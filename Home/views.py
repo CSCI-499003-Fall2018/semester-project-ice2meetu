@@ -25,3 +25,6 @@ def home(request):
         'title': 'IceToMeetYou'
     }
     return render(request, 'Home/home.html', context)
+
+def signup(request):
+    return render(request, 'Home/signup.html', {})
