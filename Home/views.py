@@ -20,11 +20,10 @@ creators = [
 ]
 
 def home(request):
-    context = {
-        'creators': creators,
-        'title': 'IceToMeetYou'
+    args = {
+        'title': 'Ice2MeetU'
     }
-    return render(request, 'Home/home.html', context)
+    return render(request, 'Home/home.html', args)
 
 def signup(request):
     return render(request, 'Home/signup.html', {})
