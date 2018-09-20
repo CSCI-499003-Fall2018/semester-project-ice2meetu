@@ -1,61 +1,69 @@
 {% extends "Home/base.html" %}
+{% load staticfiles %}
 {% block content %}
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">IceToMeetYou</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Page Content -->
-    <div class="container">
+    <!-- Menu -->
+    <header class="masthead bg-primary text-white text-center">
+      <div class="container">
+        <h1 class="text-uppercase mb-0">Ice2MeetU</h1>
+        <hr class="star-light">
+
+        <div class="text-center mt-4" id="menu">
+          <a class="btn btn-primary btn-xl" href="/signup">
+            Create Account
+          </a>
+        </div>
+
+        <div class="text-center mt-4">
+          <a class="btn btn-primary btn-xl" href="#">
+            Log In
+          </a>
+        </div>
+
+        <div class="text-center mt-4">
+          <a class="btn btn-primary btn-xl" href="#">
+            Join Event
+          </a>
+        </div>
+
+        <div class="text-center mt-4">
+          <a class="btn btn-primary btn-xl" href="#">
+            Start Game
+          </a>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- About Section -->
+    <section class="portfolio" id="portfolio">
+      <div class="container-fluid">
+        <h2 class="text-center text-uppercase text-secondary mb-0">About</h2>
+        <hr class="star-dark mb-5">
         <div class="row">
-            <div class="col-lg-12 text-center">
-                <h1 class="mt-5">IceToMeetYou</h1>
-                <p class="lead">Complete with pre-defined file paths and responsive navigation!</p>
-                <ul class="list-unstyled">
-                    <li>Bootstrap 4.1.3</li>
-                    <li>jQuery 3.3.1</li>
-                </ul>
-                <h1>Home/Creation</h1>
-                {% for creator in creators %}
-                    <h1>{{ creator.name }}</h1>
-                    <h4>{{ creator.school }}</h4>
-                {% endfor %}
-            </div>
+          <div>
+            <p class="lead">Ice2MeetU is a group game app designed for events or parties or whenever else you might need to break the ice. The app will pair/group users to play a quick, randomized game. Break out our web or mobile apps and play a game to introduce yourselves to each other in a non awkward way.</p>
+          </div>
         </div>
-    </div>
+      </div>
+    </section>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
+    <!-- Team Section -->
+    <section class="bg-primary text-white mb-0" id="team">
+      <div class="container">
+        <h2 class="text-center text-uppercase text-white">Team</h2>
+        <hr class="star-light mb-5">
+        <div class="row">
+          <div class="container-fluid lead">
+            <h4 align="center">
+              <p class="names">Dandan Lin</p>
+              <p class="names">Kevin Cybura</p>
+              <p class="names">Kristoff Campbell</p>
+              <p class="names">Silvena Chan</p>
+            </h4>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    
 {% endblock content %}
