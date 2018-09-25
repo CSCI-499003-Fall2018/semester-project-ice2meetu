@@ -35,6 +35,8 @@ def game(request):
     def get_game():
         url = "http://{}.ngrok.io/".format(tunnel)
         response = requests.get(url)
+        if response.status_code != 200:
+            return {}
         return response.json()
 
     context = get_game()

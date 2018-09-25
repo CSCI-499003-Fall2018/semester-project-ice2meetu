@@ -87,6 +87,12 @@ section h2 {
   /*padding-bottom: 1rem;*/
 }
 
+.error {
+  margin-left: auto;
+  margin-right: auto;
+  width: 8em;
+}
+
 .btn-xl {
   width: 20rem;
   padding: 1rem 1.75rem;
@@ -222,11 +228,11 @@ header.masthead h2 {
   }
 }
 
-.portfolio {
+.about {
   margin-bottom: -15px;
 }
 
-.portfolio .portfolio-item {
+.about .portfolio-item {
   position: relative;
   display: block;
   max-width: 25rem;
@@ -240,19 +246,19 @@ header.masthead h2 {
   background-color: rgba(24, 188, 156, 0.9);
 }
 
-.portfolio .portfolio-item .portfolio-item-caption:hover {
+.about .portfolio-item .portfolio-item-caption:hover {
   opacity: 1;
 }
 
-.portfolio .portfolio-item .portfolio-item-caption .portfolio-item-caption-content {
+.about .portfolio-item .portfolio-item-caption .portfolio-item-caption-content {
   font-size: 1.5rem;
 }
 
 @media (min-width: 576px) {
-  .portfolio {
+  .about {
     margin-bottom: -30px;
   }
-  .portfolio .portfolio-item {
+  .about .portfolio-item {
     margin-bottom: 30px;
   }
 }

@@ -4,20 +4,27 @@
 
     <header class="masthead bg-primary text-white">
       <div class="container-fluid">
-        <h2 class="text-center text-uppercase" id="game">{{ game }}</h2>
-        <hr class="star-light">
+        {% if game %}
+          <h2 class="text-center text-uppercase" id="game">{{ game }}</h2>
+          <hr class="star-light">
 
-        <div class="row" id="game-text">
-          <div>
-            <p class="lead">{{ text }}</p>
+          <div class="row" id="game-text">
+            <div>
+              <p class="lead">{{ text }}</p>
+            </div>
           </div>
-        </div>
 
-        <div class="text-center mt-4" id="next">
-          <a class="btn btn-primary btn-xl" href="#">
-            Next Game
-          </a>
-        </div>
+          <div class="text-center mt-4" id="next">
+            <a class="btn btn-primary btn-xl" href="#">
+              Next Game
+            </a>
+          </div>
+        {% else %}
+          <h2 class="text-center text-uppercase" id="game">Error</h2>
+          <hr class="star-light">
+          <p class="lead error">No Games Found</p>
+
+        {% endif %}
 
       </div>
     </header>

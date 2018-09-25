@@ -9,7 +9,7 @@
         <hr class="star-light">
 
         <div class="text-center mt-4" id="menu">
-          <a class="btn btn-primary btn-xl" href="/signup">
+          <a class="btn btn-primary btn-xl" href="{% url 'sign_up_page' %}">
             Create Account
           </a>
         </div>
@@ -27,7 +27,7 @@
         </div>
 
         <div class="text-center mt-4">
-          <a class="btn btn-primary btn-xl" href="/game">
+          <a class="btn btn-primary btn-xl" href="{% url 'game' %}">
             Start Game
           </a>
         </div>
@@ -36,7 +36,7 @@
     </header>
 
     <!-- About Section -->
-    <section class="portfolio" id="portfolio">
+    <section class="about" id="about">
       <div class="container-fluid">
         <h2 class="text-center text-uppercase text-secondary mb-0">About</h2>
         <hr class="star-dark mb-5">
