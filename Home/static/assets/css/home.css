@@ -114,6 +114,16 @@ section h2 {
   line-height: 3.1rem;
 }
 
+#game {
+  font-size: 3rem;
+  line-height: 2.5rem;
+}
+
+#game-text {
+  padding-left: 20%;
+  padding-right: 20%;
+}
+
 #mainNav {
   padding-top: 1rem;
   padding-bottom: 1rem;
