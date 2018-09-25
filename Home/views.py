@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import requests
 
 creators = [
     {
@@ -27,3 +28,16 @@ def home(request):
 
 def signup(request):
     return render(request, 'Home/signup.html', {})
+
+def game(request):
+    tunnel = "3d0b7810"
+
+    def get_game():
+        url = "http://{}.ngrok.io/".format(tunnel)
+        response = requests.get(url)
+        if response.status_code != 200:
+            return {}
+        return response.json()
+
+    context = get_game()
+    return render(request, 'Home/game.html', context)
