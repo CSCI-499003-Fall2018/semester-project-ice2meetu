@@ -1,8 +1,75 @@
 {% extends "Home/base.html" %}
+{% load staticfiles %}
 {% block content %}
-    <h1>Home/Creation</h1>
-    {% for creator in creators %}
-        <h1>{{ creator.name }}</h1>
-        <h4>{{ creator.school }}</h4>
-    {% endfor %}
+
+    <!-- Menu -->
+    <header class="masthead bg-primary text-white text-center">
+      <div class="container">
+        <h1 class="text-uppercase mb-0">Ice2MeetU</h1>
+        <hr class="star-light">
+
+        <div class="text-center mt-4" id="menu">
+          <a class="btn btn-primary btn-xl" href="{% url 'creation_page' %}">
+            Create Event
+          </a>
+        </div>
+
+        <div class="text-center mt-4" id="menu">
+          <a class="btn btn-primary btn-xl" href="{% url 'sign_up_page' %}">
+            Create Account
+          </a>
+        </div>
+
+        <div class="text-center mt-4">
+          <a class="btn btn-primary btn-xl" href="#">
+            Log In
+          </a>
+        </div>
+
+        <div class="text-center mt-4">
+          <a class="btn btn-primary btn-xl" href="#">
+            Join Event
+          </a>
+        </div>
+
+        <div class="text-center mt-4">
+          <a class="btn btn-primary btn-xl" href="{% url 'game' %}">
+            Start Game
+          </a>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+      <div class="container-fluid">
+        <h2 class="text-center text-uppercase text-secondary mb-0">About</h2>
+        <hr class="star-dark mb-5">
+        <div class="row">
+          <div>
+            <p class="lead">Ice2MeetU is a group game app designed for events or parties or whenever else you might need to break the ice. The app will pair/group users to play a quick, randomized game. Break out our web or mobile apps and play a game to introduce yourselves to each other in a non awkward way.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="bg-primary text-white mb-0" id="team">
+      <div class="container">
+        <h2 class="text-center text-uppercase text-white">Team</h2>
+        <hr class="star-light mb-5">
+        <div class="row">
+          <div class="container-fluid lead">
+            <h4 align="center">
+              <p class="names">Dandan Lin</p>
+              <p class="names">Kevin Cybura</p>
+              <p class="names">Kristoff Campbell</p>
+              <p class="names">Silvena Chan</p>
+            </h4>
+          </div>
+        </div>
+      </div>
+    </section>
+
 {% endblock content %}
