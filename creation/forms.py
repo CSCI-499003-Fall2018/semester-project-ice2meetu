@@ -1,11 +1,19 @@
 from django import forms
+from django.forms import ModelForm
+from .models import Event
 
-class NameForm( forms.Form):
-    if not hasattr(forms.Form, 'count'):
-        count = 0
-    else:
-        count = forms.Form['count']
-    your_name = forms.CharField(label='Your name', max_length=100)
-    your_pass = forms.CharField(label='Pass', max_length=100)
-    for i in range(count):
-        forms.CharField(label='', max_length=100)
+
+class EventForm(ModelForm):
+    choose = (('default', 'Default'), ('hackathon', 'Hackathon'),
+              ('School Event', 'School Event'), ('other', 'other'))
+    event_type = forms.ChoiceField(
+        required=False, widget=forms.Select, choices=choose)
+    description = forms.CharField(required=False,widget=forms.Textarea())
+    admin = forms.CharField(max_length=100, required=True)
+    title = forms.CharField(max_length=100, required=True)
+
+    class Meta:
+        model = Event
+        fields = ('title', 'admin', 'description', 'event_type')
+
+

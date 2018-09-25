@@ -11,14 +11,10 @@
     <div class="container-fluid">
         <div class="row justify-content-md-center">
             <div class="col-md-6 col-sm-6 col-xs-12">
-                <form action="/" method="post">
-                    <div class="form-group">
-                        {{ form }}
-                    </div>
-                </form>
-                <form action="/create/addForm" method="post" name="num" value={{form.count}}>
+                <form action="" method="post">
                     {% csrf_token %}
-                    <button type="submit">add form</button>
+                    {{ form.as_p }}
+                    <input type="submit" value="Save">
                 </form>
             </div>
         </div>
