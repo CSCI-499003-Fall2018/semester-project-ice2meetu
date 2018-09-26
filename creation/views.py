@@ -4,8 +4,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from .forms import EventForm
 from .models import Event
-import random
-import string
+from .utils import genAccessCode
 
 def create(request):
     if request.method == 'POST':
@@ -15,15 +14,7 @@ def create(request):
             event = form.save(commit=False)
             print(request)
             event.created_date = timezone.now()
-            rand_str = lambda n: ''.join([random.choice(string.ascii_lowercase) for i in range(n)])
-            code = rand_str(8)
-            
-            e_code = Event.objects.filter(access_code=code)
-            if len(e_code) > 0:
-                while len(e_code) != 0:
-                    code = rand_str(8)
-                    e_code = Event.objects.filter(access_code=code)
-            event.access_code = code
+            event.access_code = genAccessCode()
 
             event.save()
             return HttpResponseRedirect('../event/{}'.format(event.pk))
