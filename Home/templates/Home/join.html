@@ -1,0 +1,45 @@
+
+{% extends "Home/base.html" %}
+{% load staticfiles %}
+{% block content %}
+
+    <!-- Menu -->
+    <header class="masthead bg-primary text-white text-center">
+      <div class="container">
+        <h1 class="text-uppercase mb-0">Ice2MeetU</h1>
+        <hr class="star-light">
+
+	<div class="text-center mt-4">
+	  <form action="" method="post">
+	      {% csrf_token %}
+	      <h4>{{ name }}</h4>
+	      {{ form.as_p }}
+	      <div class="text-center mt-4" id="menu">
+                    <input class="btn btn-primary btn-lg" type="submit" value="Enter Access Code">
+	      </div>
+	  </form>
+	</div>
+
+      </div>
+    </header>
+
+
+    <!-- Team Section -->
+    <section class="bg-primary text-white mb-0" id="team">
+      <div class="container">
+        <h2 class="text-center text-uppercase text-white">Team</h2>
+        <hr class="star-light mb-5">
+        <div class="row">
+          <div class="container-fluid lead">
+            <h4 align="center">
+              <p class="names">Dandan Lin</p>
+              <p class="names">Kevin Cybura</p>
+              <p class="names">Kristoff Campbell</p>
+              <p class="names">Silvena Chan</p>
+            </h4>
+          </div>
+        </div>
+      </div>
+    </section>
+
+{% endblock content %}

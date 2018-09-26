@@ -19,5 +19,6 @@ class Event(models.Model):
     users = models.ManyToManyField(User, related_name="event_user")
     created_date = models.DateTimeField(
             default=timezone.now) 
+    access_code = models.CharField(max_length=8)
 
 # Create your models here.
