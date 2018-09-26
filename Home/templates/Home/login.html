@@ -1,5 +1,4 @@
 {% load staticfiles %}
-
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -61,7 +60,7 @@
 				<div class="content-main">
 					<div class="w3ls-subscribe">
 						<h4>Returning User?</h4>
-						<form action="#" method="post">
+						<form action="/" method="post">
                             {% csrf_token %}
 							<input type="email" name="Search" placeholder="Email" required="">
 							<input type="password" name="Password" placeholder="Password" required="">
