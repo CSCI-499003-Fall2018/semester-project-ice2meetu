@@ -3,6 +3,8 @@ from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from .forms import EventForm
+from .models import Event
+from .utils import genAccessCode
 
 def create(request):
     if request.method == 'POST':
@@ -12,7 +14,8 @@ def create(request):
             event = form.save(commit=False)
             print(request)
             event.created_date = timezone.now()
-            form
+            event.access_code = genAccessCode()
+
             event.save()
             return HttpResponseRedirect('../event/{}'.format(event.pk))
            
