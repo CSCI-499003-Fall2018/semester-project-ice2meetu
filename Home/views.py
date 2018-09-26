@@ -29,6 +29,9 @@ def home(request):
 def signup(request):
     return render(request, 'Home/signup.html', {})
 
+def login(request):
+    return render(request, 'Home/login.html', {})
+
 def game(request):
     tunnel = "3d0b7810"
 
