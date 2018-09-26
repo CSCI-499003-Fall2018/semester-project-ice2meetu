@@ -1,5 +1,6 @@
 from django.shortcuts import render
 import requests
+from .forms import UserCreationForm
 
 creators = [
     {
@@ -27,7 +28,20 @@ def home(request):
     return render(request, 'Home/home.html', args)
 
 def signup(request):
-    return render(request, 'Home/signup.html', {})
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('Home')
+    else:
+        form = UserCreationForm()
+    return render(request, 'Home/signup.html', {'form': form})    
 
 def login(request):
     return render(request, 'Home/login.html', {})
