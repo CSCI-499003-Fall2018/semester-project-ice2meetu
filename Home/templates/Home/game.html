@@ -4,7 +4,11 @@
 
     <header class="masthead bg-primary text-white">
       <div class="container-fluid">
-        {% if game %}
+        {% if not selected %}
+          <p class="lead game-text">Please Select Number of Players</p>
+        {% endif %}
+
+        {% if game and selected %}
           <h2 class="text-center text-uppercase" id="game">{{ game }}</h2>
           <hr class="star-light">
 
@@ -19,7 +23,8 @@
               Next Game
             </a>
           </div>
-        {% else %}
+
+        {% elif not game and selected %}
           <h2 class="text-center text-uppercase" id="game">Error</h2>
           <hr class="star-light">
           <p class="lead error">No Games Found</p>

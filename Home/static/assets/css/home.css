@@ -93,6 +93,12 @@ section h2 {
   width: 8em;
 }
 
+.game-text {
+  margin-left: auto;
+  margin-right: auto;
+  width: 10em;
+}
+
 .btn-xl {
   width: 20rem;
   padding: 1rem 1.75rem;
