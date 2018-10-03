@@ -42,7 +42,6 @@ def home(request):
     }
     return render(request, 'Home/home.html', args)
 
-
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
