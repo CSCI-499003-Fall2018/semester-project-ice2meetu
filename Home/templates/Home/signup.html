@@ -55,7 +55,7 @@
 						<div class="content-main">
 							<div class="w3ls-subscribe">
 								<h4>New Customer?</h4>
-								<form action="/" method="post">
+								<form action="{% url 'sign_up_page' %}" method="post">
 									{% csrf_token %}
 									<small style="color: white">{{ form.username.label }}</small>
 									{{ form.username }}

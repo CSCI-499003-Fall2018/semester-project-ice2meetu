@@ -36,6 +36,7 @@ def home(request):
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
+
         if form.is_valid():
             form.save()
             
@@ -45,11 +46,32 @@ def signup(request):
             user = authenticate(username=username, password=raw_password)
             login(request, user)
 
-            return redirect('Home')
+            return redirect('/')
     else:
         form = SignUpForm()
     
     return render(request, 'Home/signup.html', {'form': form})
+
+def logon(request):
+    if request.method == 'POST':
+        user = authenticate(
+            username=request.POST.get('username', '').strip(),
+            password= request.POST.get('password', ''),
+        )
+
+        if user is None:
+            messages.error(request, u'Invalid credentblog.ials')
+        else:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect(request.GET.get('next', '/'))
+            else:
+                messages.error(request, u'User is not active.')
+
+                return render_to_response('Home/login.html', locals(),      
+                    context_instance=RequestContext(request))
+    else:
+        return render(request, 'Home/login.html', {})
 
 def game(request):
     tunnel = "3d0b7810"

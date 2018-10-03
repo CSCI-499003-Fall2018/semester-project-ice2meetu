@@ -54,10 +54,12 @@
                         <div class="content-main">
                             <div class="w3ls-subscribe">
                                 <h4>Returning User?</h4>
-                                <form action="/" method="post">
+                                <form action="{% url 'login_page' %}" method="post">
                                     {% csrf_token %}
-                                    <input type="email" name="Search" placeholder="Email" required="">
-                                    <input type="password" name="Password" placeholder="Password" required="">
+                                    <small style="color: white">{{ form.username.label }}</small>
+                                    {{ form.username }}
+                                    <small style="color: white">{{ form.password.label }}</small>
+									{{ form.password }}
                                     <input type="submit" value="Login">
                                 </form>
                             </div>
