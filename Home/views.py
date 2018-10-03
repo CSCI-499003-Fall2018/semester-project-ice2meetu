@@ -4,8 +4,6 @@ from .forms import SignUpForm, Join
 from creation.models import Event
 
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 
@@ -47,7 +45,7 @@ def signup(request):
             user = authenticate(username=username, password=raw_password)
             login(request, user)
 
-            return redirect('home')
+            return redirect('Home')
     else:
         form = SignUpForm()
     
