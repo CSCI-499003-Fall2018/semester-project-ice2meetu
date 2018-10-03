@@ -1,29 +1,13 @@
 import requests
-from django.contrib.sites.shortcuts import get_current_site
 
-from django.shortcuts import render
-from django.shortcuts import redirect
-
-from .forms import Join
-from .forms import SignUpForm
-from .tokens import account_activation_token
-
+from .forms import SignUpForm, Join
 from creation.models import Event
 
-from django.http import HttpResponseRedirect
-from django.core.exceptions import ObjectDoesNotExist
-from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
-
-from django.contrib.auth import login
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
-
-from django.utils.encoding import force_text
-from django.utils.http import urlsafe_base64_decode
-
+from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
 
 creators = [
     {
