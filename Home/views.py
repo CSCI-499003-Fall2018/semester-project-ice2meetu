@@ -1,19 +1,28 @@
 import requests
+from django.contrib.sites.shortcuts import get_current_site
 
 from django.shortcuts import render
 from django.shortcuts import redirect
 
 from .forms import Join
 from .forms import SignUpForm
+from .tokens import account_activation_token
+
 from creation.models import Event
 
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
 from django.contrib.auth import login
-from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm
+
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
 
 
 creators = [
@@ -45,20 +54,36 @@ def home(request):
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
-        
         if form.is_valid():
             form.save()
-           
-            username = form.cleaned_data.get['username']
+            
+            username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
-
+            
             user = authenticate(username=username, password=raw_password)
-
             login(request, user)
-            return redirect('Home')
+
+            return redirect('home')
     else:
         form = SignUpForm()
-    return render(request, 'Home/signup.html', {'form': form})    
+    
+    return render(request, 'Home/signup.html', {'form': form})
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.profile.email_confirmed = True
+        user.save()
+        login(request, user)
+        return redirect('home')
+    else:
+        return render(request, 'account_activation_invalid.html')
 
 def game(request):
     tunnel = "3d0b7810"

@@ -355,12 +355,12 @@ h1 {
 }
 .content-left{
 	float:left;
-	width:40%;
+	width:50%;
 	background:#FFFFFF;
 }
 .content-main{
 	float:left;
-	width:60%;
+	width:50%;
 }
 .w3ls-subscribe{
 	background: rgba(0, 0, 0, 0.56);

@@ -57,13 +57,17 @@
 								<h4>New Customer?</h4>
 								<form action="/" method="post">
 									{% csrf_token %}
-									{{ form.username.label }}
+									<small style="color: white">{{ form.username.label }}</small>
 									{{ form.username }}
-									{{ form.email.label }}
+									<small style="color: white">{{ form.first_name.label }}</small>
+									{{ form.first_name }}
+									<small style="color: white">{{ form.last_name.label }}</small>
+									{{ form.last_name }}
+									<small style="color: white">{{ form.email.label }}</small>
 									{{ form.email }}
-									{{ form.password1.label }}
+									<small style="color: white">{{ form.password1.label }}</small>
 									{{ form.password1 }}
-									{{ form.password2.label }}
+									<small style="color: white">{{ form.password2.label }}</small>
 									{{ form.password2 }}
 									<input type="submit" value="Sign Up">
 								</form>
