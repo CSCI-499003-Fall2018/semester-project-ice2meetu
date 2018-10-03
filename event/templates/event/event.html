@@ -1,6 +1,11 @@
 {% extends "creation/base.html" %}
 {% block content %}
+{% if user %}
 <h1>Event Page</h1>
 <p>We need to add groups here</p>
 <h1>{{ event.title }}</h1>
+<p>{{event.description}}</p>
+{% elif not user %}
+<h1>Not logged in</h1>
+{% endif %}
 {% endblock content %}
