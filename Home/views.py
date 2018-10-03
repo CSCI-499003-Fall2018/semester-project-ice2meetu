@@ -38,7 +38,8 @@ def signup(request):
 
 def game(request):
     tunnel = "3d0b7810"
-
+    
+    """
     def get_game():
         url = "http://{}.ngrok.io/".format(tunnel)
         response = requests.get(url)
@@ -47,7 +48,8 @@ def game(request):
         return response.json()
 
     context = get_game()
-    return render(request, 'Home/game.html', context)
+    """
+    return render(request, 'Home/game.html')
 
 
 def join(request):

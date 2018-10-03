@@ -15,7 +15,6 @@ def create(request):
             print(request)
             event.created_date = timezone.now()
             event.access_code = genAccessCode()
-
             event.save()
             return HttpResponseRedirect('../event/{}'.format(event.pk))
            
