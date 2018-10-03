@@ -55,13 +55,16 @@
 						<div class="content-main">
 							<div class="w3ls-subscribe">
 								<h4>New Customer?</h4>
-								<form action="/" method="post">
+								<form action="{% url 'sign_up_page' %}" method="post">
 									{% csrf_token %}
-									<input type="text" name="Search" placeholder="First Name" required="">
-									<input type="text" name="Search" placeholder="Last Name" required="">
-									<input type="email" name="Search" placeholder="Email" required="">
-									<input type="password" name="Password" placeholder="Password" required="">
-									<input type="password" name="Password" placeholder="Confirm Password" required="">
+									<small style="color: white">{{ form.username.label }}</small>
+									{{ form.username }}
+									<small style="color: white">{{ form.email.label }}</small>
+									{{ form.email }}
+									<small style="color: white">{{ form.password1.label }}</small>
+									{{ form.password1 }}
+									<small style="color: white">{{ form.password2.label }}</small>
+									{{ form.password2 }}
 									<input type="submit" value="Sign Up">
 								</form>
 							</div>

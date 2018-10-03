@@ -1,10 +1,11 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from .forms import Join
-from creation.models import Event
-from django.core.exceptions import ObjectDoesNotExist
 import requests
-from .forms import UserCreationForm
+
+from .forms import SignUpForm, Join
+from creation.models import Event
+
+from django.contrib.auth import login, authenticate
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
 
 creators = [
     {
@@ -32,26 +33,45 @@ def home(request):
     }
     return render(request, 'Home/home.html', args)
 
-
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignUpForm(request.POST)
+
         if form.is_valid():
             form.save()
-            first_name = form.cleaned_data.get('first_name')
-            last_name = form.cleaned_data.get('last_name')
+            
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
+            
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('Home')
+
+            return redirect('/')
     else:
-        form = UserCreationForm()
+        form = SignUpForm()
+    
     return render(request, 'Home/signup.html', {'form': form})
 
-def login(request):
-    return render(request, 'Home/login.html', {})
+def logon(request):
+    if request.method == 'POST':
+        user = authenticate(
+            username=request.POST.get('username', '').strip(),
+            password= request.POST.get('password', ''),
+        )
 
+        if user is None:
+            messages.error(request, u'Invalid credentblog.ials')
+        else:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect(request.GET.get('next', '/'))
+            else:
+                messages.error(request, u'User is not active.')
+
+                return render_to_response('Home/login.html', locals(),      
+                    context_instance=RequestContext(request))
+    else:
+        return render(request, 'Home/login.html', {})
 
 def game(request, nplayers=None):
     if not nplayers:
