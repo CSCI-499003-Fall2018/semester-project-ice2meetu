@@ -1,37 +1,95 @@
 {% extends "Home/base.html" %}
 {% load staticfiles %}
+
 {% block content %}
-
-    <header class="masthead bg-primary text-white">
-      <div class="container-fluid">
-        {% if not selected %}
-          <p class="lead game-text">Please Select Number of Players</p>
+  <header class="masthead bg-primary text-white">
+    <div class="container-fluid">
+      <div class="num-box">
+        <p class="lead hint">Number of Players</p>
+      {% for i in "23456789" %}
+        {% if i == "2" or i == "6" %}
+          <div class="row row-num">
         {% endif %}
-
-        {% if game and selected %}
-          <h2 class="text-center text-uppercase" id="game">{{ game }}</h2>
-          <hr class="star-light">
-
-          <div class="row" id="game-text">
-            <div>
-              <p class="lead">{{ text }}</p>
+            <div class="num-selector">
+              <button class="btn btn-primary num" href="#" value={{i}}>
+                {{ i }}
+              </button>
             </div>
+        {% if i == "5" or i == "9" %}
           </div>
-
-          <div class="text-center mt-4" id="next">
-            <a class="btn btn-primary btn-xl" href="#">
-              Next Game
-            </a>
-          </div>
-
-        {% elif not game and selected %}
-          <h2 class="text-center text-uppercase" id="game">Error</h2>
-          <hr class="star-light">
-          <p class="lead error">No Games Found</p>
-
         {% endif %}
+      {% endfor %}
+    </div>
 
+      <div class="row num-box">
+        <h2 class="text-center text-uppercase" id="game"></h2>
       </div>
-    </header>
+
+      <hr class="">
+
+      <div class="row" id="game-text">
+        <div>
+          <p class="lead game-text"></p>
+        </div>
+      </div>
+
+      <div class="text-center mt-4" id="next">
+        <a class="btn btn-primary btn-xl" href="#">
+          Next Game
+        </a>
+      </div>
+
+
+        <!-- <h2 class="text-center text-uppercase" id="game">Error</h2>
+        <hr class="star-light">
+        <p class="lead error">No Games Found</p> -->
+
+
+
+    </div>
+  </header>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      let clicked;
+      document.querySelectorAll(".num").forEach(function(btn) {
+        btn.onclick = () => {
+          const players = btn.value;
+          clicked = players;
+          let xhttp = new XMLHttpRequest();
+          xhttp.responseType = 'json';
+          const api = "{% url 'get_game' %}";
+
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              const game = this.response;
+              document.getElementById("game").innerHTML = game.game;
+              document.querySelector(".game-text").innerHTML = game.text;
+              document.querySelector("hr").classList.add("star-light");
+            }
+          }
+          xhttp.open("GET", `${api}?nplayers=${players}`, true);
+          xhttp.send();
+        }
+      });
+      //Still need to figure out the next games button
+      // document.querySelector('#next').onclick = function() {
+      //   let xhttp = new XMLHttpRequest();
+      //   xhttp.responseType = 'json';
+      //   const api = "{% url 'get_game' %}";
+      //
+      //   xhttp.onreadystatechange = function() {
+      //     if (this.readyState == 4 && this.status == 200) {
+      //       const game = this.response;
+      //       document.getElementById("game").innerHTML = game.game;
+      //       document.querySelector(".game-text").innerHTML = game.text;
+      //       document.querySelector("hr").classList.add("star-light");
+      //     }
+      //   }
+      //   xhttp.open("GET", `${api}?nplayers=${clicked}`, true);
+      //   xhttp.send();
+      // }
+    });
+  </script>
 
 {% endblock content %}

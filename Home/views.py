@@ -2,9 +2,11 @@ import requests
 
 from .forms import SignUpForm, Join
 from creation.models import Event
+from games.models import Game, GameType
+import random
 
 from django.contrib.auth import login, authenticate
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 
 creators = [
@@ -39,17 +41,17 @@ def signup(request):
 
         if form.is_valid():
             form.save()
-            
+
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
-            
+
             user = authenticate(username=username, password=raw_password)
             login(request, user)
 
             return redirect('/')
     else:
         form = SignUpForm()
-    
+
     return render(request, 'Home/signup.html', {'form': form})
 
 def logon(request):
@@ -68,22 +70,44 @@ def logon(request):
             else:
                 messages.error(request, u'User is not active.')
 
-                return render_to_response('Home/login.html', locals(),      
+                return render_to_response('Home/login.html', locals(),
                     context_instance=RequestContext(request))
     else:
         return render(request, 'Home/login.html', {})
 
-def game(request, nplayers=None):
-    if not nplayers:
-        return render(request, 'Home/game.html', {'selected': False})
-    filtered_games = Game.objects.filter(game_type__num_players__exact=nplayers)
+def get_nplayer_game(request):
+    if not request.GET:
+        err = {
+            'status': 400,
+            'id': None,
+            'text': 'Please enter number of players',
+            'game': None
+        }
+        return JsonResponse(err)
+    nplayers = request.GET.get('nplayers', None)
+    min_games = Game.objects.filter(game_type__min_players__gte=nplayers)
+    filtered_games = Game.objects.filter(game_type__max_players__lte=nplayers)
     rand_game = random.choice(filtered_games)
     context = {
+        'status': 200,
+        'id': rand_game.id,
         'text': rand_game.text,
-        'game': rand_game.game_type.get_game_type_display(),
-        'selected': True
+        'game': rand_game.game_type.get_game_type_display()
     }
-    return render(request, 'Home/game.html', context)
+    return JsonResponse(context)
+
+def game(request): #, nplayers=None):
+    # if not nplayers:
+    #     return render(request, 'Home/game.html', {'selected': False})
+    # min_games = Game.objects.filter(game_type__min_players__gte=nplayers)
+    # filtered_games = Game.objects.filter(game_type__max_players__lte=nplayers)
+    # rand_game = random.choice(filtered_games)
+    # context = {
+    #     'text': rand_game.text,
+    #     'game': rand_game.game_type.get_game_type_display(),
+    #     'selected': True
+    # }
+    return render(request, 'Home/game.html')#, context)
 
 
 def join(request):
