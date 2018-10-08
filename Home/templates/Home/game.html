@@ -21,8 +21,14 @@
       {% endfor %}
     </div>
 
-      <div class="row num-box">
-        <h2 class="text-center text-uppercase" id="game"></h2>
+      <div class="row">
+        <div class="col"></div>
+
+        <div class="col">
+          <h2 class="text-center text-uppercase" id="game-title"></h2>
+        </div>
+
+        <div class="col"></div>
       </div>
 
       <hr class="">
@@ -33,62 +39,52 @@
         </div>
       </div>
 
-      <div class="text-center mt-4" id="next">
-        <a class="btn btn-primary btn-xl" href="#">
-          Next Game
+      <div class="text-center mt-4">
+        <a id="next" href="#">
         </a>
       </div>
-
-
-        <!-- <h2 class="text-center text-uppercase" id="game">Error</h2>
-        <hr class="star-light">
-        <p class="lead error">No Games Found</p> -->
-
-
 
     </div>
   </header>
 
   <script>
+  //TODO: Error handling if query unsuccessful
     document.addEventListener('DOMContentLoaded', function() {
-      let clicked;
       document.querySelectorAll(".num").forEach(function(btn) {
         btn.onclick = () => {
           const players = btn.value;
-          clicked = players;
-          let xhttp = new XMLHttpRequest();
-          xhttp.responseType = 'json';
-          const api = "{% url 'get_game' %}";
-
-          xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-              const game = this.response;
-              document.getElementById("game").innerHTML = game.game;
-              document.querySelector(".game-text").innerHTML = game.text;
-              document.querySelector("hr").classList.add("star-light");
-            }
+          load_game(players);
+          document.querySelector("#next").innerHTML = "Next Game";
+          document.querySelector("#next").className = "btn btn-primary btn-xl";
+          document.querySelector("#next").onclick = () => {
+            load_game(players);
           }
-          xhttp.open("GET", `${api}?nplayers=${players}`, true);
-          xhttp.send();
+
+          return false;
         }
       });
-      //Still need to figure out the next games button
-      // document.querySelector('#next').onclick = function() {
-      //   let xhttp = new XMLHttpRequest();
-      //   xhttp.responseType = 'json';
-      //   const api = "{% url 'get_game' %}";
-      //
-      //   xhttp.onreadystatechange = function() {
-      //     if (this.readyState == 4 && this.status == 200) {
-      //       const game = this.response;
-      //       document.getElementById("game").innerHTML = game.game;
-      //       document.querySelector(".game-text").innerHTML = game.text;
-      //       document.querySelector("hr").classList.add("star-light");
-      //     }
-      //   }
-      //   xhttp.open("GET", `${api}?nplayers=${clicked}`, true);
-      //   xhttp.send();
-      // }
+
+      function load_game(players) {
+        let xhttp = new XMLHttpRequest();
+        xhttp.responseType = 'json';
+        const api = "{% url 'get_game' %}";
+
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            const game = this.response;
+            document.getElementById("game-title").innerHTML = game.game;
+            document.querySelector(".game-text").innerHTML = game.text;
+            document.querySelector("hr").classList.add("star-light");
+          }
+          else {
+            document.getElementById("game-title").innerHTML = "Error";
+            document.querySelector(".game-text").innerHTML = "Unable to retrieve games";
+            document.querySelector("hr").classList.add("star-light");
+          }
+        }
+        xhttp.open("GET", `${api}?nplayers=${players}`, true);
+        xhttp.send();
+      }
     });
   </script>
 
