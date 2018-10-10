@@ -1,4 +1,5 @@
 from django.db import models
+<<<<<<< HEAD
 from sys import maxsize
 
 
@@ -25,3 +26,32 @@ class Game(models.Model):
 	max_players = models.IntegerField(default=maxsize)
 	objects = models.Manager()
 	random = RandomManager()
+=======
+
+class GameType(models.Model):
+    types_list = (
+        ('WUR', 'Would You Rather...?'),
+        ('TOD', 'Truth or Dare'),
+        ('ACT', 'Activity'),
+        ('DIS', 'Discuss'),
+        ('OTH', 'Other')
+    )
+    game_type = models.CharField(max_length=3, choices=types_list)
+    num_players = models.IntegerField(default=2)
+    min_players = models.IntegerField(default=2)
+    max_players = models.IntegerField(default=2)
+
+    def __str__(self):
+        return "{}: {} ({} Players)".format(self.game_type,
+                                            self.get_game_type_display(),
+                                            self.num_players)
+
+class Game(models.Model):
+    game_type = models.ForeignKey(GameType, default="",
+                             on_delete=models.CASCADE)
+    text = models.TextField(blank=True)
+
+    def __str__(self):
+        type_str = self.game_type.get_game_type_display()
+        return "{}: {}".format(type_str, self.text)
+>>>>>>> da4b183bf1aa60df1094ce0673e7c9ff3ba83ef0

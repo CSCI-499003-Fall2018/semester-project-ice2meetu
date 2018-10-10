@@ -93,6 +93,24 @@ section h2 {
   width: 8em;
 }
 
+.game-text {
+  margin-left: auto;
+  margin-right: auto;
+  width: 17em;
+}
+
+.selector {
+  padding-top: 5em;
+  padding-bottom: 5em;
+}
+
+.num-box {
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 1em;
+  width: 20em;
+}
+
 .btn-xl {
   width: 20rem;
   padding: 1rem 1.75rem;
@@ -120,7 +138,7 @@ section h2 {
   line-height: 3.1rem;
 }
 
-#game {
+#game-title {
   font-size: 3rem;
   line-height: 2.5rem;
 }
@@ -226,6 +244,10 @@ header.masthead h2 {
   header.masthead h2 {
     font-size: 1.75em;
   }
+}
+
+.num-selector {
+  padding: 10px;
 }
 
 .about {
@@ -349,6 +371,18 @@ header.masthead h2 {
 
 form .row:first-child .floating-label-form-group {
   border-top: 1px solid #e9ecef;
+}
+
+.row-num {
+  margin-left: auto;
+  margin-right: auto;
+  width: 15rem;
+}
+
+.hint {
+  margin-left: auto;
+  margin-right: auto;
+  width: 13rem;
 }
 
 .footer {

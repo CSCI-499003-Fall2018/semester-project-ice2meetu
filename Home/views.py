@@ -1,9 +1,13 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from .forms import Join
-from creation.models import Event
-from django.core.exceptions import ObjectDoesNotExist
 import requests
+
+from .forms import SignUpForm, Join
+from creation.models import Event
+from games.models import Game, GameType
+import random
+
+from django.contrib.auth import login, authenticate
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import render, redirect
 
 creators = [
     {
@@ -31,11 +35,20 @@ def home(request):
     }
     return render(request, 'Home/home.html', args)
 
-
 def signup(request):
-    return render(request, 'Home/signup.html', {})
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
 
+        if form.is_valid():
+            form.save()
 
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+
+<<<<<<< HEAD
 def game(request):
     tunnel = "3d0b7810"
     
@@ -50,6 +63,68 @@ def game(request):
     context = get_game()
     """
     return render(request, 'Home/game.html')
+=======
+            return redirect('/')
+    else:
+        form = SignUpForm()
+
+    return render(request, 'Home/signup.html', {'form': form})
+
+def logon(request):
+    if request.method == 'POST':
+        user = authenticate(
+            username=request.POST.get('username', '').strip(),
+            password= request.POST.get('password', ''),
+        )
+
+        if user is None:
+            messages.error(request, u'Invalid credentblog.ials')
+        else:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect(request.GET.get('next', '/'))
+            else:
+                messages.error(request, u'User is not active.')
+
+                return render_to_response('Home/login.html', locals(),
+                    context_instance=RequestContext(request))
+    else:
+        return render(request, 'Home/login.html', {})
+
+def get_nplayer_game(request):
+    if not request.GET:
+        err = {
+            'status': 400,
+            'id': None,
+            'text': 'Please enter number of players',
+            'game': None
+        }
+        return JsonResponse(err)
+    nplayers = request.GET.get('nplayers', None)
+    min_games = Game.objects.filter(game_type__min_players__gte=nplayers)
+    filtered_games = Game.objects.filter(game_type__max_players__lte=nplayers)
+    rand_game = random.choice(filtered_games)
+    context = {
+        'status': 200,
+        'id': rand_game.id,
+        'text': rand_game.text,
+        'game': rand_game.game_type.get_game_type_display()
+    }
+    return JsonResponse(context)
+
+def game(request): #, nplayers=None):
+    # if not nplayers:
+    #     return render(request, 'Home/game.html', {'selected': False})
+    # min_games = Game.objects.filter(game_type__min_players__gte=nplayers)
+    # filtered_games = Game.objects.filter(game_type__max_players__lte=nplayers)
+    # rand_game = random.choice(filtered_games)
+    # context = {
+    #     'text': rand_game.text,
+    #     'game': rand_game.game_type.get_game_type_display(),
+    #     'selected': True
+    # }
+    return render(request, 'Home/game.html')#, context)
+>>>>>>> da4b183bf1aa60df1094ce0673e7c9ff3ba83ef0
 
 
 def join(request):
