@@ -14,11 +14,11 @@ class Event(models.Model):
     access_code = models.CharField(max_length=8)
 
 class Group(models.Model):
-    event = models.ForeignKey(Event, on_delete = models.SET_NULL)
-	max_size = models.IntegerField()
+    event = models.ForeignKey(Event, on_delete = models.CASCADE)
+    max_size = models.IntegerField()
     
 class User(models.Model):
-    event = models.ForeignKey(Event, on_delete = models.SET_NULL))
+    group = models.ForeignKey(Group, on_delete = models.CASCADE, default = "")
     name = models.CharField(max_length=255)
 
 # Create your models here.
