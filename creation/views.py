@@ -5,7 +5,9 @@ from django.utils import timezone
 from .forms import EventForm
 from .models import Event
 from .utils import genAccessCode
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='../login/')
 def create(request):
     if request.method == 'POST':
         form = EventForm(request.POST)
