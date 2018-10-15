@@ -8,6 +8,7 @@ import random
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 creators = [
     {
@@ -34,6 +35,9 @@ def home(request):
         'title': 'Ice2MeetU'
     }
     return render(request, 'Home/home.html', args)
+
+def logout(requests):
+    return render(request, 'Home/home.html', {})
 
 def signup(request):
     if request.method == 'POST':
@@ -66,7 +70,7 @@ def logon(request):
         else:
             if user.is_active:
                 login(request, user)
-                return HttpResponseRedirect(request.GET.get('next', '/'))
+                return HttpResponseRedirect(request.GET.get('next', 'home_creation_page'))
             else:
                 messages.error(request, u'User is not active.')
 
@@ -75,6 +79,13 @@ def logon(request):
     else:
         return render(request, 'Home/login.html', {})
 
+@login_required(login_url='login/')
+def profile(request):
+    return render(request, 'Home/home.html', {})
+    # else:
+    #     return render(request, 'Home/login.html', {})
+
+@login_required(login_url='login/')
 def get_nplayer_game(request):
     if not request.GET:
         err = {
@@ -96,6 +107,7 @@ def get_nplayer_game(request):
     }
     return JsonResponse(context)
 
+@login_required(login_url='login/')
 def game(request): #, nplayers=None):
     # if not nplayers:
     #     return render(request, 'Home/game.html', {'selected': False})
@@ -109,20 +121,21 @@ def game(request): #, nplayers=None):
     # }
     return render(request, 'Home/game.html')#, context)
 
-
+@login_required(login_url='login/')
 def join(request):
     if request.method == 'POST':
-        form = Join(request.POST)
-        try:
-            code = form.data['access_code']
-            form = Event.objects.get(access_code=code)
-        except ObjectDoesNotExist:
-            content = {
-                'form': form,
-                'name': 'Invalid Access Code'
-            }
-            return render(request, 'Home/join.html', content)
-        return HttpResponseRedirect('../event/{}'.format(form.pk))
+        if request.user.is_authenticated():
+            form = Join(request.POST)
+            try:
+                code = form.data['access_code']
+                form = Event.objects.get(access_code=code)
+            except ObjectDoesNotExist:
+                content = {
+                    'form': form,
+                    'name': 'Invalid Access Code'
+                }
+                return render(request, 'Home/join.html', content)
+            return HttpResponseRedirect('../event/{}'.format(form.pk))
 
     else:
         form = Join()

@@ -33,7 +33,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
     <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="#page-top">Ice2MeetU</a>
+      <a class="navbar-brand js-scroll-trigger" href="{% url 'home_creation_page' %}">Ice2MeetU</a>
       <button class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         Menu
         <i class="fas fa-bars"></i>
@@ -41,7 +41,31 @@
 
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
+          {% if user.is_authenticated %}
+          <li class="nav-item mx-0 mx-lg-1">
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'creation_page' %}">
+              Create Event
+            </a>          
+          </li>
 
+          <li class="nav-item mx-0 mx-lg-1">
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'join_page' %}">
+              Join Event
+            </a>          
+          </li>
+
+          <li class="nav-item mx-0 mx-lg-1">
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'game' %}">
+              Start Game
+            </a>          
+          </li>
+
+          <li class="nav-item mx-0 mx-lg-1">
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'logout_page' %}">
+              Log Out
+            </a>          
+          </li>
+          {% else %}
           <li class="nav-item mx-0 mx-lg-1">
             <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'sign_up_page' %}">Sign Up</a>
           </li>
@@ -57,13 +81,14 @@
           <li class="nav-item mx-0 mx-lg-1">
             <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'home_creation_page' %}#team">Team</a>
           </li>
+          {% endif %}
         </ul>
       </div>
     </div>
   </nav>
 
-    {% block content %} {% endblock %}
-
+  {% block content %} {% endblock %}
+  
   <!-- Footer -->
   <div class="copyright py-4 text-center text-white">
     <div class="container">
