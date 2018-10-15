@@ -1,5 +1,4 @@
 from django.db import models
-<<<<<<< HEAD
 from sys import maxsize
 
 
@@ -26,7 +25,11 @@ class Game(models.Model):
 	max_players = models.IntegerField(default=maxsize)
 	objects = models.Manager()
 	random = RandomManager()
-=======
+
+class RandomManager(models.Manager):
+    def get_queryset(self):
+		# inefficient for large tables, need to find alternative
+        return super(RandomManager, self).get_queryset().order_by('?')
 
 class GameType(models.Model):
     types_list = (
@@ -54,4 +57,3 @@ class Game(models.Model):
     def __str__(self):
         type_str = self.game_type.get_game_type_display()
         return "{}: {}".format(type_str, self.text)
->>>>>>> da4b183bf1aa60df1094ce0673e7c9ff3ba83ef0

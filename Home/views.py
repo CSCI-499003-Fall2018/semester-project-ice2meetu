@@ -1,8 +1,6 @@
 import requests
 
 from .forms import SignUpForm, Join
-from creation.models import Event
-from games.models import Game, GameType
 import random
 
 from django.contrib.auth import login, authenticate
@@ -48,22 +46,6 @@ def signup(request):
             user = authenticate(username=username, password=raw_password)
             login(request, user)
 
-<<<<<<< HEAD
-def game(request):
-    tunnel = "3d0b7810"
-    
-    """
-    def get_game():
-        url = "http://{}.ngrok.io/".format(tunnel)
-        response = requests.get(url)
-        if response.status_code != 200:
-            return {}
-        return response.json()
-
-    context = get_game()
-    """
-    return render(request, 'Home/game.html')
-=======
             return redirect('/')
     else:
         form = SignUpForm()
@@ -78,7 +60,7 @@ def logon(request):
         )
 
         if user is None:
-            messages.error(request, u'Invalid credentblog.ials')
+            messages.error(request, u'Invalid credentials')
         else:
             if user.is_active:
                 login(request, user)
@@ -91,26 +73,20 @@ def logon(request):
     else:
         return render(request, 'Home/login.html', {})
 
-def get_nplayer_game(request):
-    if not request.GET:
-        err = {
-            'status': 400,
-            'id': None,
-            'text': 'Please enter number of players',
-            'game': None
-        }
-        return JsonResponse(err)
-    nplayers = request.GET.get('nplayers', None)
-    min_games = Game.objects.filter(game_type__min_players__gte=nplayers)
-    filtered_games = Game.objects.filter(game_type__max_players__lte=nplayers)
-    rand_game = random.choice(filtered_games)
-    context = {
-        'status': 200,
-        'id': rand_game.id,
-        'text': rand_game.text,
-        'game': rand_game.game_type.get_game_type_display()
-    }
-    return JsonResponse(context)
+def game(request):
+    tunnel = "3d0b7810"
+    
+    """
+    def get_game():
+        url = "http://{}.ngrok.io/".format(tunnel)
+        response = requests.get(url)
+        if response.status_code != 200:
+            return {}
+        return response.json()
+
+    context = get_game()
+    """
+    return render(request, 'Home/game.html')
 
 def game(request): #, nplayers=None):
     # if not nplayers:
@@ -124,8 +100,6 @@ def game(request): #, nplayers=None):
     #     'selected': True
     # }
     return render(request, 'Home/game.html')#, context)
->>>>>>> da4b183bf1aa60df1094ce0673e7c9ff3ba83ef0
-
 
 def join(request):
     if request.method == 'POST':
