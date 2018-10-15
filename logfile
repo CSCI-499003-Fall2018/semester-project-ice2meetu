@@ -1,9 +1,0 @@
-2018-10-15 16:01:29.981 EDT [36461] LOG:  listening on IPv4 address "127.0.0.1", port 5432
-2018-10-15 16:01:29.982 EDT [36461] LOG:  listening on IPv6 address "::1", port 5432
-2018-10-15 16:01:29.982 EDT [36461] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
-2018-10-15 16:01:29.991 EDT [36462] LOG:  database system was shut down at 2018-10-15 16:01:21 EDT
-2018-10-15 16:01:29.994 EDT [36461] LOG:  database system is ready to accept connections
-2018-10-15 16:02:39.735 EDT [36585] FATAL:  database "kevincybura" does not exist
-2018-10-15 16:04:21.213 EDT [36680] ERROR:  syntax error at or near "CREATE" at character 26
-2018-10-15 16:04:21.213 EDT [36680] STATEMENT:  CREATE DATABASE capstone
-	CREATE USER kevincybura WITH PASSWORD 'fire12';

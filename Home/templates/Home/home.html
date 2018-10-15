@@ -5,15 +5,34 @@
     <!-- Menu -->
     <header class="masthead bg-primary text-white text-center">
       <div class="container">
-        <h1 class="text-uppercase mb-0">Ice2MeetU</h1>
+        <h1 class="text-uppercase mb-0" href="{% url 'home_creation_page' %}">Ice2MeetU</h1>
         <hr class="star-light">
 
+        {% if user.is_authenticated %}
         <div class="text-center mt-4" id="menu">
           <a class="btn btn-primary btn-xl" href="{% url 'creation_page' %}">
             Create Event
           </a>
         </div>
 
+        <div class="text-center mt-4">
+		      <a class="btn btn-primary btn-xl" href="{% url 'join_page' %}">
+            Join Event
+          </a>
+        </div>
+
+        <div class="text-center mt-4">
+          <a class="btn btn-primary btn-xl" href="{% url 'game' %}">
+            Start Game
+          </a>
+        </div>
+
+        <div class="text-center mt-4">
+          <a class="btn btn-primary btn-xl" href="{% url 'logout_page' %}">
+            Log Out
+          </a>
+        </div>
+        {% else %}
         <div class="text-center mt-4" id="menu">
           <a class="btn btn-primary btn-xl" href="{% url 'sign_up_page' %}">
             Create Account
@@ -27,20 +46,15 @@
         </div>
 
         <div class="text-center mt-4">
-		<a class="btn btn-primary btn-xl" href="{% url 'join_page' %}">
-            Join Event
-          </a>
-        </div>
-
-        <div class="text-center mt-4">
           <a class="btn btn-primary btn-xl" href="{% url 'game' %}">
             Start Game
           </a>
         </div>
-
+        {% endif %}
       </div>
     </header>
-
+    {% if user.is_authenticated %}
+    {% else %}
     <!-- About Section -->
     <section class="about" id="about">
       <div class="container-fluid">
@@ -62,7 +76,7 @@
         <div class="row">
           <div class="container-fluid lead">
             <h4 align="center">
-              <p class="names">Dandan Lin</p>
+              <p href="https://github.com/Dandanlin0702" target="_blank" class="names">Dandan Lin</p>
               <p class="names">Kevin Cybura</p>
               <p class="names">Kristoff Campbell</p>
               <p class="names">Silvena Chan</p>
@@ -71,5 +85,5 @@
         </div>
       </div>
     </section>
-
+  {% endif %}
 {% endblock content %}

@@ -1,7 +1,8 @@
 
 from .forms import SignUpForm, Join
 from creation.models import Event
-from django.contrib import messages
+from games.models import Game, GameType
+import random
 
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect, JsonResponse
@@ -34,6 +35,8 @@ def home(request):
     }
     return render(request, 'Home/home.html', args)
 
+def logout(requests):
+    return render(request, 'Home/home.html', {})
 
 def signup(request):
     if request.method == 'POST':
@@ -67,15 +70,22 @@ def logon(request):
         else:
             if user.is_active:
                 login(request, user)
-                return HttpResponseRedirect(request.GET.get('next', '/'))
+                return HttpResponseRedirect(request.GET.get('next', 'home_creation_page'))
             else:
                 messages.error(request, u'User is not active.')
 
                 return render_to_response('Home/login.html', locals(),
-                                          context_instance=RequestContext(request))
+                    context_instance=RequestContext(request))
     else:
         return render(request, 'Home/login.html', {})
 
+@login_required(login_url='login/')
+def profile(request):
+    return render(request, 'Home/home.html', {})
+    # else:
+    #     return render(request, 'Home/login.html', {})
+
+@login_required(login_url='login/')
 def get_nplayer_game(request):
     if not request.GET:
         err = {
@@ -88,8 +98,16 @@ def get_nplayer_game(request):
     nplayers = request.GET.get('nplayers', None)
     min_games = Game.objects.filter(game_type__min_players__gte=nplayers)
     filtered_games = Game.objects.filter(game_type__max_players__lte=nplayers)
+    rand_game = random.choice(filtered_games)
+    context = {
+        'status': 200,
+        'id': rand_game.id,
+        'text': rand_game.text,
+        'game': rand_game.game_type.get_game_type_display()
+    }
+    return JsonResponse(context)
 
-
+@login_required(login_url='login/')
 def game(request): #, nplayers=None):
     # if not nplayers:
     #     return render(request, 'Home/game.html', {'selected': False})
@@ -105,7 +123,7 @@ def game(request): #, nplayers=None):
 
 @login_required(login_url='login/')
 def join(request):
-    if request.method == 'POST' and request.user.is_authenticated:
+    if request.method == 'POST':
 
         form = Join(request.POST)
         try:
@@ -123,9 +141,6 @@ def join(request):
         return HttpResponseRedirect('../event/{}'.format(form.pk))
     else:
         form = Join()
-
-
-
     content = {
         'form': form,
         'name': 'Access Code',
