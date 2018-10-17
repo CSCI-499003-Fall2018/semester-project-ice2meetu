@@ -78,8 +78,6 @@ def logon(request):
     else:
         return render(request, 'Home/login.html', {})
 
-<<<<<<< HEAD
-=======
 @login_required(login_url='login/')
 def profile(request):
     return render(request, 'Home/home.html', {})
