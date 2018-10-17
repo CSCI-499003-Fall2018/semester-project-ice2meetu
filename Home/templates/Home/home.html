@@ -7,15 +7,11 @@
     <header class="masthead bg-primary text-white text-center">
 
       <div class="container">
-<<<<<<< HEAD
         {% if user.is_authenticated %}
         <h1 class="text-uppercase mb-0" href="{% url 'home_creation_page' %}">Hello {{ user.username }}</h1>
         {% else %}
         <h1 class="text-uppercase mb-0" href="{% url 'home_creation_page' %}">Ice2MeetU</h1>
         {% endif %}
-=======
-        <h1 class="text-uppercase mb-0" href="{% url 'home_creation_page' %}">Ice2MeetU</h1>
->>>>>>> origin
         <hr class="star-light">
 
         {% if user.is_authenticated %}
@@ -65,10 +61,6 @@
     </header>
     {% if user.is_authenticated %}
     {% else %}
-<<<<<<< HEAD
-
-=======
->>>>>>> origin
     <!-- About Section -->
     <section class="about" id="about">
       <div class="container-fluid">
@@ -88,7 +80,6 @@
         <h2 class="h1-responsive font-weight-bold my-5">Our amazing team</h2>
         <p class="grey-text w-responsive mx-auto mb-5">We are a group of Computer Science students from Hunter College</p>
         <div class="row">
-<<<<<<< HEAD
           <div class="col-lg-3 col-md-6 mb-lg-0 mb-5">
             <!-- <div class="mx-auto d-block">
               <img src="https://avatars1.githubusercontent.com/u/42821446?s=400&v=4" class=".img-circle rounded-circle z-depth-1" alt="Kristoff">
@@ -166,23 +157,10 @@
                 <i class="fa fa-envelope blue-text"> </i>
               </a>
             </ul>
-=======
-          <div class="container-fluid lead">
-            <h4 align="center">
-              <p href="https://github.com/Dandanlin0702" target="_blank" class="names">Dandan Lin</p>
-              <p class="names">Kevin Cybura</p>
-              <p class="names">Kristoff Campbell</p>
-              <p class="names">Silvena Chan</p>
-            </h4>
->>>>>>> origin
           </div>
         </div>
       </section>
       </div>
-<<<<<<< HEAD
-      <!-- Section: Team -->
-=======
     </section>
->>>>>>> origin
   {% endif %}
 {% endblock content %}
