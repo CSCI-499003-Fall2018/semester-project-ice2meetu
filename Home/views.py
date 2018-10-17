@@ -6,6 +6,7 @@ import random
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
+from django.core.exceptions import ObjectDoesNotExist
 
 creators = [
     {
@@ -73,21 +74,6 @@ def logon(request):
     else:
         return render(request, 'Home/login.html', {})
 
-def game(request):
-    tunnel = "3d0b7810"
-    
-    """
-    def get_game():
-        url = "http://{}.ngrok.io/".format(tunnel)
-        response = requests.get(url)
-        if response.status_code != 200:
-            return {}
-        return response.json()
-
-    context = get_game()
-    """
-    return render(request, 'Home/game.html')
-
 def game(request): #, nplayers=None):
     # if not nplayers:
     #     return render(request, 'Home/game.html', {'selected': False})
@@ -101,24 +87,3 @@ def game(request): #, nplayers=None):
     # }
     return render(request, 'Home/game.html')#, context)
 
-def join(request):
-    if request.method == 'POST':
-        form = Join(request.POST)
-        try:
-            code = form.data['access_code']
-            form = Event.objects.get(access_code=code)
-        except ObjectDoesNotExist:
-            content = {
-                'form': form,
-                'name': 'Invalid Access Code'
-            }
-            return render(request, 'Home/join.html', content)
-        return HttpResponseRedirect('../event/{}'.format(form.pk))
-
-    else:
-        form = Join()
-    content = {
-        'form': form,
-        'name': 'Access Code'
-    }
-    return render(request, 'Home/join.html', content)

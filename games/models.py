@@ -16,7 +16,7 @@ class GameType(models.Model):
         ('DIS', 'Discuss'),
         ('OTH', 'Other')
     )
-    game_type = models.CharField(max_length=3, choices=types_list)
+    game_type = models.CharField(max_length=3, choices=types_list, default=types_list[0][0])
     num_players = models.IntegerField(default=2)
     min_players = models.IntegerField(default=2)
     max_players = models.IntegerField(default=2)

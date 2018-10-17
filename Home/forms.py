@@ -11,5 +11,5 @@ class SignUpForm(UserCreationForm):
         fields = ('username', 'email', 'password1', 'password2',)
 
 class Join(forms.Form):
-    #code = forms.CharField(max_length=100, required=True, label='') 
+    name = forms.CharField(max_length=100, required=True, label='Your Name')
     access_code = forms.CharField(widget=forms.TextInput(attrs={'size':'30','maxlength':'70'} ), label='')
