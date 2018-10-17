@@ -21,4 +21,5 @@ urlpatterns = [
     path('create/', include('creation.urls')),
     path('event/', include('event.urls')),
     path('admin/', admin.site.urls),
+    path('oauth/', include('social_django.urls', namespace='social')),  # <-- Social Login
 ]
