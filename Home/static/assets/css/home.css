@@ -339,6 +339,9 @@ header.masthead h2 {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }
+.team-section {
+  background-image: https://www.pexels.com/photo/people-silhouette-during-sunset-853168/;
+}
 
 .floating-label-form-group label {
   font-size: 0.85em;
@@ -421,11 +424,14 @@ a:focus, a:hover, a:active {
 }
 
 .text-secondary {
-  color: #2C3E50 !important;
+  /* color: #2C3E50 !important; */
+  color: black;
 }
 
 .btn-primary {
-  background-color: #2C3E50;
+  /* background-color: #2C3E50;
+  border-color: #2C3E50; */
+  background-color: white;
   border-color: #2C3E50;
 }
 
@@ -438,7 +444,8 @@ a:focus, a:hover, a:active {
 }
 
 .btn-secondary {
-  background-color: #2C3E50;
+  /* background-color: #2C3E50; */
+  background-color: white;
   border-color: #2C3E50;
 }
 
