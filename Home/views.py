@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
+from games.models import Game, GameType
 
 creators = [
     {
@@ -27,7 +28,6 @@ creators = [
         'school': 'Hunter College'
     }
 ]
-
 
 def home(request):
     args = {
@@ -121,7 +121,6 @@ def join(request):
                 }
                 return render(request, 'Home/join.html', content)
             return HttpResponseRedirect('../event/{}'.format(form.pk))
-
     else:
         form = Join()
     content = {

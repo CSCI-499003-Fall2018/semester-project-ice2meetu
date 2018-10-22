@@ -1,7 +1,8 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
-
+# Create your models here.
 class Event(models.Model):
     title = models.CharField(max_length=255)
     # admin = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="event_admin")
@@ -17,12 +18,8 @@ class Event(models.Model):
         return "{}: {} ".format(self.title, self.description)
 
 class Group(models.Model):
-    event = models.ForeignKey(Event, on_delete = models.CASCADE)
+    event = models.ForeignKey(Event, on_delete = models.DO_NOTHING)
     curr_size = models.IntegerField(default=0)
     max_size = models.IntegerField(default=4)
-    
-class User(models.Model):
-    group = models.ForeignKey(Group, on_delete = models.CASCADE, default = "")
-    name = models.CharField(max_length=255, default = "")
 
-# Create your models here.
+
