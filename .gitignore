@@ -5,3 +5,5 @@ __pycache__
 /games/gitignore/
 migrations
 venv
+.gitignore
+.idea

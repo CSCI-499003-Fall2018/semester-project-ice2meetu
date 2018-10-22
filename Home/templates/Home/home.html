@@ -3,31 +3,26 @@
 {% block content %}
 
     <!-- Menu -->
+    <!-- <header class="masthead bg-primary text-white text-center" style="background-image: url(static/assets/images/menu_background.jpeg/); background-position: bottom; opacity: 0.8;"> -->
     <header class="masthead bg-primary text-white text-center">
+
       <div class="container">
-        <h1 class="text-uppercase mb-0">Ice2MeetU</h1>
+        {% if user.is_authenticated %}
+        <h1 class="text-uppercase mb-0" href="{% url 'home_creation_page' %}">Hello {{ user.username }}</h1>
+        {% else %}
+        <h1 class="text-uppercase mb-0" href="{% url 'home_creation_page' %}">Ice2MeetU</h1>
+        {% endif %}
         <hr class="star-light">
 
+        {% if user.is_authenticated %}
         <div class="text-center mt-4" id="menu">
           <a class="btn btn-primary btn-xl" href="{% url 'creation_page' %}">
             Create Event
           </a>
         </div>
 
-        <div class="text-center mt-4" id="menu">
-          <a class="btn btn-primary btn-xl" href="{% url 'sign_up_page' %}">
-            Create Account
-          </a>
-        </div>
-
         <div class="text-center mt-4">
-          <a class="btn btn-primary btn-xl" href="#">
-            Log In
-          </a>
-        </div>
-
-        <div class="text-center mt-4">
-		<a class="btn btn-primary btn-xl" href="{% url 'join_page' %}">
+		      <a class="btn btn-primary btn-xl" href="{% url 'join_page' %}">
             Join Event
           </a>
         </div>
@@ -38,9 +33,34 @@
           </a>
         </div>
 
+        <div class="text-center mt-4">
+          <a class="btn btn-primary btn-xl" href="{% url 'logout_page' %}">
+            Log Out
+          </a>
+        </div>
+        {% else %}
+        <div class="text-center mt-4" id="menu">
+          <a class="btn btn-primary btn-xl" href="{% url 'sign_up_page' %}">
+            Create Account
+          </a>
+        </div>
+
+        <div class="text-center mt-4">
+          <a class="btn btn-primary btn-xl" href="{% url 'login_page' %}">
+            Log In
+          </a>
+        </div>
+
+        <div class="text-center mt-4">
+          <a class="btn btn-primary btn-xl" href="{% url 'game' %}">
+            Start Game
+          </a>
+        </div>
+        {% endif %}
       </div>
     </header>
-
+    {% if user.is_authenticated %}
+    {% else %}
     <!-- About Section -->
     <section class="about" id="about">
       <div class="container-fluid">
@@ -54,22 +74,91 @@
       </div>
     </section>
 
-    <!-- Team Section -->
-    <section class="bg-primary text-white mb-0" id="team">
-      <div class="container">
-        <h2 class="text-center text-uppercase text-white">Team</h2>
-        <hr class="star-light mb-5">
+    <!-- Section: Team  -->
+    <div class="team-section" style="background-color: #18a0af !important; background-position: top; ">
+    <section class="team-section text-center my-5" >
+        <h2 class="h1-responsive font-weight-bold my-5">Our amazing team</h2>
+        <p class="grey-text w-responsive mx-auto mb-5">We are a group of Computer Science students from Hunter College</p>
         <div class="row">
-          <div class="container-fluid lead">
-            <h4 align="center">
-              <p class="names">Dandan Lin</p>
-              <p class="names">Kevin Cybura</p>
-              <p class="names">Kristoff Campbell</p>
-              <p class="names">Silvena Chan</p>
-            </h4>
+          <div class="col-lg-3 col-md-6">
+            <div class="avatar mx-auto">
+              <img class="rounded-circle z-depth-1" src="/static/assets/images/team/KC_Kristoff.jpeg" alt="Kristoff" style="width:7em; height:7em;">
+            </div>
+            <h5 class="font-weight-bold mt-4 mb-3">Kristoff Campbell</h5>
+            <p class="text-uppercase blue-text"><strong></strong></p>
+            <p class="grey-text">Perspiciatis repellendus ad odit consequuntur, eveniet earum nisi qui consectetur totam officia voluptates perferendis voluptatibus aut.</p>
+            <ul class="list-unstyled mb-0">
+              <a class="p-2 fa-lg ins-ic" href="https://github.com/kristoff-campbell28">
+                <i class="fa fa-github" style="color:black"> </i>
+              </a>
+              <a class="p-2 fa-lg ins-ic" href="https://www.linkedin.com/in/kristoff-campbell-b0b19380/" target="_blank">
+                <i class="fa fa-linkedin" style="color:black"> </i>
+              </a>
+              <a class="p-2 fa-lg ins-ic" href="mailto:krisrocks4u@aol.com?Subject=Hello%20Kristoff%20Campbell" target="_top" data-toggle="tooltip" title="krisrocks4u@aol.com">
+                <i class="fa fa-envelope" style="color:black"> </i>
+              </a>
+            </ul>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="avatar mx-auto">
+              <img class="rounded-circle z-depth-1" src="https://avatars0.githubusercontent.com/u/29310729?s=400&v=4" alt="Silvena" style="width:7em; height:7em;">
+            </div>
+            <h5 class="font-weight-bold mt-4 mb-3">Silvena Chan</h5>
+            <p class="text-uppercase blue-text"><strong></strong></p>
+            <p class="grey-text">Perspiciatis repellendus ad odit consequuntur, eveniet earum nisi qui consectetur totam officia voluptates perferendis voluptatibus aut.</p>
+            <ul class="list-unstyled mb-0">
+              <a class="p-2 fa-lg ins-ic" href="https://github.com/silvenac">
+                <i class="fa fa-github" style="color:black"> </i>
+              </a>
+              <a class="p-2 fa-lg fb-ic" href="https://www.linkedin.com/in/silvena-chan/" target="_blank">
+                <i class="fa fa-linkedin" style="color:black"> </i>
+              </a>
+              <a class="p-2 fa-lg ins-ic" href="mailto:schan02@gmail.com?Subject=Hello%20Silvena%20Chan" target="_top" data-toggle="tooltip" title="schan02@gmail.com">
+                <i class="fa fa-envelope" style="color:black"> </i>
+              </a>
+            </ul>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="avatar mx-auto">
+              <img class="rounded-circle z-depth-1" src="/static/assets/images/team/KC_Kevin.jpeg" alt="Kevin" style="width:7em; height:7em;">
+            </div>
+            <h5 class="font-weight-bold mt-4 mb-3">Kevin Cybura</h5>
+            <p class="text-uppercase blue-text"><strong></strong></p>
+            <p class="grey-text">Perspiciatis repellendus ad odit consequuntur, eveniet earum nisi qui consectetur totam officia voluptates perferendis voluptatibus aut.</p>
+            <ul class="list-unstyled mb-0">
+                <a class="p-2 fa-lg fb-ic" href="https://github.com/KevinCybura">
+                  <i class="fa fa-github" style="color:black"> </i>
+                </a>
+                <a class="p-2 fa-lg ins-ic" href="https://www.linkedin.com/in/kevincybura/" target="_blank">
+                  <i class="fa fa-linkedin" style="color:black"> </i>
+                </a>
+                <a class="p-2 fa-lg ins-ic" href="mailto:kevin.cybrua@gmail.com?Subject=Hello%20Kevin%20Cybrua" target="_top" data-toggle="tooltip" title="kevin.cybrua@gmail.com">
+                  <i class="fa fa-envelope" style="color:black"> </i>
+                </a>
+            </ul>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="avatar mx-auto">
+              <img class="rounded-circle z-depth-1" src="https://avatars3.githubusercontent.com/u/20933153?v=4&s=460" alt="Dandan" style="width:7em; height:7em;">
+            </div>
+            <h5 class="font-weight-bold mt-4 mb-3">Dandan Lin</h5>
+            <p class="text-uppercase blue-text"><strong></strong></p>
+            <p class="grey-text">Perspiciatis repellendus ad odit consequuntur, eveniet earum nisi qui consectetur totam officia voluptates perferendis voluptatibus aut.</p>
+            <ul class="list-unstyled mb-0">
+              <a class="p-2 fa-lg ins-ic" href="https://github.com/dandanlin0702">
+                <i class="fa fa-github" style="color:black"> </i>
+              </a>
+              <a class="p-2 fa-lg ins-ic" href="https://www.linkedin.com/in/dandanlin0702/" target="_blank">
+                <i class="fa fa-linkedin" style="color:black"> </i>
+              </a>
+              <a class="p-2 fa-lg ins-ic" href="mailto:dandanlin.l@gmail.com?Subject=Hello%20Dan%20Dan" target="_top" data-toggle="tooltip" title="dandanlin.l@gmail.com" aria-hidden="true">
+                <i class="fa fa-envelope" style="color:black"> </i>
+              </a>
+            </ul>
           </div>
         </div>
+      </section>
       </div>
     </section>
-
+  {% endif %}
 {% endblock content %}
