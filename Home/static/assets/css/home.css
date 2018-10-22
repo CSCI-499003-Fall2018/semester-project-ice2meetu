@@ -93,6 +93,24 @@ section h2 {
   width: 8em;
 }
 
+.game-text {
+  margin-left: auto;
+  margin-right: auto;
+  width: 17em;
+}
+
+.selector {
+  padding-top: 5em;
+  padding-bottom: 5em;
+}
+
+.num-box {
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 1em;
+  width: 20em;
+}
+
 .btn-xl {
   width: 20rem;
   padding: 1rem 1.75rem;
@@ -120,7 +138,7 @@ section h2 {
   line-height: 3.1rem;
 }
 
-#game {
+#game-title {
   font-size: 3rem;
   line-height: 2.5rem;
 }
@@ -228,6 +246,10 @@ header.masthead h2 {
   }
 }
 
+.num-selector {
+  padding: 10px;
+}
+
 .about {
   margin-bottom: -15px;
 }
@@ -317,6 +339,9 @@ header.masthead h2 {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }
+.team-section {
+  background-image: https://www.pexels.com/photo/people-silhouette-during-sunset-853168/;
+}
 
 .floating-label-form-group label {
   font-size: 0.85em;
@@ -349,6 +374,18 @@ header.masthead h2 {
 
 form .row:first-child .floating-label-form-group {
   border-top: 1px solid #e9ecef;
+}
+
+.row-num {
+  margin-left: auto;
+  margin-right: auto;
+  width: 15rem;
+}
+
+.hint {
+  margin-left: auto;
+  margin-right: auto;
+  width: 13rem;
 }
 
 .footer {
@@ -388,16 +425,18 @@ a:focus, a:hover, a:active {
 
 .text-secondary {
   color: #2C3E50 !important;
+  color: black;
 }
 
 .btn-primary {
   background-color: #2C3E50;
   border-color: #2C3E50;
+  border-color: #2C3E50;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
-  /* background-color: #117c88;
-  border-color: #117c88; */
+  background-color: #117c88;
+  border-color: #117c88;
   color: #212529;
   background-color: #f8f9fa;
   border-color: #f8f9fa;

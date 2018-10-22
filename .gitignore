@@ -4,4 +4,8 @@ __pycache__
 .DS_Store
 /games/gitignore/
 migrations
+<<<<<<< HEAD
 venv
+=======
+.idea
+>>>>>>> 67efd0f7b933f35b1951aec5b5cb605bb187ee73
