@@ -85,7 +85,6 @@ def profile(request):
     # else:
     #     return render(request, 'Home/login.html', {})
 
-@login_required(login_url='login/')
 def get_nplayer_game(request):
     if not request.GET:
         err = {

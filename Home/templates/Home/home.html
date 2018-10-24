@@ -14,7 +14,6 @@
         {% endif %}
         <hr class="star-light">
 
-        {% if user.is_authenticated %}
         <div class="text-center mt-4" id="menu">
           <a class="btn btn-primary btn-xl" href="{% url 'creation_page' %}">
             Create Event
@@ -38,25 +37,6 @@
             Log Out
           </a>
         </div>
-        {% else %}
-        <div class="text-center mt-4" id="menu">
-          <a class="btn btn-primary btn-xl" href="{% url 'sign_up_page' %}">
-            Create Account
-          </a>
-        </div>
-
-        <div class="text-center mt-4">
-          <a class="btn btn-primary btn-xl" href="{% url 'login_page' %}">
-            Log In
-          </a>
-        </div>
-
-        <div class="text-center mt-4">
-          <a class="btn btn-primary btn-xl" href="{% url 'game' %}">
-            Start Game
-          </a>
-        </div>
-        {% endif %}
       </div>
     </header>
     {% if user.is_authenticated %}
