@@ -5,15 +5,8 @@
     <!-- Menu -->
     <!-- <header class="masthead bg-primary text-white text-center" style="background-image: url(static/assets/images/menu_background.jpeg/); background-position: bottom; opacity: 0.8;"> -->
     <header class="masthead bg-primary text-white text-center">
-
       <div class="container">
-        {% if user.is_authenticated %}
-        <h1 class="text-uppercase mb-0" href="{% url 'home_creation_page' %}">Hello {{ user.username }}</h1>
-        {% else %}
-        <h1 class="text-uppercase mb-0" href="{% url 'home_creation_page' %}">Ice2MeetU</h1>
-        {% endif %}
-        <hr class="star-light">
-
+		<!--
         <div class="text-center mt-4" id="menu">
           <a class="btn btn-primary btn-xl" href="{% url 'creation_page' %}">
             Create Event
@@ -37,6 +30,57 @@
             Log Out
           </a>
         </div>
+		-->
+        {% if user.is_authenticated %}
+        <h1 class="text-uppercase mb-0" href="{% url 'home_creation_page' %}">Hello {{ user.username }}</h1>
+        {% else %}
+        <h1 class="text-uppercase mb-0" href="{% url 'home_creation_page' %}">Ice2MeetU</h1>
+        {% endif %}
+        <hr class="star-light">
+
+        {% if user.is_authenticated %}
+        <div class="text-center mt-4" id="menu">
+          <a class="btn btn-primary btn-xl" href="{% url 'creation_page' %}">
+            Create Event
+          </a>
+        </div>
+
+        <div class="text-center mt-4">
+		      <a class="btn btn-primary btn-xl" href="{% url 'join_page' %}">
+            Join Event
+          </a>
+        </div>
+
+        <div class="text-center mt-4">
+          <a class="btn btn-primary btn-xl" href="{% url 'game' %}">
+            Start Game
+          </a>
+        </div>
+
+        <div class="text-center mt-4">
+          <a class="btn btn-primary btn-xl" href="{% url 'logout_page' %}">
+            Log Out
+          </a>
+        </div>
+        {% else %}
+        <div class="text-center mt-4" id="menu">
+          <a class="btn btn-primary btn-xl" href="{% url 'sign_up_page' %}">
+            Create Account
+          </a>
+        </div>
+
+        <div class="text-center mt-4">
+          <a class="btn btn-primary btn-xl" href="{% url 'login_page' %}">
+            Log In
+          </a>
+        </div>
+
+        <div class="text-center mt-4">
+          <a class="btn btn-primary btn-xl" href="{% url 'game' %}">
+            Start Game
+          </a>
+        </div>
+        {% endif %}
       </div>
     </header>
     {% if user.is_authenticated %}

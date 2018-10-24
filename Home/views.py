@@ -1,5 +1,3 @@
-import requests
-
 from .forms import SignUpForm, Join
 from creation.models import Event
 from games.models import Game, GameType
@@ -9,6 +7,7 @@ from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+import requests
 
 creators = [
     {
@@ -30,12 +29,51 @@ creators = [
 ]
 
 
+@login_required(login_url='login/')
+def game(request): #, nplayers=None):
+    # if not nplayers:
+    #     return render(request, 'Home/game.html', {'selected': False})
+    # min_games = Game.objects.filter(game_type__min_players__gte=nplayers)
+    # filtered_games = Game.objects.filter(game_type__max_players__lte=nplayers)
+    # rand_game = random.choice(filtered_games)
+    # context = {
+    #     'text': rand_game.text,
+    #     'game': rand_game.game_type.get_game_type_display(),
+    #     'selected': True
+    # }
+    return render(request, 'Home/game.html')#, context)
+
+
 def home(request):
     args = {
         'title': 'Ice2MeetU'
     }
     return render(request, 'Home/home.html', args)
 
+@login_required(login_url='login/')
+def join(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated():
+            form = Join(request.POST)
+            try:
+                code = form.data['access_code']
+                form = Event.objects.get(access_code=code)
+            except ObjectDoesNotExist:
+                content = {
+                    'form': form,
+                    'name': 'Invalid Access Code'
+                }
+                return render(request, 'Home/join.html', content)
+            return HttpResponseRedirect('../event/{}'.format(form.pk))
+
+    else:
+        form = Join()
+    content = {
+        'form': form,
+        'name': 'Access Code'
+    }
+    return render(request, 'Home/join.html', content)
+	
 def logout(requests):
     return render(request, 'Home/home.html', {})
 
@@ -56,7 +94,7 @@ def signup(request):
     else:
         form = SignUpForm()
 
-    return render(request, 'Home/signup.html', {'form': form})
+    return render(request, 'Home/signup.html', {'form': form, 'next': '/'})
 
 def logon(request):
     if request.method == 'POST':
@@ -84,62 +122,3 @@ def profile(request):
     return render(request, 'Home/home.html', {})
     # else:
     #     return render(request, 'Home/login.html', {})
-
-def get_nplayer_game(request):
-    if not request.GET:
-        err = {
-            'status': 400,
-            'id': None,
-            'text': 'Please enter number of players',
-            'game': None
-        }
-        return JsonResponse(err)
-    nplayers = request.GET.get('nplayers', None)
-    min_games = Game.objects.filter(game_type__min_players__gte=nplayers)
-    filtered_games = Game.objects.filter(game_type__max_players__lte=nplayers)
-    rand_game = random.choice(filtered_games)
-    context = {
-        'status': 200,
-        'id': rand_game.id,
-        'text': rand_game.text,
-        'game': rand_game.game_type.get_game_type_display()
-    }
-    return JsonResponse(context)
-
-@login_required(login_url='login/')
-def game(request): #, nplayers=None):
-    # if not nplayers:
-    #     return render(request, 'Home/game.html', {'selected': False})
-    # min_games = Game.objects.filter(game_type__min_players__gte=nplayers)
-    # filtered_games = Game.objects.filter(game_type__max_players__lte=nplayers)
-    # rand_game = random.choice(filtered_games)
-    # context = {
-    #     'text': rand_game.text,
-    #     'game': rand_game.game_type.get_game_type_display(),
-    #     'selected': True
-    # }
-    return render(request, 'Home/game.html')#, context)
-
-@login_required(login_url='login/')
-def join(request):
-    if request.method == 'POST':
-        if request.user.is_authenticated():
-            form = Join(request.POST)
-            try:
-                code = form.data['access_code']
-                form = Event.objects.get(access_code=code)
-            except ObjectDoesNotExist:
-                content = {
-                    'form': form,
-                    'name': 'Invalid Access Code'
-                }
-                return render(request, 'Home/join.html', content)
-            return HttpResponseRedirect('../event/{}'.format(form.pk))
-
-    else:
-        form = Join()
-    content = {
-        'form': form,
-        'name': 'Access Code'
-    }
-    return render(request, 'Home/join.html', content)
