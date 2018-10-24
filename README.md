@@ -6,7 +6,7 @@ To use heroku, you have to:
 - give email to me, so you can be added as a contributor
 - Use the following commands to set the DATABASE_URL enviroment variable
     - Windows CMD: ``FOR /F "usebackq delims=" %i IN (`heroku config:get DATABASE_URL -a ice2meetu`) DO set DATABASE_URL=%i``
-    - bash: `DATABASE_URL=$(heroku config:get DATABASE_URL -a your-app)`
+    - bash: `DATABASE_URL=$(heroku config:get DATABASE_URL -a ice2meetu)`
 
 # Project Proposal
 
