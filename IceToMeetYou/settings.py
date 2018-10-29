@@ -91,9 +91,9 @@ WSGI_APPLICATION = 'IceToMeetYou.wsgi.application'
 DATABASES = {
     'default' : {
         'ENGINE' : 'django.db.backends.postgresql_psycopg2',
-        'NAME' : 'kevincybura',
-        'USER' : 'kevincybura',
-        'PASSWORD' : 'fire12',
+        'NAME' : '****',
+        'USER' : '****',
+        'PASSWORD' : '****',
         'HOST' : 'localhost',
         'PORT' : '',
     }
