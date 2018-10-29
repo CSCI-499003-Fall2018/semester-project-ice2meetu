@@ -1,6 +1,6 @@
 
 from .forms import SignUpForm, Join
-from creation.models import Event
+from creation.models import Event, Group
 from games.models import Game, GameType
 import random
 
@@ -85,7 +85,6 @@ def profile(request):
     # else:
     #     return render(request, 'Home/login.html', {})
 
-@login_required(login_url='login/')
 def get_nplayer_game(request):
     if not request.GET:
         err = {
@@ -107,19 +106,13 @@ def get_nplayer_game(request):
     }
     return JsonResponse(context)
 
-@login_required(login_url='login/')
-def game(request): #, nplayers=None):
-    # if not nplayers:
-    #     return render(request, 'Home/game.html', {'selected': False})
-    # min_games = Game.objects.filter(game_type__min_players__gte=nplayers)
-    # filtered_games = Game.objects.filter(game_type__max_players__lte=nplayers)
-    # rand_game = random.choice(filtered_games)
-    # context = {
-    #     'text': rand_game.text,
-    #     'game': rand_game.game_type.get_game_type_display(),
-    #     'selected': True
-    # }
-    return render(request, 'Home/game.html')#, context)
+def game(request):
+    username = None
+    userGroup = None
+    # if request.user.is_authenticated:
+    #     username = request.user.username
+    #     userGroup = Group
+    return render(request, 'Home/game.html')
 
 @login_required(login_url='login/')
 def join(request):

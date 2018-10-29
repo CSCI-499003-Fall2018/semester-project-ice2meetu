@@ -10,6 +10,6 @@ urlpatterns = [
     path('signup', views.signup, name="sign_up_page"),
     path('profile', views.profile, name="profile_page"),
     path('game', views.game, name="game"),
-    path('get_game', views.get_nplayer_game, name="get_game"),
+    path('api/game', views.get_nplayer_game, name="get_game"),
     path('join', views.join, name="join_page")
 ]
