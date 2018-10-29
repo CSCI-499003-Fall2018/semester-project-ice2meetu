@@ -137,7 +137,6 @@ def join(request):
             }
             return render(request, 'Home/join.html', content)
 
-        form.user.append(request.user)
         return HttpResponseRedirect('../event/{}'.format(form.pk))
     else:
         form = Join()
