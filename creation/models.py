@@ -1,16 +1,8 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
 
-class Group(models.Model):
-    pass
-
-class Blog(models.Model):
-    title = models.CharField(max_length=255, default='', blank=True)
-
-    def __str__(self):
-        return "{}".format(self.title)
-
+# Create your models here.
 class Event(models.Model):
     title = models.CharField(max_length=255)
     admin = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -20,6 +12,13 @@ class Event(models.Model):
         default=timezone.now)
     access_code = models.CharField(max_length=8)
 
+    def __str__(self):
+        return "{}: {} ".format(self.title, self.description)
+
+class Group(models.Model):
+    event = models.ForeignKey(Event, on_delete = models.DO_NOTHING)
+    curr_size = models.IntegerField(default=0)
+    max_size = models.IntegerField(default=4)
 class EventUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     event = models.ForeignKey(Event, on_delete=models.DO_NOTHING)
@@ -27,6 +26,8 @@ class EventUser(models.Model):
 
 
 # Create your models here.
+
+
 
 
 
