@@ -58,6 +58,9 @@
                                 <h4>Returning User?</h4>
                                 <form action="{% url 'login_page' %}" method="post">
                                     {% csrf_token %}
+                                    {% if form.errors %}
+                                    <p>{{ form.errors }}</p>
+                                    {% endif %}
                                     <small style="color: white">{{ form.username.label }}</small>
                                     {{ form.username }}
                                     <small style="color: white">{{ form.password.label }}</small>

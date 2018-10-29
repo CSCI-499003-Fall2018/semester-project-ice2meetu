@@ -94,7 +94,7 @@ def signup(request):
     else:
         form = SignUpForm()
 
-    return render(request, 'Home/signup.html', {'form': form, 'next': '/'})
+    return render(request, 'Home/signup.html', {'form': form})
 
 def logon(request):
     if request.method == 'POST':
