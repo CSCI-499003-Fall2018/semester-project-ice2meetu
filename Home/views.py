@@ -1,4 +1,3 @@
-import requests
 
 from .forms import SignUpForm, Join
 from creation.models import Event
@@ -58,11 +57,12 @@ def signup(request):
 
     return render(request, 'Home/signup.html', {'form': form})
 
+
 def logon(request):
     if request.method == 'POST':
         user = authenticate(
             username=request.POST.get('username', '').strip(),
-            password= request.POST.get('password', ''),
+            password=request.POST.get('password', ''),
         )
 
         if user is None:
@@ -124,23 +124,25 @@ def game(request): #, nplayers=None):
 @login_required(login_url='login/')
 def join(request):
     if request.method == 'POST':
-        if request.user.is_authenticated():
-            form = Join(request.POST)
-            try:
-                code = form.data['access_code']
-                form = Event.objects.get(access_code=code)
-            except ObjectDoesNotExist:
-                content = {
-                    'form': form,
-                    'name': 'Invalid Access Code'
-                }
-                return render(request, 'Home/join.html', content)
-            return HttpResponseRedirect('../event/{}'.format(form.pk))
 
+        form = Join(request.POST)
+        try:
+            code = form.data['access_code']
+            form = Event.objects.get(access_code=code)
+        except Event.DoesNotExist:
+            content = {
+                'form': form,
+                'name': 'Invalid Access Code',
+                'user' : request.user
+            }
+            return render(request, 'Home/join.html', content)
+
+        return HttpResponseRedirect('../event/{}'.format(form.pk))
     else:
         form = Join()
     content = {
         'form': form,
-        'name': 'Access Code'
+        'name': 'Access Code',
+        'user' : request.user
     }
     return render(request, 'Home/join.html', content)

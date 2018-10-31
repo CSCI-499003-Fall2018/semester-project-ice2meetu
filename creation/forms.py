@@ -9,11 +9,11 @@ class EventForm(ModelForm):
     event_type = forms.ChoiceField(
         required=False, widget=forms.Select, choices=choose)
     description = forms.CharField(required=False,widget=forms.Textarea())
-    admin = forms.CharField(max_length=100, required=True)
+    # admin = forms.CharField(max_length=100, required=True)
     title = forms.CharField(max_length=100, required=True)
 
     class Meta:
         model = Event
-        fields = ('title', 'admin', 'description', 'event_type')
+        fields = ('title', 'description', 'event_type')
 
 
