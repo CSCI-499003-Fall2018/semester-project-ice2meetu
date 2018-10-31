@@ -3,21 +3,8 @@ from sys import maxsize
 
 
 # Create your models here.
-class RandomManager(models.Manager):
-    def get_queryset(self):
-		# inefficient for large tables, need to find alternative
-        return super(RandomManager, self).get_queryset().order_by('?')
-
 class GameType(models.Model):
-    types_list = (
-        ('WUR', 'Would You Rather...?'),
-        ('TOD', 'Truth or Dare'),
-        ('ACT', 'Activity'),
-        ('DIS', 'Discuss'),
-        ('OTH', 'Other')
-    )
-    game_type = models.CharField(max_length=3, choices=types_list, default=types_list[0][0])
-    num_players = models.IntegerField(default=2)
+    game_type = models.CharField(max_length=3)
     min_players = models.IntegerField(default=2)
     max_players = models.IntegerField(default=2)
 
