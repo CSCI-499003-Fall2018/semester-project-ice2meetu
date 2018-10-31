@@ -8,6 +8,5 @@ def event(request, pk):
     event = Event.objects.get(pk=pk)
     user = EventUser(user=request.user, event=event)
     user.save()
-    print(event.admin)
     return render(request, "event/event.html", context={'event': event })
 
