@@ -96,11 +96,12 @@ def signup(request):
 
     return render(request, 'Home/signup.html', {'form': form})
 
+
 def logon(request):
     if request.method == 'POST':
         user = authenticate(
             username=request.POST.get('username', '').strip(),
-            password= request.POST.get('password', ''),
+            password=request.POST.get('password', ''),
         )
 
         if user is None:
@@ -122,3 +123,17 @@ def profile(request):
     return render(request, 'Home/home.html', {})
     # else:
     #     return render(request, 'Home/login.html', {})
+
+@login_required(login_url='login/')
+def game(request): #, nplayers=None):
+    # if not nplayers:
+    #     return render(request, 'Home/game.html', {'selected': False})
+    # min_games = Game.objects.filter(game_type__min_players__gte=nplayers)
+    # filtered_games = Game.objects.filter(game_type__max_players__lte=nplayers)
+    # rand_game = random.choice(filtered_games)
+    # context = {
+    #     'text': rand_game.text,
+    #     'game': rand_game.game_type.get_game_type_display(),
+    #     'selected': True
+    # }
+    return render(request, 'Home/game.html')#, context)
