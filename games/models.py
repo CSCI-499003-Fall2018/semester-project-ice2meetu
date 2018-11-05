@@ -9,7 +9,6 @@ class GameType(models.Model):
         ('OTH', 'Other')
     )
     game_type = models.CharField(max_length=3, choices=types_list)
-    num_players = models.IntegerField(default=2)
     min_players = models.IntegerField(default=2)
     max_players = models.IntegerField(default=2)
 

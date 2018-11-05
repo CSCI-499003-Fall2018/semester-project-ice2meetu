@@ -4,22 +4,26 @@
 {% block content %}
   <header class="masthead bg-primary text-white">
     <div class="container-fluid">
-      <div class="num-box">
-        <p class="lead hint">Number of Players</p>
-      {% for i in "23456789" %}
-        {% if i == "2" or i == "6" %}
-          <div class="row row-num">
-        {% endif %}
-            <div class="num-selector">
-              <button class="btn btn-primary num" href="#" value={{i}}>
-                {{ i }}
-              </button>
+
+      <!-- Select Num Players only if not logged in -->
+      {% if not user.is_authenticated %}
+        <div class="num-box">
+          <p class="lead hint">Number of Players</p>
+        {% for i in "23456789" %}
+          {% if i == "2" or i == "6" %}
+            <div class="row row-num">
+          {% endif %}
+              <div class="num-selector">
+                <button class="btn btn-primary num" href="#" value={{i}}>
+                  {{ i }}
+                </button>
+              </div>
+          {% if i == "5" or i == "9" %}
             </div>
-        {% if i == "5" or i == "9" %}
-          </div>
-        {% endif %}
-      {% endfor %}
-    </div>
+          {% endif %}
+        {% endfor %}
+        </div>
+      {% endif %}
 
       <div class="row">
         <div class="col"></div>
