@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+from games.models import Game, GameType
 
-# Create your models here.
 class Event(models.Model):
     title = models.CharField(max_length=255)
     admin = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -15,22 +15,29 @@ class Event(models.Model):
     def __str__(self):
         return "{}: {} ".format(self.title, self.description)
 
+class Grouping(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.DO_NOTHING, null=True)
+    
+    def __str__(self):
+        return "Grouping {} in '{}' Event".format(self.pk, self.event)
+
 class Group(models.Model):
-    event = models.ForeignKey(Event, on_delete = models.DO_NOTHING)
-    curr_size = models.IntegerField(default=0)
-    max_size = models.IntegerField(default=4)
+    # curr_size = models.IntegerField(default=0)
+    max_size = models.IntegerField(default=9)
+    grouping = models.ForeignKey(Grouping, on_delete=models.DO_NOTHING, null=True)
+
+    def __str__(self):
+        grp_size = self.eventuser_set.count()
+        event = self.grouping.event
+        return "[Group {}: {} people]".format(self.pk, grp_size)
+
 class EventUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    event = models.ManyToManyField(Event,  related_name='event_users')
+    events = models.ManyToManyField(Event, related_name='event_users')
+    group = models.ForeignKey(Group, on_delete=models.DO_NOTHING, null=True)
 
+    def __str__(self):
+        return "{}".format(self.user.username)
+    
     def __unicode__(self):
         return self.user
-
-
-
-# Create your models here.
-
-
-
-
-
