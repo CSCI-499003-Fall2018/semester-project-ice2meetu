@@ -12,11 +12,51 @@ class Event(models.Model):
         default=timezone.now)
     access_code = models.CharField(max_length=8)
 
+    @property
+    def user_count(self):
+        return self.eventuser_set.count()
+    
+    @property
+    def curr_grouping(self):
+        groups = self.grouping_set.filter(is_current=True)
+        if not groups:
+            groups = Grouping(event=self)
+            groups.save()
+        return groups
+    
+    @property
+    def grouping_hist(self):
+        past_groups = self.grouping_set.filter(is_current=False)
+        if not past_groups:
+            past_groups = Grouping(event=self, is_current=False)
+            past_groups.save()
+        return past_groups
+    
+    def save_group_history(self):
+        past_groups = self.grouping_set.filter(is_current=False)
+        if not past_groups:
+            past_groups = Grouping(event=self, is_current=False)
+            past_groups.save()
+
+        curr_groups = self.grouping_set.filter(is_current=True)
+        if not curr_groups:
+            raise("Error: No Groupings to save")
+        
+        for group in curr_groups:
+            past_groups.group_set.add(group)
+
+    def users(self):
+        return {user for user in self.eventuser_set.all()}
+
     def __str__(self):
-        return "{}: {} ".format(self.title, self.description)
+        return "{}: {}".format(self.title, self.description)
 
 class Grouping(models.Model):
     event = models.ForeignKey(Event, on_delete=models.DO_NOTHING, null=True)
+    is_current = models.BooleanField(default=True)
+
+    def groups(self):
+        return [group for group in self.group_set.all()]
     
     def __str__(self):
         return "Grouping {} in '{}' Event".format(self.pk, self.event)
@@ -26,10 +66,23 @@ class Group(models.Model):
     max_size = models.IntegerField(default=9)
     grouping = models.ForeignKey(Grouping, on_delete=models.DO_NOTHING, null=True)
 
+    @property
+    def size(self):
+        return self.eventuser_set.count()
+    
+    def users(self):
+        return {user for user in self.eventuser_set.all()}
+    
+    def __eq__(self, other):
+        if self.size != other.size:
+            return False
+        if isinstance(other, Group):
+            return self.users() == other.users()
+        return False
+
     def __str__(self):
-        grp_size = self.eventuser_set.count()
         event = self.grouping.event
-        return "[Group {}: {} people]".format(self.pk, grp_size)
+        return "[Group {}: {} people]".format(self.pk, self.size)
 
 class EventUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)

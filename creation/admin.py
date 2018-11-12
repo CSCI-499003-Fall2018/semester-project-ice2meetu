@@ -6,7 +6,7 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ('pk', 'title', 'description', 'users')
 
     def users(self, obj):
-        users = [eventuser.user.username for eventuser in obj.eventuser_set.all()]
+        users = [eventuser.user.username for eventuser in obj.users()]
         return "{} users: {}".format(len(users), users)
 
 class GroupAdmin(admin.ModelAdmin):
