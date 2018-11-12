@@ -35,12 +35,10 @@ def random_swap(group1, group2):
 
 
 class SimulatedAnnealing:
-    def __init__(self, players_list, has_criteria=False):
-        """ If we also care about other criteria besides uniqueness, has_criteria=True"""
+    def __init__(self, players_list):
         self.start_state = Groups(players_list)
         self.previous_groups = [group for group in self.start_state.groups]
         self.current_state = Groups(players_list)
-        self.other_criteria = has_criteria
         self.players = players_list
         self.max_groups = 0
         if len(players_list) < 10:
