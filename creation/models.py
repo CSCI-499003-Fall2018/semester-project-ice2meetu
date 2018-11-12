@@ -21,7 +21,10 @@ class Group(models.Model):
     max_size = models.IntegerField(default=4)
 class EventUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    event = models.ForeignKey(Event, on_delete=models.DO_NOTHING)
+    event = models.ForeignKey(Event, on_delete=models.DO_NOTHING, related_name='event_users')
+
+    def __unicode__(self):
+        return self.user
 
 
 
