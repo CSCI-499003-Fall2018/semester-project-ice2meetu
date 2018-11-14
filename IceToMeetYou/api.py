@@ -3,7 +3,7 @@ from rest_framework import routers, serializers, viewsets
 from creation.models import EventUser, Event
 from games.models import Game, GameType
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
@@ -14,14 +14,13 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class EventUserSerializer(serializers.ModelSerializer):
     user = UserSerializer(required=True)
-
     class Meta:
         model = EventUser
         fields = '__all__'
 
 
 
-class EventSerializer(serializers.HyperlinkedModelSerializer):
+class EventSerializer(serializers.ModelSerializer):
     event_users = EventUserSerializer(required=True, many=True)
     class Meta:
         model = Event
