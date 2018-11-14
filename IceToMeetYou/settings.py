@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 
     'social_django',
 ]
@@ -91,10 +92,10 @@ WSGI_APPLICATION = 'IceToMeetYou.wsgi.application'
 DATABASES = {
     'default' : {
         'ENGINE' : 'django.db.backends.postgresql_psycopg2',
-        'NAME' : '****',
-        'USER' : '****',
-        'PASSWORD' : '****',
-        'HOST' : 'localhost',
+        'NAME' : '',
+        'USER' : '',
+        'PASSWORD' : '',
+        'HOST' : '',
         'PORT' : '',
     }
 }
@@ -156,3 +157,9 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
