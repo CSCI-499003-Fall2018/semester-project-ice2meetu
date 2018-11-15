@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 
     'social_django',
 ]
@@ -81,6 +82,13 @@ WSGI_APPLICATION = 'IceToMeetYou.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+#DATABASES = {
+ #   'default': {
+ #       'ENGINE': 'django.db.backends.sqlite3',
+ #       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#   }
+#}
+
 DATABASES = {
    'default' : {
        'ENGINE' : 'django.db.backends.postgresql_psycopg2',
@@ -91,7 +99,6 @@ DATABASES = {
        'PORT' : '',
    }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -152,3 +159,9 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}

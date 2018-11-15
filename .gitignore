@@ -6,3 +6,5 @@ __pycache__
 migrations
 venv
 .idea
+logfile
+games.txt
