@@ -1,4 +1,4 @@
-"""IceToMeetYou URL Configuration
+"""gmail URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
@@ -13,16 +13,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf.urls import url
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 
 urlpatterns = [
-    url(r'^', include(('Home.urls', 'Home'), namespace='Home')),
-
-    path('', include('Home.urls')),
-    path('create/', include('creation.urls')),
-    path('event/', include('event.urls')),
     path('admin/', admin.site.urls),
-    path('oauth/', include('social_django.urls', namespace='social')),  # <-- Social Login
 ]
