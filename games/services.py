@@ -1,6 +1,6 @@
 import random
 from creation.models import Event, EventUser, Group, Grouping
-from .utils import _replace, max_groups, _random_grps
+from .utils import max_groups, _random_grps
 
 class SimulatedAnnealing:
     def __init__(self, event):
@@ -12,25 +12,35 @@ class SimulatedAnnealing:
             grouping.delete()
         
         self.players = {user.pk for user in event.users()}
-        self.max_groups = 0
-        if len(self.players) < 10:
-            self.max_groups = max_groups(len(self.players))
-        else:
-            self.max_groups = float('inf')
-        
+        nplayers = len(self.players)
+        self.max_groups = max_groups(nplayers) if nplayers < 10 else float('inf')
         self.start_state = self.random_groups() #random grouping
     
-    def random_groups(self):
+    # for in round adding and removing players
+    def remove_user(self, eventuser):
+        pk = eventuser if isinstance(eventuser,int) else eventuser.pk
+        self.players.discard(pk)
+    
+    def add_user(self, eventuser):
+        pk = eventuser if isinstance(eventuser, int) else eventuser.pk
+        if pk in {user.pk for user in self.event.users()}:
+            self.players.add(pk)
+        else:
+            raise AttributeError("Player {} is not a user registered for this event".format(pk))
+    
+    def sync_users(self):
         if self.event.user_count() != len(self.players):
-            self.players = {user.pk for user in event.users()}
+            self.players = {user.pk for user in self.event.users()}
+    
+    def random_groups(self):
         event_users = self.players
         groupings_ids = _random_grps(event_users)
         grouping = Grouping(event=self.event, is_current=True)
         grouping.save()
         for group in groupings_ids:  # make group for grouping
             g = Group(grouping=grouping)
+            g.save()
             for user_id in group:  # add user to group
-                g.save()
                 g.eventuser_set.add(EventUser.objects.get(pk=user_id))
         return grouping
     
