@@ -10,10 +10,10 @@ def random_groups(event):
     for group in groupings_ids:
         g = Group(grouping=grouping)
         for user_id in group:
+            g.save()
             g.eventuser_set.add(User.objects.get(pk=user_id))
-        g.save()
+    grouping.save()
     return grouping
-
 
 def random_swap(group1, group2):
     player1 = random.choice(list(group1))
@@ -35,8 +35,9 @@ def random_swap(group1, group2):
 
 
 class SimulatedAnnealing:
-    def __init__(self, players_list):
-        self.start_state = Groups(players_list)
+    def __init__(self, event):
+        self.event = event
+        self.start_state = random_groups(event)
         self.previous_groups = [group for group in self.start_state.groups]
         self.current_state = Groups(players_list)
         self.players = players_list
@@ -45,6 +46,13 @@ class SimulatedAnnealing:
             self.max_groups = max_groups(len(self.players))
         else:
             self.max_groups = float('inf')
+    
+    def _find_duplicate(self, group):
+        past_groups = self.event.get_grouping_hist()
+        for group in past_groups.group():
+            if group == group:
+                return group
+        return False
 
     def _find_non_unique(self, state):
         return [group for group in state.groups if group in self.previous_groups]

@@ -24,25 +24,37 @@ class Event(models.Model):
             groups.save()
         return groups
     
-    @property
-    def grouping_hist(self):
+    def get_grouping_hist(self):
         past_groups = self.grouping_set.filter(is_current=False)
-        if not past_groups:
+        if not past_groups.exists():
             past_groups = Grouping(event=self, is_current=False)
             past_groups.save()
+        elif past_groups.count() > 1:  # merge
+            history = Grouping(event=self, is_current=False)
+            history.save()
+            for grouping in past_groups:
+                groups = grouping.groups()
+                for group in groups:
+                    history.group_set.add(group)
+                if not grouping.groups():
+                    grouping.delete()
+                else:
+                    raise RuntimeError("Grouping can't be deleted, not empty")
+            return history
+        else:
+            past_groups = list(past_groups)[0]
         return past_groups
     
     def save_group_history(self):
-        past_groups = self.grouping_set.filter(is_current=False)
-        if not past_groups:
-            past_groups = Grouping(event=self, is_current=False)
-            past_groups.save()
-
         curr_groups = self.grouping_set.filter(is_current=True)
-        if not curr_groups:
-            raise("Error: No Groupings to save")
+        if not curr_groups.exists():
+            raise AttributeError("Error: No Groupings to save")
+        if curr_groups.count() > 1:
+            raise AttributeError("Error: More than one current grouping")
         
-        for group in curr_groups:
+        past_groups = self.get_grouping_hist() 
+        
+        for group in list(curr_groups)[0].groups():
             past_groups.group_set.add(group)
 
     def users(self):
@@ -51,6 +63,7 @@ class Event(models.Model):
     def __str__(self):
         return "{}: {}".format(self.title, self.description)
 
+# a complete grouping of users in an event
 class Grouping(models.Model):
     event = models.ForeignKey(Event, on_delete=models.DO_NOTHING, null=True)
     is_current = models.BooleanField(default=True)
@@ -68,7 +81,10 @@ class Group(models.Model):
 
     @property
     def size(self):
-        return self.eventuser_set.count()
+        if self.eventuser_set.exists():
+            return self.eventuser_set.count()
+        else:
+            return 0
     
     def users(self):
         return {user for user in self.eventuser_set.all()}
@@ -81,8 +97,8 @@ class Group(models.Model):
         return False
 
     def __str__(self):
-        event = self.grouping.event
-        return "[Group {}: {} people]".format(self.pk, self.size)
+        people = 'people' if self.size != 1 else 'person'
+        return "[Group {}: {} {}]".format(self.pk, self.size, people)
 
 class EventUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
