@@ -108,7 +108,6 @@ class Group(models.Model):
             return self.users() == other.users()
         return False
 
-    @property
     def size(self):
         if self.eventuser_set.exists():
             return self.eventuser_set.count()
@@ -118,8 +117,11 @@ class Group(models.Model):
     def users(self):
         return {user for user in self.eventuser_set.all()}
     
+    def event(self):
+        return grouping.event
+    
     def __eq__(self, other):
-        if self.size != other.size:
+        if self.size() != other.size():
             return False
         if isinstance(other, Group):
             return self.users() == other.users()
