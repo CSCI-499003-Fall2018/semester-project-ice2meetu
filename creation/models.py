@@ -110,7 +110,10 @@ class Group(models.Model):
 
     @property
     def size(self):
-        return self.eventuser_set.count()
+        if self.eventuser_set.exists():
+            return self.eventuser_set.count()
+        else:
+            return 0
     
     def users(self):
         return {user for user in self.eventuser_set.all()}
