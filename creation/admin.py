@@ -6,17 +6,26 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ('pk', 'title', 'description', 'users')
 
     def users(self, obj):
-        users = [eventuser.user.username for eventuser in obj.users()]
+        try:
+            users = [eventuser.user.username for eventuser in obj.users()]
+        except AttributeError:
+            users = []
         return "{} users: {}".format(len(users), users)
 
 class GroupAdmin(admin.ModelAdmin):
     list_display = ('pk', 'event', 'users')
 
     def event(self, obj):
-        return obj.grouping.event
+        try:
+            return obj.grouping.event
+        except AttributeError:
+            return None
     
     def users(self, obj):
-        return [user for user in obj.eventuser_set.all()]
+        try:
+            return [user for user in obj.eventuser_set.all()]
+        except AttributeError:
+            return []
 
 class GroupingAdmin(admin.ModelAdmin):
     list_display = ('pk', 'event', 'groups')

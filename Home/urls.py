@@ -11,8 +11,8 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name="/"), name='logout_page'),    
     path('signup', views.signup, name="sign_up_page"),
     path('profile', views.profile, name="profile_page"),
-    path('game', views.game, name="game"),
-    path('get_game', views.get_nplayer_game, name="get_game"),
+    # path('game', views.game, name="game"),
+    # path('get_game', views.get_nplayer_game, name="get_game"),
     path('join', views.join, name="join_page"),
 
     url(r'^account_activation_sent/$', views.account_activation_sent, name='account_activation_sent'),

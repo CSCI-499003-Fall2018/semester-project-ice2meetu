@@ -1,3 +1,5 @@
+import random
+
 def choose(n, k):
     """
     A fast way to calculate binomial coefficients by Andrew Dalke (contrib).
@@ -12,15 +14,6 @@ def choose(n, k):
         return ntok // ktok
     else:
         return 0
-
-
-def _replace(container, elem1, elem2):
-    """In-place replace elem1 in list or set container with elem2"""
-    container.remove(elem1)
-    try:
-        container.add(elem2)
-    except AttributeError:
-        container.append(elem2)
 
 
 def max_groups(num_players):
@@ -70,4 +63,4 @@ def _random_grps(players_set, grouped=None):
         grouped = [group]
     else:
         grouped.append(group)
-    return random_grps(players.difference(group), grouped)
+    return _random_grps(players.difference(group), grouped)

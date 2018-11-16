@@ -2,75 +2,60 @@ import random
 from creation.models import Event, EventUser, Group, Grouping
 from .utils import _replace, max_groups, _random_grps
 
-# Group Utils #
-def random_groups(event):
-    event_users = {user.pk for user in event.users()}
-    groupings_ids = _random_grps(event_users)
-    grouping = Grouping(event=event, is_current=True).save()
-    for group in groupings_ids:
-        g = Group(grouping=grouping)
-        for user_id in group:
-            g.save()
-            g.eventuser_set.add(User.objects.get(pk=user_id))
-    grouping.save()
-    return grouping
-
-def random_swap(group1, group2):
-    player1 = random.choice(list(group1))
-    player2 = random.choice(list(group2))
-    # g1, g2 = group1.copy(), group2.copy()
-    _replace(group1, player1, player2)
-    _replace(group2, player2, player1)
-    assert(g1 != group1)
-    assert(g2 != group2)
-    # self.checkpoint = [(g1, group1), (g2, group2)]
-    
-# def undo_swap(self):
-#     old_g1, curr_g1 = self.checkpoint[0]
-#     old_g2, curr_g2 = self.checkpoint[1]
-#     _replace(self.groups, curr_g1, old_g1)
-#     _replace(self.groups, curr_g2, old_g2)
-#     assert(old_g1 in self.groups)
-#     assert(old_g2 in self.groups)
-
-
 class SimulatedAnnealing:
     def __init__(self, event):
         self.event = event
-        self.start_state = random_groups(event)
-        self.previous_groups = [group for group in self.start_state.groups]
-        self.current_state = Groups(players_list)
-        self.players = players_list
+
+        # cleanup before starting
+        all_groupings = list(event.grouping_set.all())
+        for grouping in all_groupings:
+            grouping.delete()
+        
+        self.players = {user.pk for user in event.users()}
         self.max_groups = 0
-        if len(players_list) < 10:
+        if len(self.players) < 10:
             self.max_groups = max_groups(len(self.players))
         else:
             self.max_groups = float('inf')
+        
+        self.start_state = self.random_groups() #random grouping
     
-    def _find_duplicate(self, group):
-        past_groups = self.event.get_grouping_hist()
-        for group in past_groups.group():
-            if group == group:
-                return group
-        return False
-
-    def _find_non_unique(self, state):
-        return [group for group in state.groups if group in self.previous_groups]
+    def random_groups(self):
+        if self.event.user_count() != len(self.players):
+            self.players = {user.pk for user in event.users()}
+        event_users = self.players
+        groupings_ids = _random_grps(event_users)
+        grouping = Grouping(event=self.event, is_current=True)
+        grouping.save()
+        for group in groupings_ids:  # make group for grouping
+            g = Group(grouping=grouping)
+            for user_id in group:  # add user to group
+                g.save()
+                g.eventuser_set.add(EventUser.objects.get(pk=user_id))
+        return grouping
+    
+    def _find_duplicate_groups(self, grouping):
+        past_groups = self.event.get_grouping_hist().groups()
+        current_groups = grouping.groups()
+        duplicate_groups = []
+        for group in current_groups:
+            if group in past_groups:
+                duplicate_groups.append(group)
+        return duplicate_groups
 
     def generate(self):
         yield self.start_state
-        while len(self.previous_groups) < self.max_groups:
-            new_group = Groups(self.players)
-            non_unique = self._find_non_unique(new_group)
-            while non_unique:
-                if len(non_unique) >= 2:
-                    group1, group2 = random.sample(non_unique, 2)
+        while self.event.get_grouping_hist().size() < self.max_groups:
+            if self.event.has_current_grouping():
+                self.event.save_group_history()
+            new_grouping = self.random_groups()
+            duplicate_groups = self._find_duplicate_groups(new_grouping)
+            while duplicate_groups:
+                if len(duplicate_groups) >= 2:
+                    group1, group2 = random.sample(duplicate_groups, 2)
                 else:
-                    group1 = non_unique[0]
-                    group2 = random.choice(new_group.groups)
-                new_group.random_swap(group1, group2)
-                non_unique = self._find_non_unique(new_group)
-            self.current_state = new_group
-            for group in new_group.groups:
-                self.previous_groups.append(group)
-            yield new_group
+                    group1 = duplicate_groups[0]
+                    group2 = random.choice(new_grouping.groups())
+                new_grouping.random_swap(group1, group2)
+                duplicate_groups = self._find_duplicate_groups(new_grouping)
+            yield new_grouping
