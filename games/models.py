@@ -13,9 +13,9 @@ class GameType(models.Model):
     max_players = models.IntegerField(default=2)
 
     def __str__(self):
-        return "{}: {} ({} Players)".format(self.game_type,
+        return "{}: {} ({}-{} Players)".format(self.game_type,
                                             self.get_game_type_display(),
-                                            self.num_players)
+                                            self.min_players, self.max_players)
 
 class Game(models.Model):
     game_type = models.ForeignKey(GameType, default="",
