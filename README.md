@@ -1,3 +1,13 @@
+#### Postgres Branch notes
+To use heroku, you have to:
+
+- Download the [Heroku CLI](/https://devcenter.heroku.com/articles/heroku-cli#download-and-install)
+- Create a heroku dev account if you don't already have one
+- give email to me, so you can be added as a contributor
+- Use the following commands to set the DATABASE_URL enviroment variable
+    - Windows CMD: ``FOR /F "usebackq delims=" %i IN (`heroku config:get DATABASE_URL -a ice2meetu`) DO set DATABASE_URL=%i``
+    - bash: `DATABASE_URL=$(heroku config:get DATABASE_URL -a ice2meetu)`
+
 # Project Proposal
 
 #### Project Title
