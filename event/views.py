@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 def event(request, pk):
     event = Event.objects.get(pk=pk)
     user = EventUser.objects.create(user=request.user)
-    user.event.add(event)
+    user.events.add(event)
     user.save()
     return render(request, "event/event.html", context={'event': event })
 

@@ -82,10 +82,15 @@ def get_nplayer_game(request):
     return JsonResponse(context)
 
 def game(request):
-    if request.user.eventuser_set.exists():
-        user = list(request.user.eventuser_set.all())[0]
-    if user:
-        context = {'is_playing': user.is_playing()}
+    context = {}
+    try: 
+        if request.user.eventuser_set.exists():
+            user = list(request.user.eventuser_set.all())[0]
+            context = {'is_playing': user.is_playing()}
+        else:
+            user = None
+    except AttributeError:
+        pass
     return render(request, 'Games/game.html', context)
 
 def gamesid(request, pk):
