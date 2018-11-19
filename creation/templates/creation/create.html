@@ -1,15 +1,36 @@
-{% extends "creation/base.html" %}
+{% extends "Home/base.html" %}
 {% block content %}
-    <div class="container-fluid" style="margin-top:100px">
-        <div class="row justify-content-md-center">
-            <div class="col-md-6 col-sm-6 col-xs-12">
-                <form action="" method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <input type="submit" value="Save">
-                </form>
+<body>
+    <section class="banner-area relative" id="home", style="background-image: url(https://images.pexels.com/photos/305821/pexels-photo-305821.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260); background-size: 100% auto; height: 100%;">
+        <div class="overlay overlay-bg"></div>
+        <div class="container">
+            <div class="row fullscreen align-items-center justify-content-center" style="margin-top: 50px;">
+                <div class="banner-content col-lg-6 col-md-12">
+                    <h1 style="color: black">
+                        Welcome to Event Creation Page
+                    </h1>
+                    <div></div>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <large style="color: black">{{ form.title.label }}</large>
+                        <br>
+                        {{ form.title }}
+                        <br>
+                        <br>
+                        <large style="color: black">{{ form.description.label }}</large>
+                        <br>
+                        {{ form.description }}
+                        <br>
+                        <br>
+                        <large style="color: black">{{ form.event_type.label }}</large>
+                        <br>
+                        {{ form.event_type }}
+                        <br>
+                        <br>
+                        <input type="submit" value="Save">
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-
+    </section>
 {% endblock content %}
