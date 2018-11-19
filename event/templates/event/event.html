@@ -1,7 +1,11 @@
 {% extends "Home/base.html" %}
+{% load staticfiles %}
+
 {% block content %}
 <h1>Event Page</h1>
 <p>We need to add groups here</p>
-<h1>{{ event.title }}</h1>
-<p>{{ event.description }}</p>
+<div class="container-fluid" style="margin-top:100px">
+    <h1>{{ event.title }}</h1>
+    <p>{{ event.description }}</p>
+</div>
 {% endblock content %}
