@@ -81,6 +81,9 @@ def signup(request):
 def account_activation_sent(request):
     return render(request, 'Home/account_activation_sent.html')
 
+def confirmed_page(request):
+    return render(request, 'Home/account_confirmed_page.html')
+
 
 def activate(request, uidb64, token, backend='django.contrib.auth.backends.ModelBackend'):
     try:
@@ -93,8 +96,8 @@ def activate(request, uidb64, token, backend='django.contrib.auth.backends.Model
         user.is_active = True
         user.email_confirmed = True
         user.save()
-        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-        return redirect('/')
+
+        return render(request, 'Home/account_confirmed_page.html')
     else:
         return render(request, 'Home/account_activation_invalid.html')
 
