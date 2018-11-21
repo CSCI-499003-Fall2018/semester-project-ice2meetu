@@ -1,0 +1,44 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="/static/assets/css/email.css" rel="stylesheet" type="text/css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<div class="container register" style="height: 80%; width: 100%; margin-top: 5%;">
+    <div class="row">
+        <div class="col-md-4 register-left">
+            <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
+            <h3>Welcome</h3>
+            <p>You are 5 seconds away from activating your private account</p>
+        </div>
+        <div class="col-md-8 register-right">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <h3 class="register-heading">Nice to Meet You</h3>
+                    <div class="row register-form">
+                        <p> Thank you for confirming your email address.</p>
+                        <br>
+                        <p> You will be redirect to the home page in <span id="countdown">6</span> seconds</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Total seconds to wait
+    var seconds = 5;
+    function countdown() {
+        seconds = seconds - 1;
+        if (seconds <= 0) {
+            // Chnage your redirection link here
+            window.location.href = "/";
+        } else {
+            // Update remaining seconds
+            document.getElementById("countdown").innerHTML = seconds;
+            // Count down using javascript
+            window.setTimeout("countdown()", 1000);
+        }
+    }
+    // Run countdown function
+    countdown();
+</script>
