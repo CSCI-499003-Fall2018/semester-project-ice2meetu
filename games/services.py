@@ -1,6 +1,16 @@
 import random
 from creation.models import Event, EventUser, Group, Grouping
+from .models import Game
 from .utils import max_groups, _random_grps
+
+# randomly picks a game for each group in grouping
+def start_games(grouping):
+    for group in grouping.groups():
+        nplayers = group.size()
+        filtered_games = Game.objects.nplayer_games(nplayers)
+        group.game = random.choice(list(filtered_games))
+        group.save()
+
 
 class SimulatedAnnealing:
     def __init__(self, event):
