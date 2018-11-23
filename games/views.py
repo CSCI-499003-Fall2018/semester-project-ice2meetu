@@ -1,34 +1,8 @@
 from django.shortcuts import render
 from .models import Game, GameType
-from .services import start_games, SimulatedAnnealing
 from django.contrib.auth.decorators import login_required
 import random
 from django.http import HttpResponseRedirect, JsonResponse
-
-
-@login_required(login_url='login/')
-def play_test(request):
-    if request.user.eventuser_set.exists():
-        user = list(request.user.eventuser_set.all())[0]
-    else:
-        raise RuntimeError("Not an event user")
-    if user.events.filter(is_playing=True).exists():
-        event = list(user.events.filter(is_playing=True))[0]
-    else:
-        raise RuntimeError("User {} is not part of any event".format(repr(user)))
-    s = SimulatedAnnealing(event)
-    grouper = s.generate()
-    grouping = next(grouper)
-    start_games(s.start_state)
-    context = {'event': repr(event),
-               'groups': []}
-    for group in s.start_state.groups():
-        info = {}
-        info['name'] = repr(group)
-        info['users'] = [repr(user) for user in group.users()]
-        info['game'] = repr(group.game)
-        context['groups'].append(info)
-    return JsonResponse(context)
 
 
 @login_required(login_url='login/')
@@ -59,8 +33,6 @@ def get_user_game(request):
         }
     return JsonResponse(context)
 
-
-
 def get_nplayer_game(request):
     if not request.GET:
         err = {
@@ -82,15 +54,15 @@ def get_nplayer_game(request):
     return JsonResponse(context)
 
 def game(request):
-    context = {}
+    context = {'is_playing': False}
     try: 
         if request.user.eventuser_set.exists():
-            user = list(request.user.eventuser_set.all())[0]
-            context = {'is_playing': user.is_playing()}
-        else:
-            user = None
+            for eventuser in request.user.eventuser_set.all():
+                if eventuser.is_playing():
+                    context['is_playing'] = True
+            context['is_playing'] = user.is_playing()
     except AttributeError:
-        pass
+        pass #AnonUser
     return render(request, 'Games/game.html', context)
 
 def gamesid(request, pk):

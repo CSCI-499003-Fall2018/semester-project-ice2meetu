@@ -1,9 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
-from games.models import Game, GameType
+from games.models import Game, GameType#, SimulatedAnnealing
 import random
-from games.models import Game, GameType
 
 class Event(models.Model):
     title = models.CharField(max_length=255)
@@ -62,7 +61,7 @@ class Event(models.Model):
     def __str__(self):
         return "{}: {}".format(self.title, self.description)
 
-# a complete grouping of users in an event
+
 class Grouping(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True)
     is_current = models.BooleanField(default=True)
@@ -145,7 +144,7 @@ class EventUser(models.Model):
     groups = models.ManyToManyField(Group, blank=True)
 
     def is_playing(self):
-        return self.events.filter(is_playing=True).exists()
+        return hasattr(self, 'player')
     
     def current_game(self):
         event = self.events.filter(is_playing=True)[0]
