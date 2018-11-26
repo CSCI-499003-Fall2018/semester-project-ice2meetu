@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import dj_database_url
 # import config as key
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -89,17 +90,19 @@ WSGI_APPLICATION = 'IceToMeetYou.wsgi.application'
  #       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #   }
 #}
-
 DATABASES = {
-   'default' : {
-       'ENGINE' : 'django.db.backends.postgresql_psycopg2',
-       'NAME' : os.environ['CAPSTONE_DB'],
-       'USER' : os.environ['CAPSTONE_USER'],
-       'PASSWORD' : os.environ['CAPSTONE_PASSWORD'],
-       'HOST' : 'localhost',
-       'PORT' : '',
-   }
+    'default':  dj_database_url.parse('postgres://bzxgeqahrbhddt:6ff84846f413b20947da13124f84a7db0b24ca2169a53f97148f0355f3557001@ec2-184-73-197-211.compute-1.amazonaws.com:5432/dc4udkl6fnja0q')
 }
+# DATABASES = {
+#    'default' : {
+#        'ENGINE' : 'django.db.backends.postgresql_psycopg2',
+#        'NAME' : os.environ['CAPSTONE_DB'],
+#        'USER' : os.environ['CAPSTONE_USER'],
+#        'PASSWORD' : os.environ['CAPSTONE_PASSWORD'],
+#        'HOST' : 'localhost',
+#        'PORT' : '',
+#    }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
