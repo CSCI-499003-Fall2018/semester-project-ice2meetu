@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 
 
-@login_required(login_url='login/')
+#@login_required(login_url='login/')
 def play_test(request):
     return JsonResponse({})
     # if request.user.eventuser_set.exists():

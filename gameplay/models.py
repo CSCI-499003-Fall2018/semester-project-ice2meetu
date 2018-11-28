@@ -36,15 +36,16 @@ class GameManager(models.Model):
                 player = Player(user=user, game_manager=self)
                 player.save()
                 self.player_set.add(player)
-            else:
+            elif user not in self.event.users():
                 raise AttributeError(
                     "Player {} is not a user registered for this event".format(user.pk))
+            else:
+                raise RuntimeError("User is already playing a game")
         except ObjectDoesNotExist:
             pk = user if isinstance(user, int) else user.pk
             error = "Error: EventUser {} does not exist"
             print(error.format(pk))
             raise # problem if doesn't exist, might be bug, so raise
-
 
     def sync_users(self):
         """Adds all users in the event to the game"""
@@ -57,16 +58,14 @@ class GameManager(models.Model):
     def go_round(self):
         if round_num == 0:
             self.event.is_playing = True
-            nplayers = self.event.user_count()
-            self.max_groups = max_groups(
-                 nplayers) if nplayers < 10 else float('inf')
+        self.max_groups = max_groups(len(self.players()))
         if self._generate():
             self._assign_games()
             return True
         else:
             return False
 
-    def end_games(self):
+    def end_game(self):
         self.event.is_playing = False
         players = self.player_set.all()
         for player in players:
@@ -85,12 +84,13 @@ class GameManager(models.Model):
         return grouping
 
     def get_current_grouping(self):
-        assert(self.event.grouping_set.filter(is_current=True) <= 1)
+        assert(self.event.grouping_set.filter(is_current=True).count() <= 1)
         return self.event.grouping_set.filter(is_current=True)[0]
 
     def _find_duplicate_groups(self, grouping):
         past_groups = self.event.get_grouping_hist().groups()
         current_groups = grouping.groups()
+
         duplicate_groups = []
         for group in current_groups:
             if group in past_groups:
@@ -99,14 +99,23 @@ class GameManager(models.Model):
 
     def _generate(self):
         if self.round_num == 0:
+            self.round_num = 1
             return self.random_groups()
         if (self.max_groups == float('inf') or
-                self.event.get_grouping_hist().size() < self.max_groups):
+                self.round_num < self.max_groups):
             if self.event.has_current_grouping():
                 self.event.save_group_history()
             new_grouping = self.random_groups()
             duplicate_groups = self._find_duplicate_groups(new_grouping)
             while duplicate_groups:
+                # needs refactoring
+                if self.event.has_current_grouping():
+                    self.event.save_group_history()
+                new_grouping = self.random_groups()
+                duplicate_groups = self._find_duplicate_groups(new_grouping)
+                if not duplicate_groups:
+                    self.round_num += 1
+                    return new_grouping
                 if len(duplicate_groups) >= 2:
                     group1, group2 = random.sample(duplicate_groups, 2)
                 else:
