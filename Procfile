@@ -1,1 +1,1 @@
-web: gunicorn ice2meetu.wsgi --log-file -
+web: gunicorn IceToMeetYou.wsgi --log-file -
