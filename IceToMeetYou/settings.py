@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import dj_database_url
+import django_heroku
 import config as key
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -163,4 +164,4 @@ REST_FRAMEWORK = {
     ]
 }
 
-ALLOWED_HOSTS = ['ce2meetu.herokuapp.com', 'localhost', '127.0.0.8000']
+ALLOWED_HOSTS = ['ce2meetu.herokuapp.com']
