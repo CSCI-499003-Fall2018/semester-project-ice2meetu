@@ -164,4 +164,4 @@ REST_FRAMEWORK = {
     ]
 }
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.8000', 'ce2meetu.herokuapp.com']
+ALLOWED_HOSTS = ['ice2meetu.herokuapp.com']
