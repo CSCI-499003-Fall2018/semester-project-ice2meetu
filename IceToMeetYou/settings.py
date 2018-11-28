@@ -162,3 +162,5 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+ALLOWED_HOSTS = ['ce2meetu.herokuapp.com', 'localhost', '127.0.0.8000']
