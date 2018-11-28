@@ -17,7 +17,8 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from .api import UserViewSet, EventViewSet, GameViewSet
+from IceToMeetYou.API.api import UserViewSet, EventViewSet, GameViewSet
+from IceToMeetYou.API.auth_api import CustomAuthToken
 
 
 router = routers.DefaultRouter()
@@ -34,6 +35,6 @@ urlpatterns = [
     path('games/', include('games.urls')),
     path('admin/', admin.site.urls),
     path('oauth/', include('social_django.urls', namespace='social')),  # <-- Social Login
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api-auth/', CustomAuthToken.as_view()),
     path('api/', include(router.urls))
 ]

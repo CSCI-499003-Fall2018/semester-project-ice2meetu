@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-
+	'rest_framework.authtoken',
     'social_django',
 ]
 
@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'IceToMeetYou.wsgi.application'
  #       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #   }
 #}
-
+'''
 DATABASES = {
    'default' : {
        'ENGINE' : 'django.db.backends.postgresql_psycopg2',
@@ -100,7 +100,13 @@ DATABASES = {
        'PORT' : '',
    }
 }
-
+'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase',
+    }
+}
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
