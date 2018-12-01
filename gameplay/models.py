@@ -19,8 +19,10 @@ class GameManager(models.Model):
         try:
             player = Player.objects.get(pk=player) if isinstance(
                 player, int) else player
-            if player.pk in self.players():
+            if player.user.pk in self.players():
                 player.delete()
+                setattr(player.user, 'player', None)
+                self.max_groups = max_groups(self.player_set.count())
         except ObjectDoesNotExist:
             pk = player if isinstance(player, int) else player.pk
             error = "Error: Player {} does not exist. Maybe you gave the \
@@ -36,6 +38,7 @@ class GameManager(models.Model):
                 player = Player(user=user, game_manager=self)
                 player.save()
                 self.player_set.add(player)
+                self.max_groups = max_groups(self.player_set.count())
             elif user not in self.event.users():
                 raise AttributeError(
                     "Player {} is not a user registered for this event".format(user.pk))
@@ -53,10 +56,11 @@ class GameManager(models.Model):
         if self.event.user_count() != len(players):
             event_users = self.event.users()
             for user in event_users:
-                self.add_player(user)
+                if user.pk not in players:
+                    self.add_player(user)
 
     def go_round(self):
-        if round_num == 0:
+        if self.round_num == 0:
             self.event.is_playing = True
         self.max_groups = max_groups(len(self.players()))
         if self._generate():
@@ -70,6 +74,7 @@ class GameManager(models.Model):
         players = self.player_set.all()
         for player in players:
             self.remove_player(player)
+        self.delete()
 
     def random_groups(self):
         event_users = self.players()

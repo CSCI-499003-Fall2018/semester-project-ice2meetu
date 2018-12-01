@@ -17,36 +17,35 @@ def get_user_game(request):
         event = None
     if event:
         game = user.current_game()
+        status = 200
         context = {
-            'status': 200,
             'id': game.id,
             'text': game.text,
             'game': game.game_type.get_game_type_display()
         }
     else:
+        status = 302
         context = {
-            'status': 302,
             'id': 0,
             'text': "Your Event is not playing right now. If you'd like to \
                     start a random game, please log out and click Start Game.",
             'game': 'Not Playing'
         }
-    return JsonResponse(context)
+    return JsonResponse(status=status, data=context)
 
 def get_nplayer_game(request):
     if not request.GET:
+        status = 400
         err = {
-            'status': 400,
             'id': None,
             'text': 'Please enter number of players',
             'game': None
         }
-        return JsonResponse(err)
+        return JsonResponse(status=status, data=err)
     nplayers = request.GET.get('nplayers', None)
     filtered_games = Game.objects.nplayer_games(nplayers)
     rand_game = random.choice(filtered_games)
     context = {
-        'status': 200,
         'id': rand_game.id,
         'text': rand_game.text,
         'game': rand_game.game_type.get_game_type_display()
@@ -70,13 +69,11 @@ def gamesid(request, pk):
         game = Game.objects.get(pk=pk)
     except Game.DoesNotExist:
         err = {
-            'status': 404,
             'text': "Error: Game ID {} does not exist".format(pk)
         }
-        return JsonResponse(err)
+        return JsonResponse(status=404, data=err)
 
     context = {
-        'status': 200,
         'id': game.id,
         'text': game.text,
         'game': game.game_type.get_game_type_display()

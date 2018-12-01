@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
-from games.models import Game, GameType#, SimulatedAnnealing
+from games.models import Game, GameType
 import random
 
 class Event(models.Model):
@@ -109,29 +109,12 @@ class Group(models.Model):
         return grouping.event
     
     def __eq__(self, other):
-        if self.size() != other.size():
-            return False
         if isinstance(other, Group):
+            if self.size() != other.size():
+                return False
             return self.users() == other.users()
-        return False
-
-    def size(self):
-        if self.eventuser_set.exists():
-            return self.eventuser_set.count()
         else:
-            return 0
-    
-    def users(self):
-        return {user for user in self.eventuser_set.all()}
-    
-    def event(self):
-        return grouping.event
-    
-    def __eq__(self, other):
-        if self.size() != other.size():
-            return False
-        if isinstance(other, Group):
-            return self.users() == other.users()
+            raise TypeError("{} is not a Group".format(other))
         return False
 
     def __str__(self):
@@ -146,13 +129,29 @@ class EventUser(models.Model):
     def is_playing(self):
         return hasattr(self, 'player')
     
+    def playing_event(self):
+        events = self.events.filter(is_playing=True)
+        if not self.is_playing or not events.exists():
+            raise UserWarning("This event user isn't playing")
+            return None
+        if events.count() > 1:  # in multiple playing events
+            for event in events:
+                if self.pk in e.gamemanager.players():
+                    return event
+        else:
+            return events[0]
+    
     def current_game(self):
-        event = self.events.filter(is_playing=True)[0]
+        event = self.playing_event()
+        if not event:
+            raise UserWarning("Warning: Not in any currently playing event")
+
         groupings = event.grouping_set.filter(is_current=True)[0]
         group = None
         for g in groupings.groups():
             if g in self.groups.all():
                 group = g
+                break
         return group.game
 
     def __str__(self):
