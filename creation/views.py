@@ -19,7 +19,7 @@ def create(request):
             event.admin = request.user
             event.save()
 
-            return HttpResponseRedirect('../event/{}'.format(event.pk))
+            return HttpResponseRedirect('../event/{}/join'.format(event.access_code))
            
     else:
         form = EventForm()
