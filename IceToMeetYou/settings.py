@@ -39,6 +39,8 @@ SECRET_KEY = 'm_7and@)f=3mb_vw3ir%s84(a7z5n&0^3zic#k5(&8@=mb!y!4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+ALLOWED_HOSTS = []
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -46,6 +48,7 @@ INSTALLED_APPS = [
     'creation.apps.CreationConfig',
     'event.apps.EventConfig',
     'games.apps.GamesConfig',
+    'gameplay.apps.GameplayConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,7 +56,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-
     'social_django',
 ]
 
@@ -65,9 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     'whitenoise.middleware.WhiteNoiseMiddleware',
-
     'social_django.middleware.SocialAuthExceptionMiddleware', # <-- Include for social auth
 ]
 
@@ -126,10 +126,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Added for Social Login
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.github.GithubOAuth2',
-    # 'social_core.backends.twitter.TwitterOAuth',
     'social_core.backends.facebook.FacebookOAuth2',
-    # 'social_core.backends.linkedin.LinkedinOAuth2',]
-
     'django.contrib.auth.backends.ModelBackend',
 )
 
