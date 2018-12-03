@@ -146,6 +146,9 @@ class Player(models.Model):
     user = models.OneToOneField(EventUser, on_delete=models.CASCADE)
     game_manager = models.ForeignKey(GameManager, on_delete=models.CASCADE)
 
+    def remove_self(self):
+        game_manager.remove_player(self)
+
     def __str__(self):
         username = self.user.user.username
         event = self.game_manager.event
