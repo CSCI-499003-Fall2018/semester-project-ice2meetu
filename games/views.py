@@ -5,7 +5,7 @@ import random
 from django.http import HttpResponseRedirect, JsonResponse
 
 
-@login_required(login_url='login/')
+@login_required(login_url='../login/')
 def get_user_game(request):
     if request.user.eventuser_set.exists():
         user = list(request.user.eventuser_set.all())[0]
@@ -53,8 +53,10 @@ def get_nplayer_game(request):
     return JsonResponse(context)
 
 def game(request):
-    context = {'is_playing': False}
+    context = {}
     try: 
+        if not request.user.is_authenticated:
+            return render(request, 'Games/game.html', context)
         if request.user.eventuser_set.exists():
             for eventuser in request.user.eventuser_set.all():
                 if eventuser.is_playing():

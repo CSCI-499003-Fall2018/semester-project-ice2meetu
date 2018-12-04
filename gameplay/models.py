@@ -74,6 +74,7 @@ class GameManager(models.Model):
         players = self.player_set.all()
         for player in players:
             self.remove_player(player)
+        setattr(self.event, 'gamemanager', None)
         self.delete()
 
     def random_groups(self):
@@ -147,7 +148,7 @@ class Player(models.Model):
     game_manager = models.ForeignKey(GameManager, on_delete=models.CASCADE)
 
     def remove_self(self):
-        game_manager.remove_player(self)
+        self.game_manager.remove_player(self)
 
     def __str__(self):
         username = self.user.user.username
