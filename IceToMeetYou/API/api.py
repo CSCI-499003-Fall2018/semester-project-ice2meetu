@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
-from creation.models import EventUser, Event
+from creation.models import EventUser, Event, Grouping, Group
 from games.models import Game, GameType
 from rest_framework.permissions import IsAuthenticated
 
@@ -35,7 +35,25 @@ class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class =  EventSerializer
 
+class GroupingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Grouping
+        fields = '__all__'
 
+class GroupingViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    queryset = Grouping.objects.all()
+    serializer_class = GroupingSerializer
+
+class GroupSerializer(serializers.ModelSerializer):
+    grouping = GroupingSerializer(required=True)
+    class Meta:
+        model = Group
+        fields = '__all__'
+
+class GroupViewSet(viewsets.ModelViewSet):
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
 class GameTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = GameType

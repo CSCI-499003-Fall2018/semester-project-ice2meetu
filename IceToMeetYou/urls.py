@@ -17,7 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from IceToMeetYou.API.api import UserViewSet, EventViewSet, GameViewSet
+from IceToMeetYou.API.api import UserViewSet, EventViewSet, GameViewSet, GroupingViewSet, GroupViewSet
 from IceToMeetYou.API.auth_api import CustomAuthToken
 
 
@@ -25,6 +25,8 @@ router = routers.DefaultRouter()
 router.register('users', UserViewSet)
 router.register('events', EventViewSet)
 router.register('games', GameViewSet)
+router.register('grouping', GroupingViewSet)
+router.register('group', GroupViewSet)
 
 urlpatterns = [
     url(r'^', include(('Home.urls', 'Home'), namespace='Home')),
