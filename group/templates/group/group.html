@@ -13,18 +13,18 @@
 <body>
     <div class="container">
         <div class="row">
-            {% if group_id is None %}
+            {% if group_number is None %}
             <div class="center-box" style="background-color: black">
             {% else %}
             <div class="center-box" style="background-color: {{color}}">
             {% endif %}    
-                {% if group_id is None %}
+                {% if group_number is None %}
                 <img itemprop="image" src="{% get_static_prefix %}assets/images/emoji/none.png">
                 <div class="find_group">
                     Opops, you are not in any group
                 </div>
                 {% else %}
-                <img itemprop="image" src="{% get_static_prefix %}assets/images/emoji/{{ group_id }}.png">
+                <img itemprop="image" src="{% get_static_prefix %}assets/images/emoji/{{ group_number }}.png">
                 
                 <div class="find_group">
                     Welcome, Find Your Group 
