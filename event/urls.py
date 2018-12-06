@@ -4,4 +4,5 @@ from . import views
 from . import views
 urlpatterns = [
     path('<int:pk>/', views.event, name='event_page'),
+    path('<int:pk>/join', views.join_event, name='join_event'),
 ]

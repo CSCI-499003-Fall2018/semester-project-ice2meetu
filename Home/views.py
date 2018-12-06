@@ -143,7 +143,7 @@ def join(request):
             }
             return render(request, 'Home/join.html', content)
 
-        return HttpResponseRedirect('../event/{}'.format(form.pk))
+        return HttpResponseRedirect('../event/{}/join'.format(form.pk))
     else:
         form = Join()
     content = {

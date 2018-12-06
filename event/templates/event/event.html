@@ -2,10 +2,100 @@
 {% load staticfiles %}
 
 {% block content %}
+<script>
+function init_game() {
+	event.preventDefault();
+			
+	httpRequest = new XMLHttpRequest();
+	const pk = "{{ event.pk }}";
+	const url = "{% url 'init_game' event_pk=pk %}";
+
+	if (!httpRequest) {
+		alert('Giving up :( Cannot create an XMLHTTP instance');
+		return false;
+	}
+	
+	httpRequest.onreadystatechange = responseHandler;
+	httpRequest.open('GET', url);
+	httpRequest.send(data);
+}
+
+function end_game() {
+	event.preventDefault();
+			
+	httpRequest = new XMLHttpRequest();
+	const pk = "{{ event.pk }}";
+	const url = "{% url 'end_game' event_pk=pk %}";
+
+	if (!httpRequest) {
+		alert('Giving up :( Cannot create an XMLHTTP instance');
+		return false;
+	}
+	
+	httpRequest.onreadystatechange = responseHandler;
+	httpRequest.open('GET', url);
+	httpRequest.send(data);
+}
+
+function add_all() {
+	event.preventDefault();
+			
+	httpRequest = new XMLHttpRequest();
+	const pk = "{{ event.pk }}";
+	const url = "{% url 'add_all' event_pk=pk %}";
+	
+	if (!httpRequest) {
+		alert('Giving up :( Cannot create an XMLHTTP instance');
+		return false;
+	}
+	
+	httpRequest.onreadystatechange = responseHandler;
+	httpRequest.open('GET', url);
+	httpRequest.send(data);
+}
+
+function add_self() {
+	event.preventDefault();
+			
+	httpRequest = new XMLHttpRequest();
+	const pk = "{{ event.pk }}";
+	const url = "{% url 'add_self' event_pk=pk %}";
+	
+	if (!httpRequest) {
+		alert('Giving up :( Cannot create an XMLHTTP instance');
+		return false;
+	}
+	
+	httpRequest.onreadystatechange = responseHandler;
+	httpRequest.open('GET', url);
+	httpRequest.send(data);
+}
+
+function responseHandler() {
+	if (httpRequest.readyState === XMLHttpRequest.DONE) {
+		if (httpRequest.status === 200) {
+			var image = httpRequest.response;
+		} 
+		else {
+			alert('There was a problem with the request.');
+		}
+	}
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+	
+});
+</script>
 <h1>Event Page</h1>
-<p>We need to add groups here</p>
 <div class="container-fluid" style="margin-top:100px">
     <h1>{{ event.title }}</h1>
+	<h2>Welcome, {{ user.user }}</h2>
     <p>{{ event.description }}</p>
+	{% if request.user == event.admin %}
+		<button class="btn btn-primary num" href="#" value={{i}}>
+		{{ i }}
+		</button>
+	{% else %}
+	{% endif %}
 </div>
 {% endblock content %}

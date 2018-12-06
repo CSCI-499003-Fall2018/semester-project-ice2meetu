@@ -70,7 +70,6 @@ def add_all(request, event_pk):
 
 
 # Game Player Endpoints #
-
 def check_event_user(request, event):
     if not event.exists():
         err = {"Error": "Event id {} doesn't exist".format(event_pk)}
@@ -113,9 +112,6 @@ def remove_self(request, event_pk):
     event_user = err['Success']
     event_user.player.remove_self()
     return JsonResponse({"Success": "You've been removed from the game"})
-
-    
-
 
 #@login_required(login_url='login/')
 # def play_test(request):
