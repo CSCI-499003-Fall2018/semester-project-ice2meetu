@@ -65,6 +65,7 @@ class GameManagerUserTestCase(TestCase):
         self.assertEqual(manager.player_set.count(), count)
         self.assertEqual(len(manager.players()), count)
         self.assertCountEqual(manager.players(), eventusers)
+        self.assertNotEqual(manager.max_groups, 100)
     
     
 class GameManagerPlayTestCase(TestCase):
@@ -105,10 +106,10 @@ class GameManagerPlayTestCase(TestCase):
         manager = GameManager.objects.all()[0]
 
         manager.random_groups()
-        curr_group = manager.event.grouping_set.filter(is_current=True)[
-            0].groups()[0]
+        event = manager.event
+        curr_group = manager.get_current_grouping().groups()[0]
         manager.event.save_group_history()
-        grouping = Grouping(event=manager.event)
+        grouping = Grouping(event=manager.event, is_current=True)
         grouping.save()
         group = Group(grouping=grouping)
         group.save()
@@ -133,7 +134,6 @@ class GameManagerPlayTestCase(TestCase):
         # num groups in event's history, previously
         prev_history_count = -1 
 
-        # do not exceed 11, manager.max_groups is set by higher level func
         for i in range(11):
             generated = manager._generate()
             curr_grouping = manager.event.grouping_set.filter(is_current=True)[
@@ -159,6 +159,7 @@ class GameManagerPlayTestCase(TestCase):
             if i == 0:
                 self.assertTrue(manager.event.is_playing)
                 self.assertNotEqual(manager.max_groups, 100)
+            manager.get_current_grouping()
             self.assertTrue(play)
             self.assertEqual(manager.round_num, i+1)
             check_games(self, manager)
@@ -214,20 +215,3 @@ class GameManagerPlayTestCase(TestCase):
         self.assertFalse(GameManager.objects.all().exists())
         for user in event_users:
             self.assertFalse(user.is_playing())
-
-
-
-        
-
-
-        
-
-
-
-
-
-
-        
-
-        
-    

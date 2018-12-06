@@ -41,6 +41,10 @@ class Event(models.Model):
         else:
             past_groups = list(past_groups)[0]
         return past_groups
+
+    def delete_groupings(self):
+        for groupings in self.grouping_set.all():
+            groupings.delete()
     
     def save_group_history(self):
         curr_groups = self.grouping_set.filter(is_current=True)
@@ -48,8 +52,9 @@ class Event(models.Model):
             raise RuntimeError("Error: No Groupings to save")
 
         past_groups = self.get_grouping_hist() 
-        for group in list(curr_groups)[0].groups():
-            past_groups.group_set.add(group)
+        for grouping in curr_groups:
+            for group in grouping.groups():
+                past_groups.group_set.add(group)
         curr_groups.delete()
 
         assert(self.grouping_set.filter(is_current=True).count() <= 1)
@@ -64,7 +69,7 @@ class Event(models.Model):
 
 class Grouping(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True)
-    is_current = models.BooleanField(default=True)
+    is_current = models.BooleanField(default=False)
 
     def size(self):
         return self.group_set.count()

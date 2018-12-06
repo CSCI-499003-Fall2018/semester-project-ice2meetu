@@ -11,6 +11,9 @@ class GameManager(models.Model):
     round_num = models.IntegerField(default=0)
     max_groups = models.IntegerField(default=100)
 
+    def __str__(self):
+        return str(self.pk) + " " + repr(self.event)
+
     def players(self):
         """Players that have this instance of SimulatedAnnealing as game_org"""
         return {player.user.pk for player in self.player_set.all()}
@@ -39,6 +42,7 @@ class GameManager(models.Model):
                 player.save()
                 self.player_set.add(player)
                 self.max_groups = max_groups(self.player_set.count())
+                self.save()
             elif user not in self.event.users():
                 raise AttributeError(
                     "Player {} is not a user registered for this event".format(user.pk))
@@ -58,11 +62,12 @@ class GameManager(models.Model):
             for user in event_users:
                 if user.pk not in players:
                     self.add_player(user)
+        assert(self.max_groups != 100)
 
     def go_round(self):
         if self.round_num == 0:
             self.event.is_playing = True
-        self.max_groups = max_groups(len(self.players()))
+        #self["max_groups"] = max_groups(len(self.players()))
         if self._generate():
             self._assign_games()
             return True
@@ -74,6 +79,7 @@ class GameManager(models.Model):
         players = self.player_set.all()
         for player in players:
             self.remove_player(player)
+        self.event.delete_groupings()
         setattr(self.event, 'gamemanager', None)
         self.delete()
 
@@ -90,7 +96,7 @@ class GameManager(models.Model):
         return grouping
 
     def get_current_grouping(self):
-        assert(self.event.grouping_set.filter(is_current=True).count() <= 1)
+        assert(self.event.grouping_set.filter(is_current=True).count() == 1)
         return self.event.grouping_set.filter(is_current=True)[0]
 
     def _find_duplicate_groups(self, grouping):
@@ -105,32 +111,36 @@ class GameManager(models.Model):
 
     def _generate(self):
         if self.round_num == 0:
+            if self.event.has_current_grouping():
+                self.event.save_group_history()
             self.round_num = 1
+            self.save()
             return self.random_groups()
-        if (self.max_groups == float('inf') or
-                self.round_num < self.max_groups):
+        if (self.round_num < self.max_groups):
             if self.event.has_current_grouping():
                 self.event.save_group_history()
             new_grouping = self.random_groups()
             duplicate_groups = self._find_duplicate_groups(new_grouping)
+            if not duplicate_groups:
+                self.round_num += 1
+                self.save()
+                return new_grouping
             while duplicate_groups:
-                # needs refactoring
-                if self.event.has_current_grouping():
-                    self.event.save_group_history()
+                for g in self.event.grouping_set.filter(is_current=True):
+                    g.delete()
                 new_grouping = self.random_groups()
                 duplicate_groups = self._find_duplicate_groups(new_grouping)
                 if not duplicate_groups:
                     self.round_num += 1
+                    self.save()
                     return new_grouping
-                if len(duplicate_groups) >= 2:
-                    group1, group2 = random.sample(duplicate_groups, 2)
-                else:
-                    group1 = duplicate_groups[0]
-                    group2 = random.choice(new_grouping.groups())
-                new_grouping.random_swap(group1, group2)
-                duplicate_groups = self._find_duplicate_groups(new_grouping)
-            self.round_num += 1
-            return new_grouping
+                # if len(duplicate_groups) >= 2:
+                #     group1, group2 = random.sample(duplicate_groups, 2)
+                # else:
+                #     group1 = duplicate_groups[0]
+                #     group2 = random.choice(new_grouping.groups())
+                # new_grouping.random_swap(group1, group2)
+                # duplicate_groups = self._find_duplicate_groups(new_grouping)
         else:
             return None
 
