@@ -10,15 +10,23 @@ def same_group(request):
             return None
         user = request.user.eventuser_set.all()[0]
         event = user.player.game_manager.event
-        grouping = event.game_manager.get_current_grouping()
+        grouping = event.gamemanager.get_current_grouping()
 
         for group in grouping.groups():
             if user in group.users():
-                group_id = int('0' + group.pk)
-                return group_id
+                # group_id = int('0' + group.pk)
+                return group.pk
     
         return None
-
+    
+    def get_num_groups(request):
+        if not request.user.eventuser_set.exists():
+            return None
+        user = request.user.eventuser_set.all()[0]
+        event = user.player.game_manager.event
+        grouping = event.gamemanager.get_current_grouping()
+        return grouping.group_set.count()
+    
     context = {
         "group_id": get_group_id(request)
     }
