@@ -1,0 +1,51 @@
+[
+    {
+        "model": "gameplay.gamemanager",
+        "pk": 13,
+        "fields": {
+            "event": 1,
+            "round_num": 1,
+            "max_groups": 11
+        }
+    },
+    {
+        "model": "gameplay.player",
+        "pk": 54,
+        "fields": {
+            "user": 1,
+            "game_manager": 13
+        }
+    },
+    {
+        "model": "gameplay.player",
+        "pk": 55,
+        "fields": {
+            "user": 2,
+            "game_manager": 13
+        }
+    },
+    {
+        "model": "gameplay.player",
+        "pk": 56,
+        "fields": {
+            "user": 3,
+            "game_manager": 13
+        }
+    },
+    {
+        "model": "gameplay.player",
+        "pk": 57,
+        "fields": {
+            "user": 4,
+            "game_manager": 13
+        }
+    },
+    {
+        "model": "gameplay.player",
+        "pk": 58,
+        "fields": {
+            "user": 5,
+            "game_manager": 13
+        }
+    }
+]
