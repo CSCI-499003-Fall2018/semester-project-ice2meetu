@@ -5,6 +5,14 @@ from django.http import HttpResponseRedirect, JsonResponse
 
 @login_required(login_url='login/')
 def same_group(request):
+    def get_num_groups(request):
+        if not request.user.eventuser_set.exists():
+            return None
+        user = request.user.eventuser_set.all()[0]
+        event = user.player.game_manager.event
+        grouping = event.gamemanager.get_current_grouping()
+        return grouping.group_set.count()
+
     def get_group_id(request):
         if not request.user.eventuser_set.exists():
             return None
@@ -14,21 +22,33 @@ def same_group(request):
 
         for group in grouping.groups():
             if user in group.users():
-                # group_id = int('0' + group.pk)
                 return group.pk
     
         return None
     
-    def get_num_groups(request):
+    def get_num_people(request):
         if not request.user.eventuser_set.exists():
             return None
+        
+        group_id = get_group_id(request)
         user = request.user.eventuser_set.all()[0]
         event = user.player.game_manager.event
         grouping = event.gamemanager.get_current_grouping()
-        return grouping.group_set.count()
-    
+
+        for group in grouping.groups():
+            if group.pk == group_id:
+                return group.size()
+                
+        return None
+
+    def generate_color():
+        color = '#{:02x}{:02x}{:02x}'.format(*map(lambda x: random.randint(0, 255), range(3)))
+        return color
+        
     context = {
-        "group_id": get_group_id(request)
+        "group_id": get_group_id(request)%30,
+        "number_of_people": get_num_people(request),
+        "color": generate_color(),
     }
 
     return render(request, "group/group.html", context)

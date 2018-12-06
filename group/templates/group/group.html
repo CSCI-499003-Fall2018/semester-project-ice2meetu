@@ -1,23 +1,48 @@
-{% extends "Home/base.html" %}
-{% block content %}
 {% load static %}
+<html>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" media="all" href="{% static 'assets/css/style.css' %}"/>
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<head></head>
 <body>
-    {% if group_id is None %}
-    <section class="banner-area relative" id="home", style="background-image: url({% get_static_prefix %}assets/images/animal/none.jpeg); background-size: 100% auto; height: 93vh;">
-    {% else %}
-    <section class="banner-area relative" id="home", style="background-image: url({% get_static_prefix %}assets/images/animal/{{ group_id }}.jpeg); background-size: 100% auto; height: 93vh;">
-    {% endif %}
-        <div class="overlay overlay-bg"></div>
-        <div class="container">
-            <div class="row fullscreen align-items-center justify-content-center" style="margin-top: 50px;">
-                <div class="banner-content col-lg-6 col-md-12">
-                    {% if group_id is None %}
-                    <img itemprop="image" src="{% get_static_prefix %}assets/images/emoji/none.png">
-                    {% else %}
-                    <img itemprop="image" src="{% get_static_prefix %}assets/images/emoji/{{ group_id }}.png">
-                    {% endif %}
+    <div class="container">
+        <div class="row">
+            {% if group_id is None %}
+            <div class="center-box" style="background-color: black">
+            {% else %}
+            <div class="center-box" style="background-color: {{color}}">
+            {% endif %}    
+                {% if group_id is None %}
+                <img itemprop="image" src="{% get_static_prefix %}assets/images/emoji/none.png">
+                <div class="find_group">
+                    Opops, you are not in any group
                 </div>
+                {% else %}
+                <img itemprop="image" src="{% get_static_prefix %}assets/images/emoji/{{ group_id }}.png">
+                
+                <div class="find_group">
+                    Welcome, Find Your Group 
+                    ({{ number_of_people }} People)
+                </div>
+                {% endif %}  
+                <div class="confirming_button" data-toggle="buttons">
+                    <label class="btn btn-lg btn-success active">
+                        <input type="radio" name="options" id="option1" autocomplete="off" checked>
+                        <i class="fa fa-check">    We Are Here</i> 
+                    </label>
+                    <label class="btn btn-lg btn-danger">
+                        <input type="radio" name="options" id="option2" autocomplete="off" action="">
+                        <i class="fa fa-spinner">    Done Grouping?</i>
+                    </label>          
+                </div>   
             </div>
         </div>
-    </section>
-{% endblock content %}
+    </div>
+</body>
+</html>
