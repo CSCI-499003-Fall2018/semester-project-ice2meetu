@@ -1,0 +1,214 @@
+[
+    {
+        "model": "creation.event",
+        "pk": 1,
+        "fields": {
+            "title": "event",
+            "admin": 1,
+            "description": "an event",
+            "event_type": "default",
+            "created_date": "2018-10-27T23:36:05Z",
+            "access_code": "tauoaqqk",
+            "is_playing": true
+        }
+    },
+    {
+        "model": "creation.event",
+        "pk": 2,
+        "fields": {
+            "title": "event2",
+            "admin": 1,
+            "description": "for testing simulated annealing",
+            "event_type": "workshop",
+            "created_date": "2018-11-16T01:44:01Z",
+            "access_code": "blahtity",
+            "is_playing": false
+        }
+    },
+    {
+        "model": "creation.event",
+        "pk": 6,
+        "fields": {
+            "title": "capstone",
+            "admin": 3,
+            "description": "best capstone class",
+            "event_type": "default",
+            "created_date": "2018-11-19T17:55:21.799Z",
+            "access_code": "lfubobfi",
+            "is_playing": false
+        }
+    },
+    {
+        "model": "creation.grouping",
+        "pk": 30,
+        "fields": {
+            "event": 1,
+            "is_current": true
+        }
+    },
+    {
+        "model": "creation.group",
+        "pk": 203,
+        "fields": {
+            "max_size": 9,
+            "grouping": 30,
+            "is_complete": false,
+            "game": 1
+        }
+    },
+    {
+        "model": "creation.group",
+        "pk": 204,
+        "fields": {
+            "max_size": 9,
+            "grouping": 30,
+            "is_complete": false,
+            "game": 4
+        }
+    },
+    {
+        "model": "creation.eventuser",
+        "pk": 1,
+        "fields": {
+            "user": 3,
+            "events": [
+                1,
+                2
+            ],
+            "groups": [
+                204
+            ]
+        }
+    },
+    {
+        "model": "creation.eventuser",
+        "pk": 2,
+        "fields": {
+            "user": 4,
+            "events": [
+                1,
+                2
+            ],
+            "groups": [
+                203
+            ]
+        }
+    },
+    {
+        "model": "creation.eventuser",
+        "pk": 3,
+        "fields": {
+            "user": 5,
+            "events": [
+                1,
+                2
+            ],
+            "groups": [
+                204
+            ]
+        }
+    },
+    {
+        "model": "creation.eventuser",
+        "pk": 4,
+        "fields": {
+            "user": 6,
+            "events": [
+                1,
+                2
+            ],
+            "groups": [
+                203
+            ]
+        }
+    },
+    {
+        "model": "creation.eventuser",
+        "pk": 5,
+        "fields": {
+            "user": 7,
+            "events": [
+                1,
+                2
+            ],
+            "groups": [
+                204
+            ]
+        }
+    },
+    {
+        "model": "creation.eventuser",
+        "pk": 7,
+        "fields": {
+            "user": 8,
+            "events": [
+                2
+            ],
+            "groups": []
+        }
+    },
+    {
+        "model": "creation.eventuser",
+        "pk": 8,
+        "fields": {
+            "user": 9,
+            "events": [
+                2
+            ],
+            "groups": []
+        }
+    },
+    {
+        "model": "creation.eventuser",
+        "pk": 9,
+        "fields": {
+            "user": 10,
+            "events": [
+                2
+            ],
+            "groups": []
+        }
+    },
+    {
+        "model": "creation.eventuser",
+        "pk": 10,
+        "fields": {
+            "user": 11,
+            "events": [
+                2
+            ],
+            "groups": []
+        }
+    },
+    {
+        "model": "creation.eventuser",
+        "pk": 11,
+        "fields": {
+            "user": 12,
+            "events": [
+                2
+            ],
+            "groups": []
+        }
+    },
+    {
+        "model": "creation.eventuser",
+        "pk": 12,
+        "fields": {
+            "user": 13,
+            "events": [
+                2
+            ],
+            "groups": []
+        }
+    },
+    {
+        "model": "creation.eventuser",
+        "pk": 13,
+        "fields": {
+            "user": 15,
+            "events": [],
+            "groups": []
+        }
+    }
+]

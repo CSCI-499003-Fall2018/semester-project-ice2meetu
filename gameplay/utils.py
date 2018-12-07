@@ -1,4 +1,5 @@
 import random
+import sys
 
 def choose(n, k):
     """
@@ -21,7 +22,7 @@ def max_groups(num_players):
     if num_players == 2 or num_players == 3:
         return 1
     if num_players > 8: #thousands of grps available
-        return float("inf") #so return infinity
+        return sys.maxsize #so return infinity
     maxn = 0
     for i in range(num_players//2 + 1):
         if i == (num_players-1) or i == 1:

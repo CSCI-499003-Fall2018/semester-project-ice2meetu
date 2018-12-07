@@ -35,8 +35,10 @@ urlpatterns = [
     path('create/', include('creation.urls')),
     path('event/', include('event.urls')),
     path('games/', include('games.urls')),
+    path('play/', include('gameplay.urls')),
     path('admin/', admin.site.urls),
     path('oauth/', include('social_django.urls', namespace='social')),  # <-- Social Login
+    path('group/', include('group.urls')),
     path('api-auth/', CustomAuthToken.as_view()),
     path('api/', include(router.urls))
 ]

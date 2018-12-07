@@ -4,8 +4,6 @@ from . import views
 from . import views
 from rest_framework.urlpatterns import format_suffix_patterns
 urlpatterns = [
-    # path('<string>/join/', views.event, name='event_page'),
-    # path('<string>/go/', views.go)
     re_path(r'^(?P<string>\w+)/join/$', views.event, name='event_page'),
     re_path(r'^(?P<string>\w+)/go/$', views.go ),
 
