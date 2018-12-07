@@ -37,7 +37,7 @@ def same_group(request):
         for group in grouping.groups():
             position += 1
             if user in group.users():
-                return position
+                return position%30
     
         return None
 
