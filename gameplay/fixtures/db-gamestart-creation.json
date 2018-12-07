@@ -9,7 +9,7 @@
             "event_type": "default",
             "created_date": "2018-10-27T23:36:05Z",
             "access_code": "tauoaqqk",
-            "is_playing": false
+            "is_playing": true
         }
     },
     {
@@ -22,7 +22,7 @@
             "event_type": "workshop",
             "created_date": "2018-11-16T01:44:01Z",
             "access_code": "blahtity",
-            "is_playing": true
+            "is_playing": false
         }
     },
     {
