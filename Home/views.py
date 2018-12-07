@@ -20,6 +20,7 @@ from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.core.mail import send_mail
 
+
 creators = [
     {
         'name': 'Kevin',
@@ -143,7 +144,7 @@ def join(request):
             }
             return render(request, 'Home/join.html', content)
 
-        return HttpResponseRedirect('../event/{}'.format(form.pk))
+        return HttpResponseRedirect('../event/{}/go'.format(form.access_code))
     else:
         form = Join()
     content = {
