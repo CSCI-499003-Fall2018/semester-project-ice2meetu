@@ -112,8 +112,16 @@ def check_event_user(request, event):
     if not event.exists():
         err = {"Error": "Event id {} doesn't exist".format(event_pk)}
         return (404, err)
-    event_user = request.user.eventuser_set.all()[0]
-    if event[0] not in event_user.events.all():
+    # event_user = request.user.eventuser_set.all()
+    event_user = EventUser.objects.filter(user=request.user)
+    ret = None
+    for e_u in event_user:
+        print(e_u.events.all())
+        print(event)
+        for e in e_u.events.all():
+            if event[0].access_code == e.access_code:
+               ret = e_u
+    if ret == None:
         msg = "You're participating in this event"
         err = {"Unauthorized Error": msg}
         return (401, err)

@@ -36,17 +36,18 @@ class GameManager(models.Model):
 
     def add_player(self, eventuser):
         try:
-            user = (EventUser.objects.get(pk=eventuser) 
+            user = (EventUser.objects.get(user=eventuser)
                         if isinstance(eventuser, int) else eventuser)
-            if user in self.event.users() and not user.is_playing():
-                player = Player(user=user, game_manager=self)
+            user = user.filter(events__access_code = self.event.access_code)
+            if user[0] in self.event.users() and not user[0].is_playing():
+                player = Player(user=user[0], game_manager=self)
                 player.save()
                 self.player_set.add(player)
                 self.max_groups = max_groups(self.player_set.count())
                 self.save()
-            elif user not in self.event.users():
+            elif user[0] not in self.event.users():
                 raise AttributeError(
-                    "Player {} is not a user registered for this event".format(user.pk))
+                    "Player {} is not a user registered for this event".format(user[0].user_id))
             else:
                 raise RuntimeError("User is already playing a game")
         except ObjectDoesNotExist:

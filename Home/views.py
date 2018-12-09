@@ -1,6 +1,6 @@
 
 from .forms import SignUpForm, Join
-from creation.models import Event, Group
+from creation.models import Event, Group, EventUser
 from games.models import Game, GameType
 import random
 
@@ -144,6 +144,11 @@ def join(request):
             }
             return render(request, 'Home/join.html', content)
 
+        e = Event.objects.get(access_code=code)
+        user = EventUser.objects.create(user=request.user)
+        user.events.add(e)
+        user.save()
+        e.event_users.add(user)
         return HttpResponseRedirect('../event/{}/go'.format(form.access_code))
     else:
         form = Join()
