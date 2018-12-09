@@ -145,7 +145,12 @@ def add_self(request, event_pk):
     event_user = err['Success']
     manager = GameManager.objects.filter(event=event)[0]
     manager.add_player(event_user)
-    return JsonResponse({"Success": "You've been added to the game"})
+    content = {
+        'event' : event,
+    }
+    return render(request,"event/event.html",content)
+    # return JsonResponse({"Success": "You've been added to the game"})
+
 
 
 @never_cache
@@ -159,8 +164,16 @@ def remove_self(request, event_pk):
         return JsonResponse(status=status, data=err)
 
     event_user = err['Success']
+    print(event_user)
+    if not isinstance(event_user, EventUser):
+        event_user = event_user.filter(events__access_code = event.access_code)[0]
     event_user.player.remove_self()
-    return JsonResponse({"Success": "You've been removed from the game"})
+    # return JsonResponse({"Success": "You've been removed from the game"})
+    content = {
+        'event' : event,
+    }
+    return render(request,"event/event.html",content)
+
 
     
 
