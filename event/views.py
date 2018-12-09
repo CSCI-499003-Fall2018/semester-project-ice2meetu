@@ -15,26 +15,25 @@ from Home.forms import Join
 # start round (create groupings, match groups -> indicate group is found -> game renders)
 
 @login_required(login_url='login/')
-def event(request, pk):
-    event = Event.objects.get(pk=pk)
+def event(request, accesscode):
+    event = Event.objects.get(access_code=accesscode)
     user = event.event_users.get(user__username = request.user.username)
     print(user)
     return render(request, "event/event.html", context={'event': event, 'user': user})
 
-def join_event(request, pk, format=None):
-    event = Event.objects.get(pk=pk)
+def join_event(request, accesscode, format=None):
+    event = Event.objects.get(access_code=accesscode)
     if format == 'json':
         return Response(EventSerializer(event).data)
 
     if request.user.is_authenticated :
-        event = Event.objects.get(pk=pk)
         user, created = EventUser.objects.get_or_create(user=request.user)
         try:
-            user.events.get(pk=pk)
+            user.events.get(access_code=accesscode)
         except Event.DoesNotExist:
             user.events.add(event)
             user.save()
-        return HttpResponseRedirect('/event/{}'.format(event.pk))
+        return HttpResponseRedirect('/event/{}'.format(event.access_code))
     else:
         form = Join()
         content = {

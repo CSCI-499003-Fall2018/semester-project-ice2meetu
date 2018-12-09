@@ -170,7 +170,6 @@ def remove_self(request, event_pk):
     # return render(request,"event/event.html",content)
     return JsonResponse({"Success": "You've been removed from the game"})
 
-
 #@login_required(login_url='login/')
 # def play_test(request):
     # if request.user.eventuser_set.exists():

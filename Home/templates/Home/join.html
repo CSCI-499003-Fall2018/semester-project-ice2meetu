@@ -32,7 +32,7 @@
 	{% endif %}
         <h4 style="margin-top: 10px">Your Events</h4>
         {% for event in events %}
-            <form action="/event/{{event.access_code}}/go">
+            <form action="/event/{{event.access_code}}/join">
                 <button class="btn btn-primary btn-lg" >{{ event.title }}</button>
             </form>
         {% endfor %}
