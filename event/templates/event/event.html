@@ -3,12 +3,14 @@
 
 {% block content %}
 <script>
-function init_game() {
+
+function hit_endpoint(view) {
 	event.preventDefault();
 			
 	httpRequest = new XMLHttpRequest();
+	httpRequest.responseType = "json"
 	const pk = "{{ event.pk }}";
-	const url = "{% url 'init_game' event_pk=pk %}";
+	const url = "/play/" + pk + "/" + view;
 
 	if (!httpRequest) {
 		alert('Giving up :( Cannot create an XMLHTTP instance');
@@ -17,85 +19,55 @@ function init_game() {
 	
 	httpRequest.onreadystatechange = responseHandler;
 	httpRequest.open('GET', url);
-	httpRequest.send(data);
-}
-
-function end_game() {
-	event.preventDefault();
-			
-	httpRequest = new XMLHttpRequest();
-	const pk = "{{ event.pk }}";
-	const url = "{% url 'end_game' event_pk=pk %}";
-
-	if (!httpRequest) {
-		alert('Giving up :( Cannot create an XMLHTTP instance');
-		return false;
-	}
-	
-	httpRequest.onreadystatechange = responseHandler;
-	httpRequest.open('GET', url);
-	httpRequest.send(data);
-}
-
-function add_all() {
-	event.preventDefault();
-			
-	httpRequest = new XMLHttpRequest();
-	const pk = "{{ event.pk }}";
-	const url = "{% url 'add_all' event_pk=pk %}";
-	
-	if (!httpRequest) {
-		alert('Giving up :( Cannot create an XMLHTTP instance');
-		return false;
-	}
-	
-	httpRequest.onreadystatechange = responseHandler;
-	httpRequest.open('GET', url);
-	httpRequest.send(data);
-}
-
-function add_self() {
-	event.preventDefault();
-			
-	httpRequest = new XMLHttpRequest();
-	const pk = "{{ event.pk }}";
-	const url = "{% url 'add_self' event_pk=pk %}";
-	
-	if (!httpRequest) {
-		alert('Giving up :( Cannot create an XMLHTTP instance');
-		return false;
-	}
-	
-	httpRequest.onreadystatechange = responseHandler;
-	httpRequest.open('GET', url);
-	httpRequest.send(data);
+	httpRequest.send();
 }
 
 function responseHandler() {
 	if (httpRequest.readyState === XMLHttpRequest.DONE) {
-		if (httpRequest.status === 200) {
-			var image = httpRequest.response;
-		} 
-		else {
-			alert('There was a problem with the request.');
-		}
+		document.getElementById('test').innerHTML += JSON.stringify(httpRequest.response);
 	}
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-	
+	document.querySelectorAll(".endpoint").forEach(function(btn) {
+		btn.onclick = () => {
+			view = btn.getAttribute('value');
+			hit_endpoint(view);
+        }
+	});
 });
 </script>
 <h1>Event Page</h1>
-<div class="container-fluid" style="margin-top:100px">
+<div class="container-fluid" style="margin-top:100px;">
     <h1>{{ event.title }}</h1>
 	<h2>Welcome, {{ user.user }}</h2>
-    <p>{{ event.description }}</p>
-	{% if request.user == event.admin %}
-		<button class="btn btn-primary num" href="#" value={{i}}>
-		{{ i }}
+    <p>{{ event.description }}</p
+	<p>{{event.admin.user}}
+	<div class="row">
+	<textarea id="test" cols="50" rows="10" disabled></textarea>
+	</div>
+	<div class="row" style="margin-top: 10px">
+	{% if user.user == event.admin %}
+		<button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="begin"> 
+		Start Game
+		</button>
+		<button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="end"> 
+		End Game
+		</button>
+		<button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="add_all"> 
+		Add All Players
+		</button>
+		<button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="start_round"> 
+		Start Round
 		</button>
 	{% else %}
+		<button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="add">
+		Add Self to Game
+		</button>
+		<button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="remove">
+		Remove Self from Game
+		</button>
 	{% endif %}
+	</div>
 </div>
 {% endblock content %}
