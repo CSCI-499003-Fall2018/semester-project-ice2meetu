@@ -27,7 +27,16 @@ def go(request, string, format=None):
         return Response(EventSerializer(event).data)
 
     if request.user.is_authenticated :
-        return render(request, "event/event.html", context={'event': event})
+        user = event.event_users.filter(events__event_users__user_id=request.user.id)
+        grouping = event.grouping_set.all()
+        group = grouping
+        print(group)
+        content = {
+            'event' : event,
+            'group' : group
+        }
+        print(group)
+        return render(request, "event/event.html", content)
     else:
         form = Join()
         content = {
@@ -35,4 +44,4 @@ def go(request, string, format=None):
             'name': 'Access Code',
             'user' : request.user
         }
-        return render(request, "Home/join.html", content)
+    return render(request, "Home/join.html", content)
