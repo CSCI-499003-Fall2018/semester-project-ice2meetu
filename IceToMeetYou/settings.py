@@ -95,7 +95,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'IceToMeetYou.wsgi.application'
-
 DATABASES = {
    'default' : {
        'ENGINE' : 'django.db.backends.postgresql_psycopg2',
@@ -164,9 +163,9 @@ LOGOUT_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 REST_FRAMEWORK = {
-     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+       'rest_framework.permissions.AllowAny',
+    )
 }
 
 ALLOWED_HOSTS = ['ice2meetu.herokuapp.com', 'localhost', '127.0.0.1']

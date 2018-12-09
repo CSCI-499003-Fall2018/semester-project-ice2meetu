@@ -112,8 +112,16 @@ def check_event_user(request, event):
     if not event.exists():
         err = {"Error": "Event id {} doesn't exist".format(event_pk)}
         return (404, err)
-    event_user = request.user.eventuser_set.all()[0]
-    if event[0] not in event_user.events.all():
+    # event_user = request.user.eventuser_set.all()
+    event_user = EventUser.objects.filter(user=request.user)
+    ret = None
+    for e_u in event_user:
+        print(e_u.events.all())
+        print(event)
+        for e in e_u.events.all():
+            if event[0].access_code == e.access_code:
+               ret = e_u
+    if ret == None:
         msg = "You're participating in this event"
         err = {"Unauthorized Error": msg}
         return (401, err)
@@ -137,7 +145,12 @@ def add_self(request, event_pk):
     event_user = err['Success']
     manager = GameManager.objects.filter(event=event)[0]
     manager.add_player(event_user)
-    return JsonResponse({"Success": "You've been added to the game"})
+    content = {
+        'event' : event,
+    }
+    return render(request,"event/event.html",content)
+    # return JsonResponse({"Success": "You've been added to the game"})
+
 
 
 @never_cache
@@ -151,8 +164,16 @@ def remove_self(request, event_pk):
         return JsonResponse(status=status, data=err)
 
     event_user = err['Success']
+    print(event_user)
+    if not isinstance(event_user, EventUser):
+        event_user = event_user.filter(events__access_code = event.access_code)[0]
     event_user.player.remove_self()
-    return JsonResponse({"Success": "You've been removed from the game"})
+    # return JsonResponse({"Success": "You've been removed from the game"})
+    content = {
+        'event' : event,
+    }
+    return render(request,"event/event.html",content)
+
 
     
 
