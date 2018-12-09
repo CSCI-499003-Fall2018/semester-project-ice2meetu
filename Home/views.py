@@ -147,9 +147,12 @@ def join(request):
         return HttpResponseRedirect('../event/{}/go'.format(form.access_code))
     else:
         form = Join()
+    events = Event.objects.filter(event_users__user_id=request.user.id)
+    print(events)
     content = {
         'form': form,
         'name': 'Access Code',
-        'user' : request.user
+        'user' : request.user,
+        'events': events,
     }
     return render(request, 'Home/join.html', content)
