@@ -1,6 +1,5 @@
-
 from .forms import SignUpForm, Join
-from creation.models import Event, Group
+from creation.models import Event, Group, EventUser
 from games.models import Game, GameType
 import random
 
@@ -19,6 +18,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.core.mail import send_mail
+
 
 creators = [
     {
@@ -142,13 +142,21 @@ def join(request):
                 'user' : request.user
             }
             return render(request, 'Home/join.html', content)
-
+        # e = Event.objects.get(access_code=code)
+        # user = EventUser.objects.create(user=request.user)
+        # user.events.add(e)
+        # user.save()
+        # e.event_users.add(user)
+        # return HttpResponseRedirect('../event/{}/go'.format(form.access_code))
         return HttpResponseRedirect('../event/{}/join'.format(form.pk))
     else:
         form = Join()
-    content = {
-        'form': form,
-        'name': 'Access Code',
-        'user' : request.user
-    }
-    return render(request, 'Home/join.html', content)
+        events = Event.objects.filter(event_users__user_id=request.user.id)
+        print(events)
+        content = {
+            'form': form,
+            'name': 'Access Code',
+            'user' : request.user,
+            'events': events,
+        }
+        return render(request, 'Home/join.html', content)

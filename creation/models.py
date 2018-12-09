@@ -141,7 +141,7 @@ class EventUser(models.Model):
             return None
         if events.count() > 1:  # in multiple playing events
             for event in events:
-                if self.pk in e.gamemanager.players():
+                if hasattr(event, 'gamemanager') and self.pk in event.gamemanager.players():
                     return event
         else:
             return events[0]

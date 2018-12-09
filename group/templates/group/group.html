@@ -1,0 +1,48 @@
+{% load static %}
+<html>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" media="all" href="{% static 'assets/css/style.css' %}"/>
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<head></head>
+<body>
+    <div class="container">
+        <div class="row">
+            {% if group_number is None %}
+            <div class="center-box" style="background-color: black">
+            {% else %}
+            <div class="center-box" style="background-color: {{color}}">
+            {% endif %}    
+                {% if group_number is None %}
+                <img itemprop="image" src="{% get_static_prefix %}assets/images/emoji/none.png">
+                <div class="find_group">
+                    Opops, you are not in any group
+                </div>
+                {% else %}
+                <img itemprop="image" src="{% get_static_prefix %}assets/images/emoji/{{ group_number }}.png">
+                
+                <div class="find_group">
+                    Welcome, Find Your Group 
+                    ({{ number_of_people }} People)
+                </div>
+                {% endif %}  
+                <div class="confirming_button" data-toggle="buttons">
+                    <label class="btn btn-lg btn-success active">
+                        <input type="radio" name="options" id="option1" autocomplete="off" checked>
+                        <i class="fa fa-check">    We Are Here</i> 
+                    </label>
+                    <label class="btn btn-lg btn-danger">
+                        <input type="radio" name="options" id="option2" autocomplete="off" action="">
+                        <i class="fa fa-spinner">    Done Grouping?</i>
+                    </label>          
+                </div>   
+            </div>
+        </div>
+    </div>
+</body>
+</html>

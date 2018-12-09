@@ -61,7 +61,6 @@ def game(request):
             for eventuser in request.user.eventuser_set.all():
                 if eventuser.is_playing():
                     context['is_playing'] = True
-            context['is_playing'] = user.is_playing()
     except AttributeError:
         pass #AnonUser
     return render(request, 'Games/game.html', context)

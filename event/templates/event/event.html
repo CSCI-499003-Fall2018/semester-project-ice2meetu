@@ -41,8 +41,8 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="container-fluid" style="margin-top:100px;">
     <h1>{{ event.title }}</h1>
 	<h2>Welcome, {{ user.user }}</h2>
-    <p>{{ event.description }}</p
-	<p>{{event.admin.user}}
+	<p>{{event.admin.user}}</p>
+    <p>{{ event.description }}</p>
 	<div class="row">
 	<textarea id="test" cols="50" rows="10" disabled></textarea>
 	</div>
@@ -69,5 +69,24 @@ document.addEventListener('DOMContentLoaded', function() {
 		</button>
 	{% endif %}
 	</div>
+	<!--
+    <p>{{ event.description }}</p>
+    <form action="/play/{{event.id}}/add" method="post">
+        {% csrf_token %}
+        <h4>{{ name }}</h4>
+        {{ form.as_p }}
+        <div class="text-center mt-4" id="menu">
+            <input class="btn btn-primary btn-lg" type="submit" value="Join Group">
+        </div>
+    </form>
+    <form action="/play/{{event.id}}/remove" method="post">
+        {% csrf_token %}
+        <h4>{{ name }}</h4>
+        {{ form.as_p }}
+        <div class="text-center mt-4" id="menu">
+            <input class="btn btn-primary btn-lg" type="submit" value="Leave Group">
+        </div>
+    </form>
+	-->
 </div>
 {% endblock content %}

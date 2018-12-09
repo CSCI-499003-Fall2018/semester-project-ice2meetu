@@ -4,7 +4,7 @@ from creation.models import Event, EventUser, Group, Grouping
 from games.models import Game
 from .utils import max_groups, _random_grps
 import random
-
+import sys
 
 class GameManager(models.Model):
     event = models.OneToOneField(Event, default="", on_delete=models.CASCADE)
@@ -26,6 +26,7 @@ class GameManager(models.Model):
                 player.delete()
                 setattr(player.user, 'player', None)
                 self.max_groups = max_groups(self.player_set.count())
+                self.save()
         except ObjectDoesNotExist:
             pk = player if isinstance(player, int) else player.pk
             error = "Error: Player {} does not exist. Maybe you gave the \
@@ -35,8 +36,11 @@ class GameManager(models.Model):
 
     def add_player(self, eventuser):
         try:
-            user = (EventUser.objects.get(pk=eventuser) 
+            user = (EventUser.objects.get(user=eventuser)
                         if isinstance(eventuser, int) else eventuser)
+
+            if not isinstance(user, EventUser):
+                user = user.filter(events__access_code = self.event.access_code)[0]
             if user in self.event.users() and not user.is_playing():
                 player = Player(user=user, game_manager=self)
                 player.save()
@@ -45,9 +49,9 @@ class GameManager(models.Model):
                 self.save()
             elif user not in self.event.users():
                 raise AttributeError(
-                    "Player {} is not a user registered for this event".format(user.pk))
-            else:
-                raise RuntimeError("User is already playing a game")
+                    "Player {} is not a user registered for this event".format(user[0].user_id))
+            # else:
+            #     raise RuntimeError("User is already playing a game")
         except ObjectDoesNotExist:
             pk = user if isinstance(user, int) else user.pk
             error = "Error: EventUser {} does not exist"
@@ -67,7 +71,7 @@ class GameManager(models.Model):
     def go_round(self):
         if self.round_num == 0:
             self.event.is_playing = True
-        #self["max_groups"] = max_groups(len(self.players()))
+            self.event.save()
         if self._generate():
             self._assign_games()
             return True
@@ -114,33 +118,22 @@ class GameManager(models.Model):
             if self.event.has_current_grouping():
                 self.event.save_group_history()
             self.round_num = 1
+            print(self)
             self.save()
             return self.random_groups()
-        if (self.round_num < self.max_groups):
+        if (self.max_groups == sys.maxsize or self.round_num < self.max_groups):
             if self.event.has_current_grouping():
                 self.event.save_group_history()
             new_grouping = self.random_groups()
             duplicate_groups = self._find_duplicate_groups(new_grouping)
-            if not duplicate_groups:
-                self.round_num += 1
-                self.save()
-                return new_grouping
             while duplicate_groups:
                 for g in self.event.grouping_set.filter(is_current=True):
                     g.delete()
                 new_grouping = self.random_groups()
                 duplicate_groups = self._find_duplicate_groups(new_grouping)
-                if not duplicate_groups:
-                    self.round_num += 1
-                    self.save()
-                    return new_grouping
-                # if len(duplicate_groups) >= 2:
-                #     group1, group2 = random.sample(duplicate_groups, 2)
-                # else:
-                #     group1 = duplicate_groups[0]
-                #     group2 = random.choice(new_grouping.groups())
-                # new_grouping.random_swap(group1, group2)
-                # duplicate_groups = self._find_duplicate_groups(new_grouping)
+            self.round_num += 1
+            self.save()
+            return new_grouping
         else:
             return None
 

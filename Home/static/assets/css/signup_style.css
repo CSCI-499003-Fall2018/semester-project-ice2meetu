@@ -353,19 +353,32 @@ h1 {
 .agile-signin h4 a:hover{
 	color:#212121;
 }
-.content-left{
+.content-left-signup{
 	float:left;
 	width:50%;
-	background:#FFFFFF;
+    background:#FFFFFF;
+    min-height: 479px;
 }
-.content-main{
+.content-main-signup{
+	float:left;
+    width:50%;
+    min-height: 510px;
+}
+.content-left-login{
 	float:left;
 	width:50%;
+    background:#FFFFFF;
+    min-height: 457px;
+}
+.content-main-login{
+	float:left;
+    width:50%;
+    min-height: 457px;
 }
 .w3ls-subscribe{
 	background: rgba(0, 0, 0, 0.56);
     padding: 3em;
-    min-height: 426px;
+    min-height: 373px;
 }
 .w3ls-subscribe h3{
     color: #FFFFFF;
