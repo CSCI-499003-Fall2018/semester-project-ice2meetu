@@ -147,8 +147,7 @@ def join(request):
         # user.events.add(e)
         # user.save()
         # e.event_users.add(user)
-        # return HttpResponseRedirect('../event/{}/go'.format(form.access_code))
-        return HttpResponseRedirect('../event/{}/join'.format(form.pk))
+        return HttpResponseRedirect('../event/{}/join'.format(form.access_code))
     else:
         form = Join()
         events = Event.objects.filter(event_users__user_id=request.user.id)
