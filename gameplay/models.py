@@ -42,6 +42,8 @@ class GameManager(models.Model):
             if not isinstance(user, EventUser):
                 user = user.filter(events__access_code = self.event.access_code)[0]
             if user in self.event.users() and not user.is_playing():
+                if user.pk in self.players():
+                    return #already added
                 player = Player(user=user, game_manager=self)
                 player.save()
                 self.player_set.add(player)
@@ -56,7 +58,7 @@ class GameManager(models.Model):
             pk = user if isinstance(user, int) else user.pk
             error = "Error: EventUser {} does not exist"
             print(error.format(pk))
-            raise # problem if doesn't exist, might be bug, so raise
+            raise 
 
     def sync_users(self):
         """Adds all users in the event to the game"""
