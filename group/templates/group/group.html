@@ -44,4 +44,33 @@
         </div>
     </div>
 </body>
+<script>
+    const groupSocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/group/ws/');
+
+    //Updating group complete
+    groupSocket.onmessage = e => {
+        const data = JSON.parse(e.data);
+        console.log("got a message");
+        console.log(data);
+        const complete = data['complete'];
+        if (complete === true) {
+            window.location.replace("{% url 'game' %}");
+        }
+    };
+
+    groupSocket.onclose = function (e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    //Found Group
+    document.querySelector('.confirming_button').onclick = function (e) {
+        console.log("sending message");
+        groupSocket.send(JSON.stringify({
+            'group_id': '{{group_id}}',
+            'complete': true
+        }));
+    };
+</script>
 </html>

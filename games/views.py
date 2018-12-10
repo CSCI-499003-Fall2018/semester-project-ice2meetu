@@ -3,19 +3,16 @@ from .models import Game, GameType
 from django.contrib.auth.decorators import login_required
 import random
 from django.http import HttpResponseRedirect, JsonResponse
+from django.urls import reverse
 
 
 @login_required(login_url='../login/')
 def get_user_game(request):
     if request.user.eventuser_set.exists():
-        user = list(request.user.eventuser_set.all())[0]
+        user = request.user.eventuser_set.all()[0]
     else:
         raise RuntimeError("Not an event user")
-    if user.events.filter(is_playing=True).exists():
-        event = list(user.events.filter(is_playing=True))[0]
-    else:
-        event = None
-    if event:
+    if user.is_playing():
         game = user.current_game()
         status = 200
         context = {
@@ -55,12 +52,17 @@ def get_nplayer_game(request):
 def game(request):
     context = {}
     try: 
-        if not request.user.is_authenticated:
+        user = request.user
+        if not user.is_authenticated or not user.eventuser_set.exists():
             return render(request, 'Games/game.html', context)
         if request.user.eventuser_set.exists():
             for eventuser in request.user.eventuser_set.all():
                 if eventuser.is_playing():
+                    group = eventuser.groups.filter(grouping__is_current=True)[0]
+                    if not group.is_complete:
+                        return HttpResponseRedirect(reverse('same_group_page'))
                     context['is_playing'] = True
+                    break
     except AttributeError:
         pass #AnonUser
     return render(request, 'Games/game.html', context)

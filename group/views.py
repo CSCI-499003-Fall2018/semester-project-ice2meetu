@@ -61,6 +61,7 @@ def same_group(request):
         return color
 
     context = {
+        "group_id": get_group_id(request),
         "group_number": get_group_pos(request),
         "number_of_people": get_num_people(request),
         "color": generate_color(),
