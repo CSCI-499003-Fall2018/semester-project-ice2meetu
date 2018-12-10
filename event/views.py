@@ -30,12 +30,11 @@ def go(request, string, format=None):
         user = event.event_users.filter(events__event_users__user_id=request.user.id)
         grouping = event.grouping_set.all()
         group = grouping
-        print(group)
         content = {
             'event' : event,
-            'group' : group
+            'group' : group,
+            'user'  :request.user
         }
-        print(group)
         return render(request, "event/event.html", content)
     else:
         form = Join()
