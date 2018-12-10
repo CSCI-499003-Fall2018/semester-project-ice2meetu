@@ -1,49 +1,99 @@
-
 {% extends "Home/base.html" %}
-{% load staticfiles %}
+{% load static %}
 {% block content %}
 
-    <!-- Menu -->
-    <header class="masthead bg-primary text-white text-center">
-      <div class="container">
-        <h1 class="text-uppercase mb-0">Ice2MeetU</h1>
-        <hr class="star-light">
+</html>
+<!-- Stylesheet -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-	<div class="text-center mt-4">
-	{% if not user.is_authenticated %}
-	<h2>User is required to be logged in</h5>
-	{% else %}
-	  <form action="" method="post">
-	      {% csrf_token %}
-	      <h4>{{ name }}</h4>
-	      {{ form.as_p }}
-	      <div class="text-center mt-4" id="menu">
+    <!-- Title -->
+    <title>Event</title>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'assets/css/style.css' %}"/>
+
+</head>
+<body>
+    <!-- ##### Breadcumb Area Start ##### -->
+    <section class="breadcumb-area bg-img bg-overlay" style="background-image: url({% get_static_prefix %}assets/images/event/e6.jpeg);">
+        <div class="bradcumbContent">
+            <h3> Join A New Event</h3>
+            {% if not user.is_authenticated %}
+            <h2>User is required to be logged in</h5>
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="text-center mt-4" id="menu">
                     <input class="btn btn-primary btn-lg" type="submit" value="Enter Access Code">
-	      </div>
-	  </form>
-	{% endif %}
-	</div>
-
-      </div>
-    </header>
-
-
-    <!-- Team Section -->
-    <section class="bg-primary text-white mb-0" id="team">
-      <div class="container">
-        <h2 class="text-center text-uppercase text-white">Team</h2>
-        <hr class="star-light mb-5">
-        <div class="row">
-          <div class="container-fluid lead">
-            <h4 align="center">
-              <p class="names">Dandan Lin</p>
-              <p class="names">Kevin Cybura</p>
-              <p class="names">Kristoff Campbell</p>
-              <p class="names">Silvena Chan</p>
-            </h4>
-          </div>
+                </div>
+            </form>
+            {% else %}
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="text-center mt-4" id="menu">
+                    <input class="btn btn-primary btn-lg" type="submit" value="Enter Access Code">
+                </div>
+            </form>
+            {% endif %}
+            <br>
+            <hr>
+            <br>
+            <p>See What Events You Have Joined</p>
+            <h2>Events</h2>
         </div>
-      </div>
     </section>
+    <!-- ##### Breadcumb Area End ##### -->
 
+    <!-- ##### Events Area Start ##### -->
+    <section class="events-area section-padding-100">
+        <div class="container">
+            <div class="row">
+                {% for event in events %}
+                <!-- Single Event Area -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="single-event-area mb-30">
+                        <div class="event-thumbnail">
+                            <img src="{% get_static_prefix %}assets/images/event/e{{ forloop.counter }}.jpeg" alt="">
+                        </div>
+                        <div class="event-text">
+                            <h4>{{ event.title }}</h4>
+                            <div class="event-meta-data">
+                                <a href="#" class="event-place">{{ event.title }}</a>
+                                <a href="#" class="event-date">{{ event.description }}</a>
+                            </div>
+                            <a href="/event/{{event.access_code}}/go" class="btn see-more-btn">See Event</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="load-more-btn text-center mt-70">
+                        <a href="#" class="btn icetomeetu-btn">Load More <i class="fa fa-angle-double-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Events Area End ##### -->
+
+    <!-- ##### All Javascript Script ##### -->
+    <!-- jQuery-2.2.4 js -->
+    <script src="{% static 'assets/js/jquery/jquery-2.2.4.min.js' %}"></script>
+    <!-- Popper js -->
+    <script src="{% static 'assets/js/bootstrap/popper.min.js' %}"></script>
+    <!-- Bootstrap js -->
+    <script src="{% static 'assets/js/bootstrap/bootstrap.min.js' %}"></script>
+    <!-- All Plugins js -->
+    <script src="{% static 'assets/js/plugins/plugins.js' %}"></script>
+    <!-- Active js -->
+    <script src="{% static 'assets/js/active.js' %}"></script>
+
+</body>
+</html>
 {% endblock content %}

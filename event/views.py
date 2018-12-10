@@ -44,3 +44,4 @@ def go(request, string, format=None):
             'user' : request.user
         }
     return render(request, "Home/join.html", content)
+    

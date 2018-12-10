@@ -34,10 +34,11 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 });
 </script>
+
 <h1>Event Page</h1>
 <div class="container-fluid" style="margin-top:100px;">
 <div class="row justify-content-center">
-<h1 class="col-12">{{ event.title }}</h1>
+    <h1 class="col-12">{{ event.title }}</h1>
 	<h2 class="col-12">Welcome, {{ user.user }}</h2>
 	<p class="col-12">{{ event.admin }}</p>
     <p class="col-12">{{ event.description }}</p>
@@ -59,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             Start Round
             </button>
         </div>
-    {% endif %}
+        {% endif %}
         <div class="col-12 justify-content-center" style="margin-top: 10px">
             <h1 class="col-12">GamePlay</h1>
             <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="add">
