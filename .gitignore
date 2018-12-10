@@ -8,4 +8,4 @@ venv
 .idea
 logfile
 games.txt
-config.py
+config.*
