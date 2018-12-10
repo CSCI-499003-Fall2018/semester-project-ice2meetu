@@ -39,6 +39,8 @@ SECRET_KEY = 'm_7and@)f=3mb_vw3ir%s84(a7z5n&0^3zic#k5(&8@=mb!y!4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+ALLOWED_HOSTS = []
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -46,6 +48,8 @@ INSTALLED_APPS = [
     'creation.apps.CreationConfig',
     'event.apps.EventConfig',
     'games.apps.GamesConfig',
+    'gameplay.apps.GameplayConfig',
+    'group.apps.GroupConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,7 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-
+	'rest_framework.authtoken',
     'social_django',
 ]
 
@@ -65,9 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     'whitenoise.middleware.WhiteNoiseMiddleware',
-
     'social_django.middleware.SocialAuthExceptionMiddleware', # <-- Include for social auth
 ]
 
@@ -76,7 +78,7 @@ ROOT_URLCONF = 'IceToMeetYou.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['group/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -93,11 +95,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'IceToMeetYou.wsgi.application'
-
 DATABASES = {
-    'default':  dj_database_url.parse('postgres://bzxgeqahrbhddt:6ff84846f413b20947da13124f84a7db0b24ca2169a53f97148f0355f3557001@ec2-184-73-197-211.compute-1.amazonaws.com:5432/dc4udkl6fnja0q')
+   'default' : {
+       'ENGINE' : 'django.db.backends.postgresql_psycopg2',
+       'NAME' : os.environ['CAPSTONE_DB'],
+       'USER' : os.environ['CAPSTONE_USER'],
+       'PASSWORD' : os.environ['CAPSTONE_PASSWORD'],
+       'HOST' : 'localhost',
+       'PORT' : '',
+   }
 }
-
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
@@ -119,25 +126,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Added for Social Login
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.github.GithubOAuth2',
-    # 'social_core.backends.twitter.TwitterOAuth',
     'social_core.backends.facebook.FacebookOAuth2',
-    # 'social_core.backends.linkedin.LinkedinOAuth2',]
-
     'django.contrib.auth.backends.ModelBackend',
 )
-
-# SOCIAL_AUTH_GITHUB_KEY = os.environ['SOCIAL_AUTH_GITHUB_KEY']
-# SOCIAL_AUTH_GITHUB_SECRET = os.environ['SOCIAL_AUTH_GITHUB_SECRET']
-
-# SOCIAL_AUTH_FACEBOOK_KEY = os.environ['SOCIAL_AUTH_FACEBOOK_KEY']
-# SOCIAL_AUTH_FACEBOOK_SECRET = os.environ['SOCIAL_AUTH_FACEBOOK_SECRET']  
-
-# Added for email confirmation
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = 'ice2meetyouteam@gmail.com'
-# EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASSWORD']
-# EMAIL_PORT = 587
 
 # Social Auth ID & Secret
 SOCIAL_AUTH_GITHUB_KEY = key.SOCIAL_AUTH_GITHUB_KEY
@@ -172,9 +163,9 @@ LOGOUT_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    'DEFAULT_PERMISSION_CLASSES': (
+       'rest_framework.permissions.AllowAny',
+    )
 }
 
-ALLOWED_HOSTS = ['ice2meetu.herokuapp.com']
+ALLOWED_HOSTS = ['ice2meetu.herokuapp.com', 'localhost', '127.0.0.1']

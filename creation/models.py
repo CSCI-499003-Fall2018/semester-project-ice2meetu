@@ -3,7 +3,6 @@ from django.db import models
 from django.utils import timezone
 from games.models import Game, GameType
 import random
-from games.models import Game, GameType
 
 class Event(models.Model):
     title = models.CharField(max_length=255)
@@ -42,6 +41,10 @@ class Event(models.Model):
         else:
             past_groups = list(past_groups)[0]
         return past_groups
+
+    def delete_groupings(self):
+        for groupings in self.grouping_set.all():
+            groupings.delete()
     
     def save_group_history(self):
         curr_groups = self.grouping_set.filter(is_current=True)
@@ -49,8 +52,9 @@ class Event(models.Model):
             raise RuntimeError("Error: No Groupings to save")
 
         past_groups = self.get_grouping_hist() 
-        for group in list(curr_groups)[0].groups():
-            past_groups.group_set.add(group)
+        for grouping in curr_groups:
+            for group in grouping.groups():
+                past_groups.group_set.add(group)
         curr_groups.delete()
 
         assert(self.grouping_set.filter(is_current=True).count() <= 1)
@@ -62,10 +66,10 @@ class Event(models.Model):
     def __str__(self):
         return "{}: {}".format(self.title, self.description)
 
-# a complete grouping of users in an event
+
 class Grouping(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True)
-    is_current = models.BooleanField(default=True)
+    is_current = models.BooleanField(default=False)
 
     def size(self):
         return self.group_set.count()
@@ -110,29 +114,12 @@ class Group(models.Model):
         return grouping.event
     
     def __eq__(self, other):
-        if self.size() != other.size():
-            return False
         if isinstance(other, Group):
+            if self.size() != other.size():
+                return False
             return self.users() == other.users()
-        return False
-
-    def size(self):
-        if self.eventuser_set.exists():
-            return self.eventuser_set.count()
         else:
-            return 0
-    
-    def users(self):
-        return {user for user in self.eventuser_set.all()}
-    
-    def event(self):
-        return grouping.event
-    
-    def __eq__(self, other):
-        if self.size() != other.size():
-            return False
-        if isinstance(other, Group):
-            return self.users() == other.users()
+            raise TypeError("{} is not a Group".format(other))
         return False
 
     def __str__(self):
@@ -145,15 +132,31 @@ class EventUser(models.Model):
     groups = models.ManyToManyField(Group, blank=True)
 
     def is_playing(self):
-        return self.events.filter(is_playing=True).exists()
+        return hasattr(self, 'player')
+    
+    def playing_event(self):
+        events = self.events.filter(is_playing=True)
+        if not self.is_playing or not events.exists():
+            raise UserWarning("This event user isn't playing")
+            return None
+        if events.count() > 1:  # in multiple playing events
+            for event in events:
+                if hasattr(event, 'gamemanager') and self.pk in event.gamemanager.players():
+                    return event
+        else:
+            return events[0]
     
     def current_game(self):
-        event = self.events.filter(is_playing=True)[0]
+        event = self.playing_event()
+        if not event:
+            raise UserWarning("Warning: Not in any currently playing event")
+
         groupings = event.grouping_set.filter(is_current=True)[0]
         group = None
         for g in groupings.groups():
             if g in self.groups.all():
                 group = g
+                break
         return group.game
 
     def __str__(self):

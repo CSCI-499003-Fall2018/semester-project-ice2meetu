@@ -17,13 +17,16 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from .api import UserViewSet, EventViewSet, GameViewSet
+from IceToMeetYou.API.api import UserViewSet, EventViewSet, GameViewSet, GroupingViewSet, GroupViewSet
+from IceToMeetYou.API.auth_api import CustomAuthToken
 
 
 router = routers.DefaultRouter()
 router.register('users', UserViewSet)
 router.register('events', EventViewSet)
 router.register('games', GameViewSet)
+router.register('grouping', GroupingViewSet)
+router.register('group', GroupViewSet)
 
 urlpatterns = [
     url(r'^', include(('Home.urls', 'Home'), namespace='Home')),
@@ -32,8 +35,10 @@ urlpatterns = [
     path('create/', include('creation.urls')),
     path('event/', include('event.urls')),
     path('games/', include('games.urls')),
+    path('play/', include('gameplay.urls')),
     path('admin/', admin.site.urls),
     path('oauth/', include('social_django.urls', namespace='social')),  # <-- Social Login
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('group/', include('group.urls')),
+    path('api-auth/', CustomAuthToken.as_view()),
     path('api/', include(router.urls))
 ]

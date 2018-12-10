@@ -1,0 +1,127 @@
+[
+    {
+        "model": "games.gametype",
+        "pk": 1,
+        "fields": {
+            "game_type": "WUR",
+            "min_players": 2,
+            "max_players": 9
+        }
+    },
+    {
+        "model": "games.gametype",
+        "pk": 3,
+        "fields": {
+            "game_type": "TOD",
+            "min_players": 2,
+            "max_players": 2
+        }
+    },
+    {
+        "model": "games.gametype",
+        "pk": 4,
+        "fields": {
+            "game_type": "ACT",
+            "min_players": 2,
+            "max_players": 2
+        }
+    },
+    {
+        "model": "games.gametype",
+        "pk": 5,
+        "fields": {
+            "game_type": "DIS",
+            "min_players": 2,
+            "max_players": 9
+        }
+    },
+    {
+        "model": "games.gametype",
+        "pk": 6,
+        "fields": {
+            "game_type": "ACT",
+            "min_players": 3,
+            "max_players": 6
+        }
+    },
+    {
+        "model": "games.game",
+        "pk": 1,
+        "fields": {
+            "game_type": 1,
+            "text": "'Be able to read minds at will or turn invisible at will?'"
+        }
+    },
+    {
+        "model": "games.game",
+        "pk": 2,
+        "fields": {
+            "game_type": 1,
+            "text": "'Play every instrument in the world unexceptionally or play one instrument at virtuoso level?'"
+        }
+    },
+    {
+        "model": "games.game",
+        "pk": 3,
+        "fields": {
+            "game_type": 1,
+            "text": "Live in a place that snows every day or a place that rains every day?"
+        }
+    },
+    {
+        "model": "games.game",
+        "pk": 4,
+        "fields": {
+            "game_type": 1,
+            "text": "Lose your wallet or lose all of your cloud or hard drive storage?"
+        }
+    },
+    {
+        "model": "games.game",
+        "pk": 5,
+        "fields": {
+            "game_type": 3,
+            "text": "Truth: When was the last time you (fill in the blank)?, Dare: Show off your favorite dance move."
+        }
+    },
+    {
+        "model": "games.game",
+        "pk": 6,
+        "fields": {
+            "game_type": 3,
+            "text": "Truth: What was your most embarrassing moment?, Dare: Send a random person in your phone (choose together) a selfie."
+        }
+    },
+    {
+        "model": "games.game",
+        "pk": 7,
+        "fields": {
+            "game_type": 4,
+            "text": "Make up a special handshake with each other. Note: It doesn't need to include touching."
+        }
+    },
+    {
+        "model": "games.game",
+        "pk": 8,
+        "fields": {
+            "game_type": 6,
+            "text": "Take turns saying one word to tell a story."
+        }
+    },
+    {
+        "model": "games.game",
+        "pk": 9,
+        "fields": {
+            "game_type": 5,
+            "text": "To what extent are people obligated to others?"
+        }
+    },
+    {
+        "model": "games.game",
+        "pk": 10,
+        "fields": {
+            "game_type": 5,
+            "text": "How important is it to you that others be on time?"
+        }
+    }
+]

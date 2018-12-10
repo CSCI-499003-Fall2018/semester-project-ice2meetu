@@ -1,4 +1,5 @@
 from django.db import models
+import random
 
 class GameType(models.Model):
     types_list = (
@@ -27,7 +28,7 @@ class GameManager(models.Manager):
 
 class Game(models.Model):
     game_type = models.ForeignKey(GameType, default="",
-                             on_delete=models.CASCADE)
+                             on_delete=models.DO_NOTHING)
     text = models.TextField(blank=True)
     objects = GameManager()
 
@@ -39,3 +40,6 @@ class Game(models.Model):
     def __str__(self):
         type_str = self.game_type.get_game_type_display()
         return "{}: {}".format(type_str, self.text)
+
+
+
