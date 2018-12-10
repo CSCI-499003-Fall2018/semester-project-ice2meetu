@@ -2,26 +2,73 @@
 {% load staticfiles %}
 
 {% block content %}
+<script>
+function hit_endpoint(view) {
+	httpRequest = new XMLHttpRequest();
+	httpRequest.responseType = "json"
+	const pk = "{{ event.pk }}";
+	const url = "/play/" + pk + "/" + view;
+
+	if (!httpRequest) {
+		alert('Giving up :( Cannot create an XMLHTTP instance');
+		return false;
+	}
+
+	httpRequest.onreadystatechange = responseHandler;
+	httpRequest.open('GET', url);
+	httpRequest.send();
+}
+
+function responseHandler() {
+	if (httpRequest.readyState === XMLHttpRequest.DONE) {
+		document.getElementById('test').innerHTML += JSON.stringify(httpRequest.response);
+	}
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+	document.querySelectorAll(".endpoint").forEach(function(btn) {
+		btn.onclick = () => {
+			view = btn.getAttribute('value');
+			hit_endpoint(view);
+        }
+	});
+});
+</script>
 <h1>Event Page</h1>
-<p>We need to add groups here</p>
-<div class="container-fluid" style="margin-top:100px">
-    <h1>{{ event.title }}</h1>
-    <p>{{ event.description }}</p>
-    <form action="/play/{{event.id}}/add" method="post">
-        {% csrf_token %}
-        <h4>{{ name }}</h4>
-        {{ form.as_p }}
-        <div class="text-center mt-4" id="menu">
-            <input class="btn btn-primary btn-lg" type="submit" value="Join Group">
+<div class="container-fluid" style="margin-top:100px;">
+<div class="row justify-content-center">
+<h1 class="col-12">{{ event.title }}</h1>
+	<h2 class="col-12">Welcome, {{ user.user }}</h2>
+	<p class="col-12">{{ event.admin }}</p>
+    <p class="col-12">{{ event.description }}</p>
+</div>
+	<div  class="container"style="margin-top: 10px">
+	{% if user == event.admin %}
+        <div class="col-12 justify-content-center">
+            <h1 class="col-12 ">Admin Control</h1>
+            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="begin">
+            Start Game
+            </button>
+            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="end">
+            End Game
+            </button>
+            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="add_all">
+            Add All Players
+            </button>
+            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="start_round">
+            Start Round
+            </button>
         </div>
-    </form>
-    <form action="/play/{{event.id}}/remove" method="post">
-        {% csrf_token %}
-        <h4>{{ name }}</h4>
-        {{ form.as_p }}
-        <div class="text-center mt-4" id="menu">
-            <input class="btn btn-primary btn-lg" type="submit" value="Leave Group">
+    {% endif %}
+        <div class="col-12 justify-content-center" style="margin-top: 10px">
+            <h1 class="col-12">GamePlay</h1>
+            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="add">
+            Join Game
+            </button>
+            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="remove">
+            Leave Game
+            </button>
         </div>
-    </form>
+	</div>
 </div>
 {% endblock content %}
