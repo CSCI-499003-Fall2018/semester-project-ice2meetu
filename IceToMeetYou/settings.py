@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'rest_framework',
 	'rest_framework.authtoken',
     'social_django',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -169,3 +170,14 @@ REST_FRAMEWORK = {
 }
 
 ALLOWED_HOSTS = ['ice2meetu.herokuapp.com', 'localhost', '127.0.0.1']
+
+# Channels
+ASGI_APPLICATION = 'IceToMeetYou.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
