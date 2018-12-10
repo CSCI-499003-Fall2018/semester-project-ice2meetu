@@ -26,8 +26,8 @@
                 {% else %}
                 <img itemprop="image" src="{% get_static_prefix %}assets/images/emoji/{{ group_number }}.png">
                 <div class="find_group">
-                    Welcome, Find Your Group 
-                    ({{ number_of_people }} People)
+                    Find Your Group! Match emojis with
+                    {{ number_of_people }} People
                 </div>
                 {% endif %}  
                 <div class="confirming_button" data-toggle="buttons">
@@ -52,23 +52,19 @@
     //Updating group complete
     groupSocket.onmessage = e => {
         const data = JSON.parse(e.data);
-        console.log("got a message");
-        console.log(data);
         const complete = data['complete'];
         if (complete === true) {
             window.location.replace("{% url 'game' %}");
         }
     };
 
-    groupSocket.onclose = function (e) {
-        console.error('Chat socket closed unexpectedly');
+    groupSocket.onclose = e => {
+        console.log('Chat socket closed');
     };
 
     //Found Group
-    document.querySelector('.confirming_button').onclick = function (e) {
-        console.log("sending message");
+    document.querySelector('.confirming_button').onclick = e => {
         groupSocket.send(JSON.stringify({
-            'group_id': '{{group_id}}',
             'complete': true
         }));
     };

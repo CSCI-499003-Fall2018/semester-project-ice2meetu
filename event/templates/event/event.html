@@ -3,37 +3,95 @@
 
 {% block content %}
 <script>
-function hit_endpoint(view) {
-	httpRequest = new XMLHttpRequest();
-	httpRequest.responseType = "json"
-	const pk = "{{ event.pk }}";
-	const url = "/play/" + pk + "/" + view;
+    function hit_endpoint(view) {
+        httpRequest = new XMLHttpRequest();
+        httpRequest.responseType = "json"
+        const pk = "{{ event.pk }}";
+        const url = "/play/" + pk + "/" + view;
 
-	if (!httpRequest) {
-		alert('Giving up :( Cannot create an XMLHTTP instance');
-		return false;
-	}
-
-	httpRequest.onreadystatechange = responseHandler;
-	httpRequest.open('GET', url);
-	httpRequest.send();
-}
-
-function responseHandler() {
-	if (httpRequest.readyState === XMLHttpRequest.DONE) {
-		document.getElementById('test').innerHTML += JSON.stringify(httpRequest.response);
-	}
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-	document.querySelectorAll(".endpoint").forEach(function(btn) {
-		btn.onclick = () => {
-			view = btn.getAttribute('value');
-			hit_endpoint(view);
+        if (!httpRequest) {
+            alert('Giving up :( Cannot create an XMLHTTP instance');
+            return false;
         }
-	});
-});
+
+        httpRequest.onreadystatechange = responseHandler;
+        httpRequest.open('GET', url);
+        httpRequest.send();
+    }
+
+    function responseHandler() {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            document.getElementById('test').innerHTML += JSON.stringify(httpRequest.response);
+        }
+    }
+
+    let modal = document.querySelector('#notify-modal');
+    document.querySelector('.close').onclick = () => {
+        modal.style.display = "none";   
+    }
+    window.onclick = event => {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    } 
+
+    const eventSocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/event/ws/player');
+
+    //Receiving updates from button clicks
+    eventSocket.onmessage = e => {
+        const data = JSON.parse(e.data);
+        console.log("got a message");
+        console.log(data);
+        const notification = data['notification']
+        let modal = document.querySelector('#notify-modal');
+        let modalText = document.querySelector('#modal-text');
+        switch (notification) {
+            case 'add_all':
+                document.querySelector('#add_self').innerHTML = "";
+                modal.style.display = "block";
+                modalText.innerHTML = "Your event admin has added you to a game";
+                break;
+            case 'start_round':
+                modal.style.display = "block";
+                modalText.innerHTML = "Your event's game has begun. Redirecting...";
+                window.location.replace("{% url 'game' %}");
+                break;
+            case 'end':
+                modal.style.display = "block";
+                modalText.innerHTML = "Your event's game has ended. Redirecting...";
+                window.location.replace("{% url 'event_page' %}");
+                break;
+            default:
+                console.error(`Unknown notification: ${notification}`);
+        }
+    };
+
+    eventSocket.onclose = e => {
+        console.log('Chat socket closed');
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll(".endpoint").forEach(function(btn) {
+            btn.onclick = () => {
+                view = btn.getAttribute('value');
+                hit_endpoint(view);
+                eventSocket.send(JSON.stringify({
+                    'notification': view
+                }));
+            }
+        });
+    });
 </script>
+
+<div id="notify-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="modal-text"></p>
+    </div>
+</div>
+
 <h1>Event Page</h1>
 <div class="container-fluid" style="margin-top:100px;">
 <div class="row justify-content-center">
@@ -62,12 +120,16 @@ document.addEventListener('DOMContentLoaded', function() {
 	{% else %}
         <div class="col-12 justify-content-center" style="margin-top: 10px">
             <h1 class="col-12">GamePlay</h1>
-            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="add">
-            Join Game
-            </button>
-            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="remove">
-            Leave Game
-            </button>
+            <div id="add_self">
+                <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="add">
+                Join Game
+                </button>
+            </div>
+            <div id="remove_self">
+                <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="remove">
+                Leave Game
+                </button>
+            </div>
         </div>
     {% endif %}
 	</div>

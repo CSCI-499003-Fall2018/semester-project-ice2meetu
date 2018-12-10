@@ -45,7 +45,7 @@ class GroupConsumer(AsyncWebsocketConsumer):
         if complete:
             await self.set_group_complete()
 
-        # Send message to group
+        # Notify group
         await self.channel_layer.group_send(
             self.group_id,
             {
