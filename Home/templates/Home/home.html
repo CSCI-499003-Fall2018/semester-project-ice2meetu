@@ -1,164 +1,345 @@
-{% extends "Home/base.html" %}
-{% load staticfiles %}
-{% block content %}
+{% load static %}
+<html lang="en">
 
-    <!-- Menu -->
-    <!-- <header class="masthead bg-primary text-white text-center" style="background-image: url(static/assets/images/menu_background.jpeg/); background-position: bottom; opacity: 0.8;"> -->
-    <header class="masthead bg-primary text-white text-center">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-      <div class="container">
-        {% if user.is_authenticated %}
-        <h1 class="text-uppercase mb-0" href="{% url 'home_creation_page' %}">Hello {{ user.username }}</h1>
-        {% else %}
-        <h1 class="text-uppercase mb-0" href="{% url 'home_creation_page' %}">Ice2MeetU</h1>
-        {% endif %}
-        <hr class="star-light">
+    <!-- Title -->
+    <title>Home</title>
 
-        {% if user.is_authenticated %}
-        <div class="text-center mt-4" id="menu">
-          <a class="btn btn-primary btn-xl" href="{% url 'creation_page' %}">
-            Create Event
-          </a>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'assets/css/style.css' %}"/>
+
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader d-flex align-items-center justify-content-center">
+        <div class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
+    </div>
 
-        <div class="text-center mt-4">
-		      <a class="btn btn-primary btn-xl" href="{% url 'join_page' %}">
-            Join Event
-          </a>
-        </div>
+    <!-- ##### Header Area Start ##### -->
+    <header class="header-area">
+        <!-- Navbar Area -->
+        <div class="oneMusic-main-menu">
+            <div class="classy-nav-container breakpoint-off">
+                <div class="container">
+                    <!-- Menu -->
+                    <nav class="classy-navbar justify-content-between" id="iceToMeetUNav">
 
-        <div class="text-center mt-4">
-          <a class="btn btn-primary btn-xl" href="{% url 'game' %}">
-            Start Game
-          </a>
-        </div>
+                        <!-- Nav brand -->
+                        {% if user.is_authenticated %}
+                        <h1 class="text-uppercase mb-0" href="{% url 'home_creation_page' %}" style="color: white">Hello {{ user.username }}</h1>
+                        {% else %}
+                        <h1 class="text-uppercase mb-0" href="{% url 'home_creation_page' %}" style="color: white">Ice2MeetU</h1>
+                        {% endif %}
+                        <!-- Navbar Toggler -->
+                        <div class="classy-navbar-toggler">
+                            <span class="navbarToggler"><span></span><span></span><span></span></span>
+                        </div>
 
-        <div class="text-center mt-4">
-          <a class="btn btn-primary btn-xl" href="{% url 'logout_page' %}">
-            Log Out
-          </a>
-        </div>
-        {% else %}
-        <div class="text-center mt-4" id="menu">
-          <a class="btn btn-primary btn-xl" href="{% url 'sign_up_page' %}">
-            Create Account
-          </a>
-        </div>
+                        <!-- Menu -->
+                        <div class="classy-menu">
 
-        <div class="text-center mt-4">
-          <a class="btn btn-primary btn-xl" href="{% url 'login_page' %}">
-            Log In
-          </a>
-        </div>
+                            <!-- Close Button -->
+                            <div class="classycloseIcon">
+                                <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                            </div>
 
-        <div class="text-center mt-4">
-          <a class="btn btn-primary btn-xl" href="{% url 'game' %}">
-            Start Game
-          </a>
+                            <!-- Nav Start -->
+                            <div class="classynav">
+                                <ul>
+                                    <li><a href="Home/index.html">Home</a></li>
+                                    {% if user.is_authenticated %}
+                                    <li><a href="{% url 'creation_page' %}">Create Event</a></li>
+                                    <li><a href="{% url 'join_page' %}">Join Event</a></li>
+                                    <li><a href="{% url 'game' %}">Start Game</a></li>
+                                    <li><a href="#team">Team</a></li>
+                                    {% else %}
+                                    <li><a href="#about_us">About Us</a></li>
+                                    <li><a href="#service">Service</a></li>
+                                    <li><a href="{% url 'game' %}">Start Game</a></li>
+                                    {% endif %}
+                                </ul>
+
+                                <!-- Login/Register/Logout -->
+                                <div class="login-register-cart-button d-flex align-items-center">
+                                    <!-- Login/Register -->
+                                    {% if user.is_authenticated %}
+                                    <div class="login-register-btn mr-50">
+                                        <a href="{% url 'logout_page' %}" id="loginBtn">Logout</a>
+                                    </div>
+                                    {% else %}
+                                    <div class="login-register-btn mr-50">
+                                        <a href="{% url 'login_page' %}" id="loginBtn">Login</a>
+                                    </div>
+                                    <div class="login-register-btn mr-50">
+                                        <a href="{% url 'sign_up_page' %}" id="loginBtn">Register</a>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <!-- Nav End -->
+
+                        </div>
+                    </nav>
+                </div>
+            </div>
         </div>
-        {% endif %}
-      </div>
     </header>
-    {% if user.is_authenticated %}
-    {% else %}
-    <!-- About Section -->
-    <section class="about" id="about">
-      <div class="container-fluid">
-        <h2 class="text-center text-uppercase text-secondary mb-0">About</h2>
-        <hr class="star-dark mb-5">
-        <div class="row">
-          <div>
-            <p class="lead">Ice2MeetU is a group game app designed for events or parties or whenever else you might need to break the ice. The app will pair/group users to play a quick, randomized game. Break out our web or mobile apps and play a game to introduce yourselves to each other in a non awkward way.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- ##### Header Area End ##### -->
+    
+    <!-- ##### Hero Area Start ##### -->
+    <section class="hero-area">
+        <div class="hero-slides owl-carousel">
+            <!-- Single Hero Slide -->
+            <div class="single-hero-slide d-flex align-items-center justify-content-center">
+                <!-- Slide Img -->
+                <div class="slide-img bg-img" style="background-image: url({% get_static_prefix %}assets/images/bg-img/bg-1.jpeg);"></div>
+                <!-- Slide Content -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="hero-slides-content text-center">
+                                <h6 data-animation="fadeInUp" data-delay="100ms">WELCOME</h6>
+                                <h2 data-animation="fadeInUp" data-delay="300ms">ICE TO MEET U<span></span></h2>
+                                <a data-animation="fadeInUp" data-delay="500ms" href="#service" class="btn oneMusic-btn mt-50">Discover <i class="fa fa-angle-double-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <!-- Section: Team  -->
-    <div class="team-section" style="background-color: #18a0af !important; background-position: top; ">
-    <section class="team-section text-center my-5" >
-        <h2 class="h1-responsive font-weight-bold my-5">Our amazing team</h2>
-        <p class="grey-text w-responsive mx-auto mb-5">We are a group of Computer Science students from Hunter College</p>
-        <div class="row">
-          <div class="col-lg-3 col-md-6">
-            <div class="avatar mx-auto">
-              <img class="rounded-circle z-depth-1" src="/static/assets/images/team/KC_Kristoff.jpeg" alt="Kristoff" style="width:7em; height:7em;">
+            <!-- Single Hero Slide -->
+            <div class="single-hero-slide d-flex align-items-center justify-content-center">
+                <!-- Slide Img -->
+                <div class="slide-img bg-img" style="background-image: url({% get_static_prefix %}assets/images/bg-img/bg-2.jpeg);"></div>
+                <!-- Slide Content -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="hero-slides-content text-center">
+                                <h6 data-animation="fadeInUp" data-delay="100ms"></h6>
+                                <h2 data-animation="fadeInUp" data-delay="300ms"><span>ICE TO MEET U</span></h2>
+                                <a data-animation="fadeInUp" data-delay="500ms" href="#" class="btn oneMusic-btn mt-50">Discover <i class="fa fa-angle-double-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h5 class="font-weight-bold mt-4 mb-3">Kristoff Campbell</h5>
-            <p class="text-uppercase blue-text"><strong></strong></p>
-            <p class="grey-text">Perspiciatis repellendus ad odit consequuntur, eveniet earum nisi qui consectetur totam officia voluptates perferendis voluptatibus aut.</p>
-            <ul class="list-unstyled mb-0">
-              <a class="p-2 fa-lg ins-ic" href="https://github.com/kristoff-campbell28">
-                <i class="fa fa-github" style="color:black"> </i>
-              </a>
-              <a class="p-2 fa-lg ins-ic" href="https://www.linkedin.com/in/kristoff-campbell-b0b19380/" target="_blank">
-                <i class="fa fa-linkedin" style="color:black"> </i>
-              </a>
-              <a class="p-2 fa-lg ins-ic" href="mailto:krisrocks4u@aol.com?Subject=Hello%20Kristoff%20Campbell" target="_top" data-toggle="tooltip" title="krisrocks4u@aol.com">
-                <i class="fa fa-envelope" style="color:black"> </i>
-              </a>
-            </ul>
-          </div>
-          <div class="col-lg-3 col-md-6">
-            <div class="avatar mx-auto">
-              <img class="rounded-circle z-depth-1" src="https://avatars0.githubusercontent.com/u/29310729?s=400&v=4" alt="Silvena" style="width:7em; height:7em;">
-            </div>
-            <h5 class="font-weight-bold mt-4 mb-3">Silvena Chan</h5>
-            <p class="text-uppercase blue-text"><strong></strong></p>
-            <p class="grey-text">Perspiciatis repellendus ad odit consequuntur, eveniet earum nisi qui consectetur totam officia voluptates perferendis voluptatibus aut.</p>
-            <ul class="list-unstyled mb-0">
-              <a class="p-2 fa-lg ins-ic" href="https://github.com/silvenac">
-                <i class="fa fa-github" style="color:black"> </i>
-              </a>
-              <a class="p-2 fa-lg fb-ic" href="https://www.linkedin.com/in/silvena-chan/" target="_blank">
-                <i class="fa fa-linkedin" style="color:black"> </i>
-              </a>
-              <a class="p-2 fa-lg ins-ic" href="mailto:schan02@gmail.com?Subject=Hello%20Silvena%20Chan" target="_top" data-toggle="tooltip" title="schan02@gmail.com">
-                <i class="fa fa-envelope" style="color:black"> </i>
-              </a>
-            </ul>
-          </div>
-          <div class="col-lg-3 col-md-6">
-            <div class="avatar mx-auto">
-              <img class="rounded-circle z-depth-1" src="/static/assets/images/team/KC_Kevin.jpeg" alt="Kevin" style="width:7em; height:7em;">
-            </div>
-            <h5 class="font-weight-bold mt-4 mb-3">Kevin Cybura</h5>
-            <p class="text-uppercase blue-text"><strong></strong></p>
-            <p class="grey-text">Perspiciatis repellendus ad odit consequuntur, eveniet earum nisi qui consectetur totam officia voluptates perferendis voluptatibus aut.</p>
-            <ul class="list-unstyled mb-0">
-                <a class="p-2 fa-lg fb-ic" href="https://github.com/KevinCybura">
-                  <i class="fa fa-github" style="color:black"> </i>
-                </a>
-                <a class="p-2 fa-lg ins-ic" href="https://www.linkedin.com/in/kevincybura/" target="_blank">
-                  <i class="fa fa-linkedin" style="color:black"> </i>
-                </a>
-                <a class="p-2 fa-lg ins-ic" href="mailto:kevin.cybrua@gmail.com?Subject=Hello%20Kevin%20Cybrua" target="_top" data-toggle="tooltip" title="kevin.cybrua@gmail.com">
-                  <i class="fa fa-envelope" style="color:black"> </i>
-                </a>
-            </ul>
-          </div>
-          <div class="col-lg-3 col-md-6">
-            <div class="avatar mx-auto">
-              <img class="rounded-circle z-depth-1" src="https://avatars3.githubusercontent.com/u/20933153?v=4&s=460" alt="Dandan" style="width:7em; height:7em;">
-            </div>
-            <h5 class="font-weight-bold mt-4 mb-3">Dandan Lin</h5>
-            <p class="text-uppercase blue-text"><strong></strong></p>
-            <p class="grey-text">Perspiciatis repellendus ad odit consequuntur, eveniet earum nisi qui consectetur totam officia voluptates perferendis voluptatibus aut.</p>
-            <ul class="list-unstyled mb-0">
-              <a class="p-2 fa-lg ins-ic" href="https://github.com/dandanlin0702">
-                <i class="fa fa-github" style="color:black"> </i>
-              </a>
-              <a class="p-2 fa-lg ins-ic" href="https://www.linkedin.com/in/dandanlin0702/" target="_blank">
-                <i class="fa fa-linkedin" style="color:black"> </i>
-              </a>
-              <a class="p-2 fa-lg ins-ic" href="mailto:dandanlin.l@gmail.com?Subject=Hello%20Dan%20Dan" target="_top" data-toggle="tooltip" title="dandanlin.l@gmail.com" aria-hidden="true">
-                <i class="fa fa-envelope" style="color:black"> </i>
-              </a>
-            </ul>
-          </div>
         </div>
-      </section>
-      </div>
     </section>
-  {% endif %}
-{% endblock content %}
+    <!-- ##### Hero Area End ##### -->
+
+    <!-- ##### Service Area Start ##### -->
+    <section id="service" class="oneMusic-buy-now-area has-fluid bg-gray section-padding-100">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-heading style-2">
+                        <p>Do What You Love</p>
+                        <h2>Do What's Awesome</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Single Service Area -->
+                <div class="col-sm-4">
+                    <div class="single-service-area wow fadeInUp" data-wow-delay="100ms">
+                        <div class="service-thumb">
+                            <img src="{% get_static_prefix %}assets/images/service/event.jpeg" alt="">
+                        </div>
+                        <div class="service-info">
+                            {% if user.is_authenticated %}
+                            <a href="{% url 'creation_page' %}">
+                                <h5>Create</h5>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'login_page' %}">
+                                <h5>Create</h5>
+                            </a>
+                            {% endif %}
+                            <p>Be An Admin</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Single Service Area -->
+                <div class="col-sm-4">
+                    <div class="single-service-area wow fadeInUp" data-wow-delay="300ms">
+                        <div class="service-thumb">
+                            <img src="{% get_static_prefix %}assets/images/service/game.jpeg" alt="">
+                        </div>
+                        <div class="service-info">
+                            {% if user.is_authenticated %}
+                            <a href="{% url 'game' %}">
+                                <h5>Play</h5>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'login_page' %}">
+                                <h5>Play</h5>
+                            </a>
+                            {% endif %}
+                            <p>Play a Game with Friends</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Single Service Area -->
+                <div class="col-sm-4">
+                    <div class="single-service-area wow fadeInUp" data-wow-delay="200ms">
+                        <div class="service-thumb">
+                            <img src="{% get_static_prefix %}assets/images/service/join.jpeg" alt="">
+                        </div>
+                        <div class="service-info">
+                            {% if user.is_authenticated %}
+                            <a href="{% url 'join_page' %}">
+                                <h5>Join</h5>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'login_page' %}">
+                                <h5>Join</h5>
+                            </a>
+                            {% endif %}
+                            <p>Play a Game with Friends</p>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </section>
+    <!-- ##### ServiceArea End ##### -->
+
+    <!-- ##### Team Area Start ##### -->
+    <div id="team" class="team-section" style="background-color: white !important; background-position: top; ">
+        <section class="team-section text-center my-5" >
+            <h2 class="h1-responsive font-weight-bold my-5">Our amazing team</h2>
+            <p class="grey-text w-responsive mx-auto mb-5">We are a group of Computer Science students from Hunter College</p>
+            <div class="row">
+              <div class="col-lg-3 col-md-6">
+                <div class="avatar mx-auto">
+                  <img class="rounded-circle z-depth-1" src="/static/assets/images/team/KC_Kristoff.jpeg" alt="Kristoff" style="width:7em; height:7em;">
+                </div>
+                <h5 class="font-weight-bold mt-4 mb-3">Kristoff Campbell</h5>
+                <p class="text-uppercase blue-text"><strong></strong></p>
+                <p class="grey-text">Perspiciatis repellendus ad odit consequuntur, eveniet earum nisi qui consectetur totam officia voluptates perferendis voluptatibus aut.</p>
+                <ul class="list-unstyled mb-0">
+                  <a class="p-2 fa-lg ins-ic" href="https://github.com/kristoff-campbell28">
+                    <i class="fa fa-github" style="color:black"> </i>
+                  </a>
+                  <a class="p-2 fa-lg ins-ic" href="https://www.linkedin.com/in/kristoff-campbell-b0b19380/" target="_blank">
+                    <i class="fa fa-linkedin" style="color:black"> </i>
+                  </a>
+                  <a class="p-2 fa-lg ins-ic" href="mailto:krisrocks4u@aol.com?Subject=Hello%20Kristoff%20Campbell" target="_top" data-toggle="tooltip" title="krisrocks4u@aol.com">
+                    <i class="fa fa-envelope" style="color:black"> </i>
+                  </a>
+                </ul>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div class="avatar mx-auto">
+                  <img class="rounded-circle z-depth-1" src="https://avatars0.githubusercontent.com/u/29310729?s=400&v=4" alt="Silvena" style="width:7em; height:7em;">
+                </div>
+                <h5 class="font-weight-bold mt-4 mb-3">Silvena Chan</h5>
+                <p class="text-uppercase blue-text"><strong></strong></p>
+                <p class="grey-text">Perspiciatis repellendus ad odit consequuntur, eveniet earum nisi qui consectetur totam officia voluptates perferendis voluptatibus aut.</p>
+                <ul class="list-unstyled mb-0">
+                  <a class="p-2 fa-lg ins-ic" href="https://github.com/silvenac">
+                    <i class="fa fa-github" style="color:black"> </i>
+                  </a>
+                  <a class="p-2 fa-lg fb-ic" href="https://www.linkedin.com/in/silvena-chan/" target="_blank">
+                    <i class="fa fa-linkedin" style="color:black"> </i>
+                  </a>
+                  <a class="p-2 fa-lg ins-ic" href="mailto:schan02@gmail.com?Subject=Hello%20Silvena%20Chan" target="_top" data-toggle="tooltip" title="schan02@gmail.com">
+                    <i class="fa fa-envelope" style="color:black"> </i>
+                  </a>
+                </ul>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div class="avatar mx-auto">
+                  <img class="rounded-circle z-depth-1" src="/static/assets/images/team/KC_Kevin.jpeg" alt="Kevin" style="width:7em; height:7em;">
+                </div>
+                <h5 class="font-weight-bold mt-4 mb-3">Kevin Cybura</h5>
+                <p class="text-uppercase blue-text"><strong></strong></p>
+                <p class="grey-text">Perspiciatis repellendus ad odit consequuntur, eveniet earum nisi qui consectetur totam officia voluptates perferendis voluptatibus aut.</p>
+                <ul class="list-unstyled mb-0">
+                    <a class="p-2 fa-lg fb-ic" href="https://github.com/KevinCybura">
+                      <i class="fa fa-github" style="color:black"> </i>
+                    </a>
+                    <a class="p-2 fa-lg ins-ic" href="https://www.linkedin.com/in/kevincybura/" target="_blank">
+                      <i class="fa fa-linkedin" style="color:black"> </i>
+                    </a>
+                    <a class="p-2 fa-lg ins-ic" href="mailto:kevin.cybrua@gmail.com?Subject=Hello%20Kevin%20Cybrua" target="_top" data-toggle="tooltip" title="kevin.cybrua@gmail.com">
+                      <i class="fa fa-envelope" style="color:black"> </i>
+                    </a>
+                </ul>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div class="avatar mx-auto">
+                  <img class="rounded-circle z-depth-1" src="https://avatars3.githubusercontent.com/u/20933153?v=4&s=460" alt="Dandan" style="width:7em; height:7em;">
+                </div>
+                <h5 class="font-weight-bold mt-4 mb-3">Dandan Lin</h5>
+                <p class="text-uppercase blue-text"><strong></strong></p>
+                <p class="grey-text">Perspiciatis repellendus ad odit consequuntur, eveniet earum nisi qui consectetur totam officia voluptates perferendis voluptatibus aut.</p>
+                <ul class="list-unstyled mb-0">
+                  <a class="p-2 fa-lg ins-ic" href="https://github.com/dandanlin0702">
+                    <i class="fa fa-github" style="color:black"> </i>
+                  </a>
+                  <a class="p-2 fa-lg ins-ic" href="https://www.linkedin.com/in/dandanlin0702/" target="_blank">
+                    <i class="fa fa-linkedin" style="color:black"> </i>
+                  </a>
+                  <a class="p-2 fa-lg ins-ic" href="mailto:dandanlin.l@gmail.com?Subject=Hello%20Dan%20Dan" target="_top" data-toggle="tooltip" title="dandanlin.l@gmail.com" aria-hidden="true">
+                    <i class="fa fa-envelope" style="color:black"> </i>
+                  </a>
+                </ul>
+              </div>
+            </div>
+          </section>
+          </div>
+        </section>
+    </div>
+    <!-- ##### Footer Area Start ##### -->
+    <footer class="footer-area">
+        <div class="container">
+            <div class="row d-flex flex-wrap align-items-center">
+                <div class="col-12 col-md-6">
+                    <p class="copywrite-text"><a href="#">
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div class="footer-nav">
+                        <ul>
+                            <li><a href="Home/index.html">Home</a></li>
+                            <li><a href="#service">Service</a></li>
+                            <li><a href="{% url 'game' %}">Start Game</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- ##### Footer Area Start ##### -->
+
+    <!-- ##### All Javascript Script ##### -->
+    <!-- jQuery-2.2.4 js -->
+    <script src="{% static 'assets/js/jquery/jquery-2.2.4.min.js' %}"></script>
+    <!-- Popper js -->
+    <script src="{% static 'assets/js/bootstrap/popper.min.js' %}"></script>
+    <!-- Bootstrap js -->
+    <script src="{% static 'assets/js/bootstrap/bootstrap.min.js' %}"></script>
+    <!-- All Plugins js -->
+    <script src="{% static 'assets/js/plugins/plugins.js' %}"></script>
+    <!-- Active js -->
+    <script src="{% static 'assets/js/active.js' %}"></script>
+</body>
+
+</html>
