@@ -5,7 +5,6 @@
 <script>
 function hit_endpoint(view) {
 	httpRequest = new XMLHttpRequest();
-	httpRequest.responseType = "json"
 	const pk = "{{ event.pk }}";
 	const url = "/play/" + pk + "/" + view;
 
@@ -14,15 +13,47 @@ function hit_endpoint(view) {
 		return false;
 	}
 
-	httpRequest.onreadystatechange = responseHandler;
-	httpRequest.open('GET', url);
-	httpRequest.send();
+	{#httpRequest.onreadystatechange = responseHandler;#}
+	{#httpRequest.open('GET', url);#}
+	{#httpRequest.send();#}
+	fetch(url).then(function (res) {
+        if(view == 'add' ){
+            document.getElementById('something').innerText = 'Successfully joined'
+        } else if(view == 'remove'){
+            document.getElementById('something').innerText = 'Successfully left game'
+        }
+        button = document.getElementById('addremove');
+        if(view == 'add'){
+            button.value = 'remove'
+            button.innerText = 'Leave Game'
+        }
+        else if (view == 'remove'){
+            button.value = 'add'
+            button.innerText = 'Join Game'
+        }
+        if (view == 'add_all'){
+            document.getElementById('admin').innerText = 'Successfully add all players'
+        }
+        else if (view == 'begin'){
+            document.getElementById('admin').innerText = 'Event has been started'
+        }
+        else if (view == 'start_round'){
+            document.getElementById('admin').innerText = 'Game has been start'
+        }
+        else if(view == 'end') {
+            document.getElementById('admin').innerText = 'Event has been ended'
+        }
+    }).catch(function (err) {
+        console.log(err)
+    })
 }
 
 function responseHandler() {
 	if (httpRequest.readyState === XMLHttpRequest.DONE) {
 		document.getElementById('test').innerHTML += JSON.stringify(httpRequest.response);
 	}
+
+    location.reload()
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -46,8 +77,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	{% if user == event.admin %}
         <div class="col-12 justify-content-center">
             <h1 class="col-12 ">Admin Control</h1>
+            <h5 id="admin"></h5>
             <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="begin">
-            Start Game
+            Start Event
             </button>
             <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="end">
             End Game
@@ -56,18 +88,22 @@ document.addEventListener('DOMContentLoaded', function() {
             Add All Players
             </button>
             <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="start_round">
-            Start Round
+            Start Game
             </button>
         </div>
     {% endif %}
         <div class="col-12 justify-content-center" style="margin-top: 10px">
             <h1 class="col-12">GamePlay</h1>
-            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="add">
+            <h6 id="something"></h6>
+            {% if join %}
+            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" id="addremove" value="add">
             Join Game
             </button>
-            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="remove">
+            {% else %}
+            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" id="addremove" value="remove">
             Leave Game
             </button>
+            {% endif %}
         </div>
 	</div>
 </div>
