@@ -1,0 +1,12 @@
+{% extends "event/event.html" %}
+{% block econtent %}
+    {% if join %}
+        <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="add">
+            Join Game
+        </button>
+    {% else %}
+        <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="remove">
+            Leave Game
+        </button>
+    {% endif %}
+{% endblock econtent %}

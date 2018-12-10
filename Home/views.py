@@ -146,6 +146,9 @@ def join(request):
 
         e = Event.objects.get(access_code=code)
         user = EventUser.objects.create(user=request.user)
+        for u in e.users():
+            if u.user == request.user:
+                return HttpResponseRedirect('../event/{}/go'.format(form.access_code))
         user.events.add(e)
         user.save()
         e.event_users.add(user)
@@ -153,7 +156,6 @@ def join(request):
     else:
         form = Join()
     events = Event.objects.filter(event_users__user_id=request.user.id)
-    print(events)
     content = {
         'form': form,
         'name': 'Access Code',
