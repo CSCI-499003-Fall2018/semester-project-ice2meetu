@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
             Start Round
             </button>
         </div>
-    {% endif %}
+	{% else %}
         <div class="col-12 justify-content-center" style="margin-top: 10px">
             <h1 class="col-12">GamePlay</h1>
             <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="add">
@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
             Leave Game
             </button>
         </div>
+    {% endif %}
 	</div>
 </div>
 {% endblock content %}
