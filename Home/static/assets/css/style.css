@@ -1,3 +1,533 @@
+/* :: 1.0 Import Fonts */
+@import url("https://fonts.googleapis.com/css?family=Archivo+Narrow:400,400i,500,500i,600,600i,700,700i");
+
+* {
+  margin: 0;
+  padding: 0; }
+
+body {
+  font-size: 14px; }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Archivo Narrow", sans-serif;
+  color: #000000;
+  line-height: 1.3;
+  font-weight: 700; }
+
+p {
+  font-family: "Archivo Narrow", sans-serif;
+  color: #5f5f5f;
+  font-size: 15px;
+  line-height: 2;
+  font-weight: 400; }
+
+a,
+a:hover,
+a:focus {
+  -webkit-transition-duration: 500ms;
+  transition-duration: 500ms;
+  text-decoration: none;
+  outline: 0 solid transparent;
+  color: #000000;
+  font-weight: 700;
+  font-size: 16px;
+  font-family: "Archivo Narrow", sans-serif; }
+
+ul,
+ol {
+  margin: 0; }
+  ul li,
+  ol li {
+    list-style: none; }
+
+img {
+  height: auto;
+  max-width: 100%; }
+
+/* :: 3.1.0 Spacing */
+.mt-15 {
+  margin-top: 15px !important; }
+
+.mt-30 {
+  margin-top: 30px !important; }
+
+.mt-50 {
+  margin-top: 50px !important; }
+
+.mt-70 {
+  margin-top: 70px !important; }
+
+.mt-100 {
+  margin-top: 100px !important; }
+
+.mb-15 {
+  margin-bottom: 15px !important; }
+
+.mb-30 {
+  margin-bottom: 30px !important; }
+
+.mb-50 {
+  margin-bottom: 50px !important; }
+
+.mb-70 {
+  margin-bottom: 70px !important; }
+
+.mb-100 {
+  margin-bottom: 100px !important; }
+
+.ml-15 {
+  margin-left: 15px !important; }
+
+.ml-30 {
+  margin-left: 30px !important; }
+
+.ml-50 {
+  margin-left: 50px !important; }
+
+.mr-15 {
+  margin-right: 15px !important; }
+
+.mr-30 {
+  margin-right: 30px !important; }
+
+.mr-50 {
+  margin-right: 50px !important; }
+
+/* :: 3.2.0 Height */
+.height-400 {
+  height: 400px !important; }
+
+.height-500 {
+  height: 500px !important; }
+
+.height-600 {
+  height: 600px !important; }
+
+.height-700 {
+  height: 700px !important; }
+
+.height-800 {
+  height: 800px !important; }
+
+/* :: 3.3.0 Section Padding */
+.section-padding-100 {
+  padding-top: 100px;
+  padding-bottom: 100px; }
+
+.section-padding-100-0 {
+  padding-top: 100px;
+  padding-bottom: 0; }
+
+.section-padding-0-100 {
+  padding-top: 0;
+  padding-bottom: 100px; }
+
+.section-padding-100-70 {
+  padding-top: 100px;
+  padding-bottom: 70px; }
+
+/* :: 3.4.0 Section Heading */
+.section-heading {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 100px;
+  text-align: center; }
+  .section-heading p {
+    color: #5f5f5f;
+    font-size: 14px;
+    margin-bottom: 5px; }
+  .section-heading h2 {
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 10px;
+    margin-bottom: 0; }
+    @media only screen and (max-width: 767px) {
+      .section-heading h2 {
+        letter-spacing: 5px; } }
+  .section-heading.white h2 {
+    color: #fff; }
+  .section-heading.style-2 p {
+    font-size: 16px; }
+  .section-heading.style-2 h2 {
+    font-size: 30px; }
+    @media only screen and (max-width: 767px) {
+      .section-heading.style-2 h2 {
+        font-size: 24px; } }
+
+/* :: 3.6.0 Miscellaneous */
+.bg-img {
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat; }
+
+.bg-white {
+  background-color: #ffffff !important; }
+
+.bg-dark {
+  background-color: #000000 !important; }
+
+.bg-transparent {
+  background-color: transparent !important; }
+
+.bg-gray {
+  background-color: #f5f9fa; }
+
+.font-bold {
+  font-weight: 700; }
+
+.font-light {
+  font-weight: 300; }
+
+.bg-overlay {
+  position: relative;
+  z-index: 2;
+  background-position: center center;
+  background-size: cover; }
+  .bg-overlay::after {
+    background-color: rgba(0, 0, 0, 0.65);
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: ""; }
+
+.bg-fixed {
+  background-attachment: fixed !important; }
+
+/* :: 3.7.0 ScrollUp */
+#scrollUp {
+  background-color: #000000;
+  border-radius: 0;
+  bottom: 50px;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  font-size: 24px;
+  height: 40px;
+  line-height: 40px;
+  right: 50px;
+  text-align: center;
+  width: 40px;
+  -webkit-transition-duration: 500ms;
+  transition-duration: 500ms;
+  box-shadow: 0 1px 5px 2px rgba(0, 0, 0, 0.15); }
+  @media only screen and (max-width: 767px) {
+    #scrollUp {
+      right: 30px;
+      bottom: 30px; } }
+  #scrollUp:hover {
+    background-color: #fff;
+    color: #232323; }
+
+/* :: 3.8.0 oneMusic Button */
+.oneMusic-btn {
+  background-color: #fff;
+  -webkit-transition-duration: 500ms;
+  transition-duration: 500ms;
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  min-width: 212px;
+  height: 49px;
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 0;
+  padding: 0 30px;
+  font-size: 16px;
+  line-height: 47px;
+  font-weight: 700;
+  text-transform: capitalize; }
+  .oneMusic-btn i {
+    margin-left: 5px; }
+  .oneMusic-btn:hover, .oneMusic-btn:focus {
+    font-size: 16px;
+    font-weight: 700;
+    background-color: #000000;
+    color: #fff; }
+  .oneMusic-btn.btn-2 {
+    background-color: #000000;
+    color: #fff; }
+    .oneMusic-btn.btn-2:hover, .oneMusic-btn.btn-2:focus {
+      background-color: #fff;
+      color: #232323; }
+
+/* :: 4.0 Header Area CSS */
+.header-area {
+  position: absolute;
+  z-index: 1000;
+  width: 100%;
+  top: 20px;
+  left: 0;
+  z-index: 1000; }
+  .header-area .oneMusic-main-menu {
+    position: relative;
+    width: 100%;
+    height: 85px;
+    background-color: transparent; }
+    @media only screen and (max-width: 767px) {
+      .header-area .oneMusic-main-menu {
+        height: 70px; } }
+    .header-area .oneMusic-main-menu .classy-nav-container {
+      background-color: transparent; }
+    .header-area .oneMusic-main-menu .classy-navbar {
+      background-color: transparent;
+      height: 85px;
+      padding: 0; }
+      @media only screen and (max-width: 767px) {
+        .header-area .oneMusic-main-menu .classy-navbar {
+          height: 70px; } }
+      .header-area .oneMusic-main-menu .classy-navbar .classynav ul li a {
+        font-weight: 700;
+        text-transform: capitalize;
+        color: #ffffff;
+        font-size: 16px; }
+        .header-area .oneMusic-main-menu .classy-navbar .classynav ul li a:hover, .header-area .oneMusic-main-menu .classy-navbar .classynav ul li a:focus {
+          color: rgba(255, 255, 255, 0.7); }
+        @media only screen and (min-width: 768px) and (max-width: 991px) {
+          .header-area .oneMusic-main-menu .classy-navbar .classynav ul li a {
+            background-color: #000000;
+            border-bottom-color: rgba(255, 255, 255, 0.1); } }
+        @media only screen and (max-width: 767px) {
+          .header-area .oneMusic-main-menu .classy-navbar .classynav ul li a {
+            background-color: #000000;
+            border-bottom-color: rgba(255, 255, 255, 0.1); } }
+      .header-area .oneMusic-main-menu .classy-navbar .classynav ul li.megamenu-item > a::after,
+      .header-area .oneMusic-main-menu .classy-navbar .classynav ul li.has-down > a::after {
+        color: #ffffff; }
+      .header-area .oneMusic-main-menu .classy-navbar .classynav ul li.megamenu-item ul li > a::after,
+      .header-area .oneMusic-main-menu .classy-navbar .classynav ul li.has-down ul li > a::after {
+        color: #232323; }
+        @media only screen and (max-width: 767px) {
+          .header-area .oneMusic-main-menu .classy-navbar .classynav ul li.megamenu-item ul li > a::after,
+          .header-area .oneMusic-main-menu .classy-navbar .classynav ul li.has-down ul li > a::after {
+            color: #ffffff; } }
+      .header-area .oneMusic-main-menu .classy-navbar .classynav ul li ul li a {
+        color: #232323; }
+        .header-area .oneMusic-main-menu .classy-navbar .classynav ul li ul li a:hover, .header-area .oneMusic-main-menu .classy-navbar .classynav ul li ul li a:focus {
+          color: #888888; }
+        @media only screen and (min-width: 992px) and (max-width: 1199px) {
+          .header-area .oneMusic-main-menu .classy-navbar .classynav ul li ul li a {
+            padding: 0 15px; } }
+        @media only screen and (min-width: 768px) and (max-width: 991px) {
+          .header-area .oneMusic-main-menu .classy-navbar .classynav ul li ul li a {
+            color: #ffffff;
+            padding: 0 30px;
+            border-bottom-color: rgba(255, 255, 255, 0.1); } }
+        @media only screen and (max-width: 767px) {
+          .header-area .oneMusic-main-menu .classy-navbar .classynav ul li ul li a {
+            color: #ffffff;
+            padding: 0 30px;
+            border-bottom-color: rgba(255, 255, 255, 0.1) !important; } }
+      .header-area .oneMusic-main-menu .classy-navbar .classynav ul li .dropdown li .dropdown li .dropdown li a {
+        border-bottom: 1px solid rgba(242, 244, 248, 0.7); }
+        @media only screen and (min-width: 768px) and (max-width: 991px) {
+          .header-area .oneMusic-main-menu .classy-navbar .classynav ul li .dropdown li .dropdown li .dropdown li a {
+            border-bottom-color: rgba(255, 255, 255, 0.1) !important; } }
+        @media only screen and (max-width: 767px) {
+          .header-area .oneMusic-main-menu .classy-navbar .classynav ul li .dropdown li .dropdown li .dropdown li a {
+            border-bottom-color: rgba(255, 255, 255, 0.1) !important; } }
+    .header-area .oneMusic-main-menu .login-register-cart-button {
+      position: relative;
+      z-index: 1;
+      margin-left: 100px; }
+      @media only screen and (min-width: 768px) and (max-width: 991px) {
+        .header-area .oneMusic-main-menu .login-register-cart-button {
+          margin-left: 12px;
+          margin-top: 15px; } }
+      @media only screen and (max-width: 767px) {
+        .header-area .oneMusic-main-menu .login-register-cart-button {
+          margin-left: 12px;
+          margin-top: 15px; } }
+      .header-area .oneMusic-main-menu .login-register-cart-button .login-register-btn {
+        position: relative;
+        z-index: 10; }
+        .header-area .oneMusic-main-menu .login-register-cart-button .login-register-btn a {
+          -webkit-transition-duration: 500ms;
+          transition-duration: 500ms;
+          margin-bottom: 0;
+          color: #fff;
+          font-weight: 700;
+          font-size: 16px;
+          cursor: pointer;
+          line-height: 1; }
+          .header-area .oneMusic-main-menu .login-register-cart-button .login-register-btn a:hover, .header-area .oneMusic-main-menu .login-register-cart-button .login-register-btn a:focus {
+            color: rgba(255, 255, 255, 0.7); }
+      .header-area .oneMusic-main-menu .login-register-cart-button .cart-btn {
+        position: relative;
+        z-index: 10; }
+        .header-area .oneMusic-main-menu .login-register-cart-button .cart-btn p {
+          -webkit-transition-duration: 500ms;
+          transition-duration: 500ms;
+          margin-bottom: 0;
+          color: #fff;
+          font-size: 18px;
+          cursor: pointer;
+          line-height: 1; }
+          .header-area .oneMusic-main-menu .login-register-cart-button .cart-btn p:hover, .header-area .oneMusic-main-menu .login-register-cart-button .cart-btn p:focus {
+            color: rgba(255, 255, 255, 0.7); }
+          .header-area .oneMusic-main-menu .login-register-cart-button .cart-btn p .quantity {
+            width: 15px;
+            height: 15px;
+            border: 1px solid #fff;
+            background-color: #232323;
+            color: #fff;
+            display: block;
+            position: absolute;
+            bottom: -5px;
+            left: -10px;
+            z-index: 10;
+            font-size: 9px;
+            font-weight: 400;
+            border-radius: 50%;
+            line-height: 13px;
+            text-align: center; }
+  .header-area .is-sticky .oneMusic-main-menu {
+    position: fixed;
+    width: 100%;
+    height: 85px;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    background-color: #000000;
+    box-shadow: 0 5px 50px 15px rgba(0, 0, 0, 0.2); }
+    @media only screen and (max-width: 767px) {
+      .header-area .is-sticky .oneMusic-main-menu {
+        height: 70px; } }
+
+.classy-navbar .nav-brand {
+  max-width: 130px; }
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .breakpoint-on .classy-navbar .classy-menu {
+    background-color: #000000; } }
+@media only screen and (max-width: 767px) {
+  .breakpoint-on .classy-navbar .classy-menu {
+    background-color: #000000; } }
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .classynav ul li .megamenu .single-mega.cn-col-4 {
+    padding: 0; } }
+@media only screen and (max-width: 767px) {
+  .classynav ul li .megamenu .single-mega.cn-col-4 {
+    padding: 0; } }
+
+.classycloseIcon .cross-wrap span {
+  background: #ffffff; }
+
+/* :: 7.0 Events Area CSS */
+.single-event-area {
+  position: relative;
+  z-index: 1;
+  -webkit-transition-duration: 500ms;
+  transition-duration: 500ms; }
+  .single-event-area img {
+    width: 100%; }
+  .single-event-area .event-text {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    padding: 30px 15px;
+    background-color: #000;
+    -webkit-transition-duration: 500ms;
+    transition-duration: 500ms; }
+    .single-event-area .event-text h4 {
+      color: #fff;
+      text-transform: uppercase;
+      -webkit-transition-duration: 500ms;
+      transition-duration: 500ms; }
+    .single-event-area .event-text .event-meta-data {
+      position: relative;
+      margin-bottom: 30px; }
+      .single-event-area .event-text .event-meta-data a {
+        -webkit-transition-duration: 500ms;
+        transition-duration: 500ms;
+        position: relative;
+        z-index: 1;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 400;
+        display: inline-block;
+        padding-right: 29px; }
+        .single-event-area .event-text .event-meta-data a:first-child::after {
+          position: absolute;
+          content: '|';
+          top: 0;
+          right: 12px;
+          z-index: 1; }
+        .single-event-area .event-text .event-meta-data a:last-child {
+          padding-right: 0; }
+    .single-event-area .event-text .see-more-btn {
+      font-size: 11px;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 10px;
+      border-bottom: 1px solid #fff;
+      padding-left: 0;
+      padding-right: 0;
+      border-radius: 0; }
+      .single-event-area .event-text .see-more-btn:hover, .single-event-area .event-text .see-more-btn:focus {
+        font-weight: 400; }
+  .single-event-area:hover, .single-event-area:focus {
+    box-shadow: 0 5px 80px 0 rgba(0, 0, 0, 0.2); }
+    .single-event-area:hover .event-text, .single-event-area:focus .event-text {
+      background-color: #f5f9fa; }
+      .single-event-area:hover .event-text h4,
+      .single-event-area:hover .event-text .event-meta-data a, .single-event-area:focus .event-text h4,
+      .single-event-area:focus .event-text .event-meta-data a {
+        color: #000000; }
+      .single-event-area:hover .event-text .see-more-btn, .single-event-area:focus .event-text .see-more-btn {
+        border-bottom-color: #000000;
+        color: #000000; }
+
+/* :: 15.0 Breadcumb Area CSS */
+.breadcumb-area {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 385px; }
+  @media only screen and (max-width: 767px) {
+    .breadcumb-area {
+      height: 270px; } }
+  .breadcumb-area .bradcumbContent {
+    position: absolute;
+    background-color: #fff;
+    width: 552px;
+    bottom: 0;
+    left: 50%;
+    z-index: 100;
+    text-align: center;
+    padding-top: 40px;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%); }
+    @media only screen and (max-width: 767px) {
+      .breadcumb-area .bradcumbContent {
+        width: calc(100% - 60px);
+        padding-top: 30px; } }
+    .breadcumb-area .bradcumbContent p {
+      line-height: 1.5;
+      font-size: 16px;
+      color: #5f5f5f; }
+    .breadcumb-area .bradcumbContent h2 {
+      font-size: 30px;
+      letter-spacing: 10px;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 0; }
+      @media only screen and (max-width: 767px) {
+        .breadcumb-area .bradcumbContent h2 {
+          font-size: 18px;
+          letter-spacing: 5px; } }
+/* ====== The End Join Page====== */
+
+/*
+    Group Style
+ */
 .center-box{
     position:absolute;
     top:0;

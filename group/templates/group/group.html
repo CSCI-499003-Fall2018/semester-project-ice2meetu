@@ -10,14 +10,14 @@
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <head></head>
-<body>
+{% if group_number is None %}
+<body style="background-color: black">
+{% else %}
+<body style="background-color:{{color}}">
+{% endif %} 
     <div class="container">
         <div class="row">
-            {% if group_number is None %}
-            <div class="center-box" style="background-color: black">
-            {% else %}
-            <div class="center-box" style="background-color: {{color}}">
-            {% endif %}    
+            <div class="center-box">   
                 {% if group_number is None %}
                 <img itemprop="image" src="{% get_static_prefix %}assets/images/emoji/none.png">
                 <div class="find_group">
@@ -25,7 +25,6 @@
                 </div>
                 {% else %}
                 <img itemprop="image" src="{% get_static_prefix %}assets/images/emoji/{{ group_number }}.png">
-                
                 <div class="find_group">
                     Welcome, Find Your Group 
                     ({{ number_of_people }} People)
