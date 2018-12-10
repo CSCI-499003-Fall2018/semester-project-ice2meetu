@@ -38,9 +38,9 @@
 
                         <!-- Nav brand -->
                         {% if user.is_authenticated %}
-                        <h1 class="text-uppercase mb-0" href="{% url 'home_creation_page' %}" style="color: white">Hello {{ user.username }}</h1>
+                        <h1 class="text-uppercase mb-0" href="{% url 'Home' %}" style="color: white">{{ user.username }}</h1>
                         {% else %}
-                        <h1 class="text-uppercase mb-0" href="{% url 'home_creation_page' %}" style="color: white">Ice2MeetU</h1>
+                        <h1 class="text-uppercase mb-0" href="{% url 'Home' %}" style="color: white">Welcome</h1>
                         {% endif %}
                         <!-- Navbar Toggler -->
                         <div class="classy-navbar-toggler">
@@ -58,7 +58,7 @@
                             <!-- Nav Start -->
                             <div class="classynav">
                                 <ul>
-                                    <li><a href="Home/index.html">Home</a></li>
+                                    <li><a href="{% url 'Home' %}">Home</a></li>
                                     {% if user.is_authenticated %}
                                     <li><a href="{% url 'creation_page' %}">Create Event</a></li>
                                     <li><a href="{% url 'join_page' %}">Join Event</a></li>
@@ -110,9 +110,19 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="hero-slides-content text-center">
+                                {% if user.is_authenticated %}
+                                <h6 data-animation="fadeInUp" data-delay="100ms">WELCOME {{ user.username }}</h6>
+                                {% else %}
                                 <h6 data-animation="fadeInUp" data-delay="100ms">WELCOME</h6>
+                                {% endif %}
                                 <h2 data-animation="fadeInUp" data-delay="300ms">ICE TO MEET U<span></span></h2>
+                                {% if user.is_authenticated %}
+                                <a data-animation="fadeInUp" data-delay="500ms" href="{% url 'creation_page' %}" class="btn oneMusic-btn mt-50">Create Event </a>
+                                <a data-animation="fadeInUp" data-delay="500ms" href="{% url 'join_page' %}" class="btn oneMusic-btn mt-50">Join Event </a>
+                                <a data-animation="fadeInUp" data-delay="500ms" href="{% url 'game' %}" class="btn oneMusic-btn mt-50">Play Games </a>
+                                {% else %}
                                 <a data-animation="fadeInUp" data-delay="500ms" href="#service" class="btn oneMusic-btn mt-50">Discover <i class="fa fa-angle-double-right"></i></a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -318,7 +328,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                 <div class="col-12 col-md-6">
                     <div class="footer-nav">
                         <ul>
-                            <li><a href="Home/index.html">Home</a></li>
+                            <li><a href="{% url 'Home' %}">Home</a></li>
                             <li><a href="#service">Service</a></li>
                             <li><a href="{% url 'game' %}">Start Game</a></li>
                         </ul>
