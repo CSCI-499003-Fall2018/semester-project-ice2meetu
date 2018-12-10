@@ -135,6 +135,18 @@ class EventUser(models.Model):
         return hasattr(self, 'player')
     
     def playing_event(self):
+        events = self.events.filter(is_playing=True)
+        if not self.is_playing or not events.exists():
+            raise UserWarning("This event user isn't playing")
+            return None
+        if events.count() > 1:  # in multiple playing events
+            for event in events:
+                if hasattr(event, 'gamemanager') and self.pk in event.gamemanager.players():
+                    return event
+        else:
+            return events[0]
+    
+    def playing_event(self):
         if self.is_playing():
             return self.player.game_manager.event
         else:

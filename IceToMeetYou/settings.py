@@ -97,14 +97,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'IceToMeetYou.wsgi.application'
 DATABASES = {
-   'default' : {
-       'ENGINE' : 'django.db.backends.postgresql_psycopg2',
-       'NAME' : os.environ['CAPSTONE_DB'],
-       'USER' : os.environ['CAPSTONE_USER'],
-       'PASSWORD' : os.environ['CAPSTONE_PASSWORD'],
-       'HOST' : 'localhost',
-       'PORT' : '',
-   }
+    'default':  dj_database_url.parse('postgres://bzxgeqahrbhddt:6ff84846f413b20947da13124f84a7db0b24ca2169a53f97148f0355f3557001@ec2-184-73-197-211.compute-1.amazonaws.com:5432/dc4udkl6fnja0q')
 }
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -180,4 +173,5 @@ CHANNEL_LAYERS = {
             "hosts": [(os.environ.get("REDIS_URL", '127.0.0.1'), 6379)],
         },
     },
-}
+
+ALLOWED_HOSTS = ['ice2meetu.herokuapp.com', 'localhost', '127.0.0.1']

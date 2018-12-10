@@ -46,13 +46,11 @@ function hit_endpoint(view) {
     }).catch(function (err) {
         console.log(err)
     })
-}
 
 function responseHandler() {
 	if (httpRequest.readyState === XMLHttpRequest.DONE) {
 		document.getElementById('test').innerHTML += JSON.stringify(httpRequest.response);
 	}
-
     location.reload()
 }
 
@@ -65,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 });
 </script>
+<<<<<<< HEAD
 <h1>Event Page</h1>
 <div class="container-fluid" style="margin-top:100px;">
 <div class="row justify-content-center">
@@ -103,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <button class="btn btn-primary endpoint" style="padding: 5px" href="#" id="addremove" value="remove">
             Leave Game
             </button>
-            {% endif %}
+			{% endif %}
         </div>
     {% endif %}
 	</div>

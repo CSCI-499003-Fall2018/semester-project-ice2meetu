@@ -1,0 +1,241 @@
+{% load static %}
+<html lang="en">
+</html>
+<!-- Stylesheet -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title -->
+    <title>Event</title>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'assets/css/style.css' %}"/>
+    <script>
+        function hit_endpoint(view) {
+            httpRequest = new XMLHttpRequest();
+            httpRequest.responseType = "json"
+            const pk = "{{ event.pk }}";
+            const url = "/play/" + pk + "/" + view;
+        
+            if (!httpRequest) {
+                alert('Giving up :( Cannot create an XMLHTTP instance');
+                return false;
+            }
+        
+            httpRequest.onreadystatechange = responseHandler;
+            httpRequest.open('GET', url);
+            httpRequest.send();
+        }
+        
+        function responseHandler() {
+            if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                document.getElementById('test').innerHTML += JSON.stringify(httpRequest.response);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll(".endpoint").forEach(function(btn) {
+                btn.onclick = () => {
+                    view = btn.getAttribute('value');
+                    hit_endpoint(view);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader d-flex align-items-center justify-content-center">
+        <div class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <!-- ##### Header Area Start ##### -->
+    <header class="header-area">
+        <!-- Navbar Area -->
+        <div class="oneMusic-main-menu">
+            <div class="classy-nav-container breakpoint-off">
+                <div class="container">
+                    <!-- Menu -->
+                    <nav class="classy-navbar justify-content-between" id="iceToMeetUNav">
+
+                        <!-- Nav brand -->
+                        {% if user.is_authenticated %}
+                        <h1 class="text-uppercase mb-0" href="{% url 'Home' %}" style="color: white">{{ user.username }}</h1>
+                        {% else %}
+                        <h1 class="text-uppercase mb-0" href="{% url 'Home' %}" style="color: white">Ice To Meet U</h1>
+                        {% endif %}
+                        <!-- Navbar Toggler -->
+                        <div class="classy-navbar-toggler">
+                            <span class="navbarToggler"><span></span><span></span><span></span></span>
+                        </div>
+
+                        <!-- Menu -->
+                        <div class="classy-menu">
+
+                            <!-- Close Button -->
+                            <div class="classycloseIcon">
+                                <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                            </div>
+
+                            <!-- Nav Start -->
+                            <div class="classynav">
+                                <ul>
+                                    <li><a href="{% url 'Home' %}">Home</a></li>
+                                    <li><a href="{% url 'creation_page' %}">Create Event</a></li>
+                                    <li><a href="{% url 'join_page' %}">Join Event</a></li>
+                                    <li><a href="{% url 'game' %}">Start Game</a></li>
+                                    <li><a href="#team">Team</a></li>
+                                </ul>
+
+                                <!-- Login/Register/Logout -->
+                                <div class="login-register-cart-button d-flex align-items-center">
+                                    <!-- Login/Register -->
+                                    {% if user.is_authenticated %}
+                                    <div class="login-register-btn mr-50">
+                                        <a href="{% url 'logout_page' %}" id="loginBtn">Logout</a>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <!-- Nav End -->
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ##### Header Area End ##### -->
+
+    <!-- ##### Event Catagory Area Start ##### -->
+    <section class="service-catagory section-padding-100-0">
+        <div class="container">
+            <!-- <div class="row">
+                <div class="col-12">
+                    <div class="browse-by-catagories catagory-menu d-flex flex-wrap align-items-center mb-70">
+                        <a href="#" data-filter="*">Browse All</a>
+                        <a href="#" data-filter=".a" class="active">A</a>
+                        <a href="#" data-filter=".b">B</a>
+                        <a href="#" data-filter=".c">C</a>
+                        <a href="#" data-filter=".d">D</a>
+                        <a href="#" data-filter=".e">E</a>
+                        <a href="#" data-filter=".f">F</a>
+                        <a href="#" data-filter=".g">G</a>
+                        <a href="#" data-filter=".h">H</a>
+                        <a href="#" data-filter=".i">I</a>
+                        <a href="#" data-filter=".j">J</a>
+                        <a href="#" data-filter=".k">K</a>
+                        <a href="#" data-filter=".l">L</a>
+                        <a href="#" data-filter=".m">M</a>
+                        <a href="#" data-filter=".n">N</a>
+                        <a href="#" data-filter=".o">O</a>
+                        <a href="#" data-filter=".p">P</a>
+                        <a href="#" data-filter=".q">Q</a>
+                        <a href="#" data-filter=".r">R</a>
+                        <a href="#" data-filter=".s">S</a>
+                        <a href="#" data-filter=".t">T</a>
+                        <a href="#" data-filter=".u">U</a>
+                        <a href="#" data-filter=".v">V</a>
+                        <a href="#" data-filter=".w">W</a>
+                        <a href="#" data-filter=".x">X</a>
+                        <a href="#" data-filter=".y">Y</a>
+                        <a href="#" data-filter=".z">Z</a>
+                        <a href="#" data-filter=".number">0-9</a>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="row">
+                <!-- ##### Breadcumb Area Start ##### -->
+                {% if user == event.admin %}
+                <!-- <section class="breadcumb-area bg-img bg-overlay" style="background-image: url({% get_static_prefix %}assets/images/event/e6.jpeg);"> -->
+                <div class="row icetomeetu-albums"
+                    <div class="bradcumbContent">
+                        <h3>Event Admin Board</h3>
+                        <br>
+                        <hr>
+                        <br>
+                        <p>{{ event.description }}</p>
+                        <h2>{{ event.title }}</h2>
+                    </div>
+                <!-- </section> -->
+                <!-- ##### Breadcumb Area End ##### -->
+                <!-- <div class="row icetomeetu-albums"> -->
+                    <div  class="container"style="margin-top: 10px">
+                        <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="begin">Start Game</button>
+                        <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="end">End Game</button>
+                        <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="add_all">Add All Players</button>
+                        <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="start_round">Start Round</button>
+                    </div>
+                </div>
+                {% endif %}
+                <!-- <section class="breadcumb-area bg-img bg-overlay" style="background-image: url({% get_static_prefix %}assets/images/event/e6.jpeg);"> -->
+                <div class="row icetomeetu-albums"></div>                
+                    <div class="bradcumbContent">
+                        <h3>Palyer Board</h3>
+                        <br>
+                        <hr>
+                        <br>
+                        <!-- <p>{{ event.description }}</p>
+                        <h2>{{ event.title }}</h2> -->
+                    </div>
+                <!-- </section> -->
+                <!-- ##### Breadcumb Area End ##### -->
+                <!-- <div class="row icetomeetu-albums"> -->
+                    <div  class="container"style="margin-top: 10px">
+                        <div class="col-12 justify-content-center" style="margin-top: 10px">
+                        <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="add">Join Game</button>
+                        <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="remove">Leave Game</button>      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Album Catagory Area End ##### -->
+
+    <!-- ##### Footer Area Start ##### -->
+    <footer class="footer-area">
+        <div class="container">
+            <div class="row d-flex flex-wrap align-items-center">
+                <div class="col-12 col-md-6">
+                    <p class="copywrite-text">
+                        <a href="#">Copyright &copy;
+                            <script>document.write(new Date().getFullYear());</script> 
+                        </a>
+                    </p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="footer-nav">
+                        <ul>
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Create Event</a></li>
+                            <li><a href="#">Join Event</a></li>
+                            <li><a href="#">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- ##### Footer Area Start ##### -->
+
+    <!-- ##### All Javascript Script ##### -->
+    <!-- jQuery-2.2.4 js -->
+    <script src="{% static 'assets/js/jquery/jquery-2.2.4.min.js' %}"></script>
+    <!-- Popper js -->
+    <script src="{% static 'assets/js/bootstrap/popper.min.js' %}"></script>
+    <!-- Bootstrap js -->
+    <script src="{% static 'assets/js/bootstrap/bootstrap.min.js' %}"></script>
+    <!-- All Plugins js -->
+    <script src="{% static 'assets/js/plugins/plugins.js' %}"></script>
+    <!-- Active js -->
+    <script src="{% static 'assets/js/active.js' %}"></script>
+</body>
+</html>

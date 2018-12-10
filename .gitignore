@@ -8,4 +8,7 @@ venv
 .idea
 logfile
 games.txt
+<<<<<<< HEAD
 config.*
+=======
+>>>>>>> 0efdc21028fbb643d4a4da3c2af409bda92d256c

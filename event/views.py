@@ -33,7 +33,6 @@ def go(request, string, format=None):
 
     if request.user.is_authenticated:
         user = event.event_users.filter(user=request.user)
-
         player = event.gamemanager.player_set.filter(user__in=user)
         grouping = event.grouping_set.all()
         group = grouping

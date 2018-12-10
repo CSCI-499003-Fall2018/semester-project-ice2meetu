@@ -172,7 +172,6 @@ def remove_self(request, event_pk):
         event_user = event_user.filter(events__access_code = event.access_code)[0]
     event_user.player.remove_self()
     # return JsonResponse({"Success": "You've been removed from the game"})
-
     player = event.gamemanager.player_set.filter(user=event_user)
     player = len(player) == 0
     content = {
@@ -180,10 +179,6 @@ def remove_self(request, event_pk):
         'join': player
     }
     return TemplateResponse(request,"event/event.html",content)
-
-
-    
-
 
 #@login_required(login_url='login/')
 # def play_test(request):
