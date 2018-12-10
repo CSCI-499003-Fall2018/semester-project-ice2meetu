@@ -12,7 +12,7 @@
 
     // :: 2.0 Nav Active Code
     if ($.fn.classyNav) {
-        $('#oneMusicNav').classyNav();
+        $('#iceToMeetUNav').classyNav();
     }
 
     // :: 3.0 Sliders Active Code

@@ -135,29 +135,18 @@ class EventUser(models.Model):
         return hasattr(self, 'player')
     
     def playing_event(self):
-        events = self.events.filter(is_playing=True)
-        if not self.is_playing or not events.exists():
-            raise UserWarning("This event user isn't playing")
-            return None
-        if events.count() > 1:  # in multiple playing events
-            for event in events:
-                if hasattr(event, 'gamemanager') and self.pk in event.gamemanager.players():
-                    return event
+        if self.is_playing():
+            return self.player.game_manager.event
         else:
-            return events[0]
+            return None
     
-    def current_game(self):
-        event = self.playing_event()
-        if not event:
-            raise UserWarning("Warning: Not in any currently playing event")
+    def current_group(self):
+        assert(self.groups.filter(grouping__is_current=True).count() <= 1)
+        group = self.groups.get(grouping__is_current=True)
+        return group
 
-        groupings = event.grouping_set.filter(is_current=True)[0]
-        group = None
-        for g in groupings.groups():
-            if g in self.groups.all():
-                group = g
-                break
-        return group.game
+    def current_game(self):
+        return self.current_group().game
 
     def __str__(self):
         return "{}".format(self.user.username)

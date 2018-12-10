@@ -56,7 +56,6 @@
     document.addEventListener('DOMContentLoaded', function() {
       //for a logged in user in a playing event
       if ("{{ is_playing }}") {
-        console.log('IS PLAYING');
         fetch("{% url 'get_user_game' %}")
           .then(res => res.json())
           .then(res => {

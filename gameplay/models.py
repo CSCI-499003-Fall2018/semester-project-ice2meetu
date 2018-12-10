@@ -82,6 +82,7 @@ class GameManager(models.Model):
 
     def end_game(self):
         self.event.is_playing = False
+        self.event.save()
         players = self.player_set.all()
         for player in players:
             self.remove_player(player)
