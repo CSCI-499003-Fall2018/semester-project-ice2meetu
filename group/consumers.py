@@ -7,6 +7,7 @@ import json
 
 class GroupConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        print("GROUPCONSUMER")
         user = self.scope['user']
         if user.is_anonymous:
             await self.close()

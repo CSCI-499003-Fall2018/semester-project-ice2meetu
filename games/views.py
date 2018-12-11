@@ -58,7 +58,7 @@ def game(request):
         if request.user.eventuser_set.exists():
             for eventuser in request.user.eventuser_set.all():
                 if eventuser.is_playing():
-                    group = eventuser.groups.filter(grouping__is_current=True)[0]
+                    group = eventuser.current_group()
                     if not group.is_complete:
                         return HttpResponseRedirect(reverse('same_group_page'))
                     context['is_playing'] = True

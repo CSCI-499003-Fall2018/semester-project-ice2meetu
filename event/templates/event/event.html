@@ -1,55 +1,54 @@
 {% extends "Home/base.html" %}
 {% load staticfiles %}
-
 {% block content %}
 <script>
-const eventSocket = new WebSocket(
-    'ws://' + window.location.host +
-    '/event/ws');
+    const eventSocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/event/ws');
 
-eventSocket.onclose = e => {
-    console.log('Chat socket closed');
-};
+    eventSocket.onclose = e => {
+        console.log('Chat socket closed');
+    };
 
-eventSocket.onmessage = e => {
-    const data = JSON.parse(e.data);
-    const notification = data['notification'];
-    console.log(notification);
+    eventSocket.onmessage = e => {
+        const data = JSON.parse(e.data);
+        const notification = data['notification'];
+        const event = data['event_title'];
 
-    let modal = document.querySelector('#notify-modal');
-    let modalText = document.querySelector('#modal-text');
-    document.querySelector('.close').onclick = () => {
-        modal.style.display = "none";
-    }
-    window.onclick = event => {
-        if (event.target == modal) {
+        let modal = document.querySelector('#notify-modal');
+        let modalText = document.querySelector('#modal-text');
+        document.querySelector('.close').onclick = () => {
             modal.style.display = "none";
         }
+        window.onclick = event => {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        switch (notification) {
+            case 'begin':
+                modal.style.display = "block";
+                modalText.innerHTML = `A game is starting soon in ${event}`;
+                break;
+            case 'add_all':
+                modal.style.display = "block";
+                modalText.innerHTML = `Your event admin has added you to a game in ${event}`;
+                break;
+            case 'start_round':
+                modal.style.display = "block";
+                modalText.innerHTML = `The game has begun in ${event}. Redirecting...`;
+                window.location.replace("{% url 'game' %}");
+                break;
+            case 'end':
+                modal.style.display = "block";
+                modalText.innerHTML = "Your event's game has ended. Redirecting...";
+                window.location.replace("{% url 'home_creation_page' %}");
+                break;
+            default:
+                console.error(`Unknown notification: ${notification}`);
+        }
     }
-    switch (notification) {
-        case 'begin':
-            modal.style.display = "block";
-            modalText.innerHTML = "A game is starting soon in your event";
-            break;
-        case 'add_all':
-            modal.style.display = "block";
-            modalText.innerHTML = "Your event admin has added you to a game";
-            break;
-        case 'start_round':
-            modal.style.display = "block";
-            modalText.innerHTML = "Your event's game has begun. Redirecting...";
-            window.location.replace("{% url 'game' %}");
-            break;
-        case 'end':
-            modal.style.display = "block";
-            modalText.innerHTML = "Your event's game has ended. Redirecting...";
-            window.location.replace("{% url 'home_creation_page' %}");
-            break;
-        default:
-            console.error(`Unknown notification: ${notification}`);
-    }
-}
-
+    
 function hit_endpoint(view) {
 	httpRequest = new XMLHttpRequest();
 	const pk = "{{ event.pk }}";
@@ -110,13 +109,13 @@ document.addEventListener('DOMContentLoaded', function() {
 			hit_endpoint(view);
             eventSocket.send(JSON.stringify({
                 'event_code': '{{ event.access_code }}',
+                'event_title': '{{ event.title }}',
                 'notification': view
             }));
         }
 	});
 });
 </script>
-
 <div id="notify-modal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>

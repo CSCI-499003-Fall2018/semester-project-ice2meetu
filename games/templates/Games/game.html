@@ -1,7 +1,54 @@
 {% extends "Home/base.html" %}
 {% load staticfiles %}
-
 {% block content %}
+<script>
+  const eventSocket = new WebSocket(
+    'ws://' + window.location.host +
+    '/event/ws');
+
+  eventSocket.onclose = e => {
+    console.log('Chat socket closed');
+  };
+
+  eventSocket.onmessage = e => {
+    const data = JSON.parse(e.data);
+    const notification = data['notification'];
+    const event = data['event_title'];
+
+    let modal = document.querySelector('#notify-modal');
+    let modalText = document.querySelector('#modal-text');
+    document.querySelector('.close').onclick = () => {
+      modal.style.display = "none";
+    }
+    window.onclick = event => {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+    switch (notification) {
+      case 'start_round':
+        modal.style.display = "block";
+        modalText.innerHTML = "Next Round!";
+        window.location.replace("{% url 'same_group_page' %}");
+        break;
+      case 'end':
+        modal.style.display = "block";
+        modalText.innerHTML = "Your event's game has ended. Redirecting...";
+        window.location.replace("{% url 'home_creation_page' %}");
+        break;
+      default:
+        console.error(`Unknown notification: ${notification}`);
+    }
+  }
+</script>
+
+<div id="notify-modal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p id="modal-text"></p>
+  </div>
+</div>
+
   <header class="masthead bg-primary text-white">
     <div class="container-fluid">
 

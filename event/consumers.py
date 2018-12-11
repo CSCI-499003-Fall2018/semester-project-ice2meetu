@@ -7,6 +7,7 @@ import json
 
 class EventConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        print("EVENT CONSUMER")
         user = self.scope['user']
         if user.is_anonymous:
             await self.close()
@@ -51,8 +52,9 @@ class EventConsumer(AsyncWebsocketConsumer):
             await self.close()
 
         text_data_json = json.loads(text_data)
-        notification = text_data_json['notification']
         event_code = text_data_json['event_code']
+        event_title = text_data_json['event_title']
+        notification = text_data_json['notification']
 
         # Send message to group
         await self.channel_layer.group_send(
@@ -60,6 +62,7 @@ class EventConsumer(AsyncWebsocketConsumer):
             {
                 'type': 'notify',
                 'event_code': event_code,
+                'event_title': event_title,
                 'notification': notification
             }
         )
@@ -71,10 +74,12 @@ class EventConsumer(AsyncWebsocketConsumer):
 
         notification = event['notification']
         event_code = event['event_code']
+        event_title = event['event_title']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'event_code': event_code,
+            'event_title': event_title,
             'notification': notification
         }))
 
