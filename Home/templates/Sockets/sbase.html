@@ -34,12 +34,11 @@
             case 'start_round':
                 modal.style.display = "block";
                 modalText.innerHTML = `The game has begun in ${event}. Redirecting...`;
-                window.location.replace("{% url 'game' %}");
+                setTimeout(() => { window.location.replace("{% url 'game' %}");}, 1500);
                 break;
             case 'end':
                 modal.style.display = "block";
-                modalText.innerHTML = "Your event's game has ended. Redirecting...";
-                window.location.replace("{% url 'home_creation_page' %}");
+                modalText.innerHTML = "Your event's game has ended.";
                 break;
             default:
                 console.error(`Unknown notification: ${notification}`);

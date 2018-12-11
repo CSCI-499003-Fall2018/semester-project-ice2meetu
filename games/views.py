@@ -65,6 +65,7 @@ def game(request):
                     break
     except AttributeError:
         pass #AnonUser
+    context['event_id'] = user.eventuser_set.all()[0].playing_event().pk
     return render(request, 'Games/game.html', context)
 
 def gamesid(request, pk):
