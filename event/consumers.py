@@ -2,87 +2,75 @@ from creation.models import Group
 from asgiref.sync import async_to_sync
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-import json
+import json   
 
 
-class GroupConsumer(AsyncWebsocketConsumer):
+class EventConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         user = self.scope['user']
-        if not self.user:
+        if not user:
             self.close()
             return
+            
+        self.event_code = await self.get_access_code(user)
 
-        group = await self.get_group(user)
-        self.group_id = str(group.pk) if group else None
-
-        if not self.group_id:
+        if not self.event_code:
             self.close()
             return
 
         # Join group
         await self.channel_layer.group_add(
-            self.group_id,
+            self.event_code,
             self.channel_name
         )
 
         await self.accept()
 
     @database_sync_to_async
-    def get_group(self, user):
+    def get_access_code(self, user):
         if user.eventuser_set.exists():
             eventuser = user.eventuser_set.all()[0]
-            if not eventuser.is_playing():
-                return None
-            group = eventuser.current_group()
-            return group if group else None
-        return None
-
-
+            event = eventuser.playing_event()
+            return event.access_code if event else None
+        else:
+            return None
+    
     async def disconnect(self, close_code):
-        if not self.group_id:
+        if not self.event_code:
             self.close()
             return
         # Leave group connection
         await self.channel_layer.group_discard(
-            self.group_id,
+            self.event_code,
             self.channel_name
         )
-    
-    @database_sync_to_async
-    def set_group_complete(self):
-        group = Group.objects.get(pk=int(self.group_id))
-        if not group.is_complete:
-            group.is_complete = True
-            group.save()
 
     # Receive message from WebSocket
     async def receive(self, text_data):
-        if not self.group_id:
+        if not self.event_code:
             self.close()
             return
         text_data_json = json.loads(text_data)
-        complete = text_data_json['complete']
+        notification = text_data_json['notification']
 
-        if complete:
-            await self.set_group_complete()
-
-        # Notify group
+        # Send message to group
         await self.channel_layer.group_send(
-            self.group_id,
+            self.event_code,
             {
                 'type': 'notify',
-                'complete': True
+                'notification': notification
             }
         )
 
     # Receive message from group
     async def notify(self, event):
-        if not self.group_id:
+        if not self.event_code:
             self.close()
             return
-        complete = event['complete']
+        notification = event['notification']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'complete': True
+            'notification': notification
         }))
+

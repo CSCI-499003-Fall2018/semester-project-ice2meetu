@@ -3,6 +3,49 @@
 
 {% block content %}
 <script>
+const eventSocket = new WebSocket(
+    'ws://' + window.location.host +
+    '/event/ws');
+
+eventSocket.onclose = e => {
+    console.log('Chat socket closed');
+};
+
+eventSocket.onmessage = e => {
+    const data = JSON.parse(e.data);
+    const notification = data['notification'];
+    console.log(notification);
+
+    let modal = document.querySelector('#notify-modal');
+    let modalText = document.querySelector('#modal-text');
+    document.querySelector('.close').onclick = () => {
+        modal.style.display = "none";
+    }
+    window.onclick = event => {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    switch (notification) {
+        case 'add_all':
+            modal.style.display = "block";
+            modalText.innerHTML = "Your event admin has added you to a game";
+            break;
+        case 'start_round':
+            modal.style.display = "block";
+            modalText.innerHTML = "Your event's game has begun. Redirecting...";
+            window.location.replace("{% url 'game' %}");
+            break;
+        case 'end':
+            modal.style.display = "block";
+            modalText.innerHTML = "Your event's game has ended. Redirecting...";
+            window.location.replace("{% url 'home_creation_page' %}");
+            break;
+        default:
+            console.error(`Unknown notification: ${notification}`);
+    }
+}
+
 function hit_endpoint(view) {
 	httpRequest = new XMLHttpRequest();
 	const pk = "{{ event.pk }}";
@@ -61,10 +104,23 @@ document.addEventListener('DOMContentLoaded', function() {
 		btn.onclick = () => {
 			view = btn.getAttribute('value');
 			hit_endpoint(view);
+            // if (view === "begin") {
+
+            // }
+            eventSocket.send(JSON.stringify({
+                'notification': view
+            }));
         }
 	});
 });
 </script>
+
+<div id="notify-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="modal-text"></p>
+    </div>
+</div>
 <h1>Event Page</h1>
 <div class="container-fluid" style="margin-top:100px;">
 <div class="row justify-content-center">
