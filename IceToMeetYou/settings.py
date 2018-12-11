@@ -173,5 +173,4 @@ CHANNEL_LAYERS = {
             "hosts": [(os.environ.get("REDIS_URL", '127.0.0.1'), 6379)],
         },
     },
-
-ALLOWED_HOSTS = ['ice2meetu.herokuapp.com', 'localhost', '127.0.0.1']
+}
