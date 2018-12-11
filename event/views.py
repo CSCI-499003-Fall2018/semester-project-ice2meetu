@@ -18,7 +18,7 @@ def event(request, string):
     user = EventUser.objects.create(user=request.user)
     user.events.add(event)
     user.save()
-    return TemplateResponse(request, "event/buttons.html", context={'event': event, 'join': True })
+    return TemplateResponse(request, "event/event.html", context={'event': event, 'join': True })
 
 
 @api_view(['GET', ])
@@ -32,6 +32,14 @@ def go(request, string, format=None):
     if request.user.is_authenticated:
         user = event.event_users.filter(user=request.user)
 
+        player = ""
+        if hasattr(event, 'gamemanager'):
+            player = event.gamemanager.player_set.filter(user__in=user)
+        joined = False
+        if player != "":
+            joined = True
+        if joined and len(player) == 0:
+            joined = False
 
         grouping = event.grouping_set.all()
         group = grouping
@@ -39,9 +47,9 @@ def go(request, string, format=None):
             'event' : event,
             'group' : group,
             'user'  :request.user,
-            'join': True
+            'join': not joined
         }
-        return TemplateResponse(request, "event/buttons.html", content)
+        return TemplateResponse(request, "event/event.html", content)
     else:
         form = Join()
         content = {
