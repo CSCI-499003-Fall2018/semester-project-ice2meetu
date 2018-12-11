@@ -7,10 +7,16 @@ import json
 
 class GroupConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        print("GROUPCONSUMER")
         user = self.scope['user']
-        eventuser = await database_sync_to_async(self.get_user)(user)
-        group = await database_sync_to_async(eventuser.current_group)()
-        self.group_id = str(group.pk)
+        if user.is_anonymous:
+            await self.close()
+
+        group = await self.get_group(user)
+        self.group_id = str(group.pk) if group else None
+
+        if not self.group_id:
+            await self.close()
 
         # Join group
         await self.channel_layer.group_add(
@@ -20,10 +26,20 @@ class GroupConsumer(AsyncWebsocketConsumer):
 
         await self.accept()
 
-    def get_user(self, user):
-        return user.eventuser_set.all()[0]
+    @database_sync_to_async
+    def get_group(self, user):
+        if user.eventuser_set.exists():
+            eventuser = user.eventuser_set.all()[0]
+            if not eventuser.is_playing():
+                return None
+            group = eventuser.current_group()
+            return group if group else None
+        return None
+
 
     async def disconnect(self, close_code):
+        if not self.group_id:
+            await self.close()
         # Leave group connection
         await self.channel_layer.group_discard(
             self.group_id,
@@ -39,6 +55,9 @@ class GroupConsumer(AsyncWebsocketConsumer):
 
     # Receive message from WebSocket
     async def receive(self, text_data):
+        if not self.group_id:
+            await self.close()
+            
         text_data_json = json.loads(text_data)
         complete = text_data_json['complete']
 
@@ -56,6 +75,9 @@ class GroupConsumer(AsyncWebsocketConsumer):
 
     # Receive message from group
     async def notify(self, event):
+        if not self.group_id:
+            await self.close()
+            
         complete = event['complete']
 
         # Send message to WebSocket
