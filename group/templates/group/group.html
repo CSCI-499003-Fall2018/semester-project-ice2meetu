@@ -47,8 +47,7 @@
 <script>
     const groupSocket = new WebSocket(
         'ws://' + window.location.host +
-        '/group/ws/');
-
+        '/group/ws');
     //Updating group complete
     groupSocket.onmessage = e => {
         const data = JSON.parse(e.data);

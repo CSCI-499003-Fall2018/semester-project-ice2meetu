@@ -1,7 +1,13 @@
 {% extends "Home/base.html" %}
 {% load staticfiles %}
-
 {% block content %}
+<div id="notify-modal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p id="modal-text"></p>
+  </div>
+</div>
+
   <header class="masthead bg-primary text-white">
     <div class="container-fluid">
 
@@ -52,7 +58,45 @@
   </header>
 
   <script>
-  //TODO: Error handling if query unsuccessful
+  const eventSocket = new WebSocket(
+      'ws://' + window.location.host +
+      '/event/ws');
+
+    eventSocket.onclose = e => {
+      console.log('Chat socket closed');
+    };
+
+    eventSocket.onmessage = e => {
+      const data = JSON.parse(e.data);
+      const notification = data['notification'];
+      const event = data['event_title'];
+
+      let modal = document.querySelector('#notify-modal');
+      let modalText = document.querySelector('#modal-text');
+      document.querySelector('.close').onclick = () => {
+        modal.style.display = "none";
+      }
+      window.onclick = event => {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+      switch (notification) {
+        case 'start_round':
+          modal.style.display = "block";
+          modalText.innerHTML = "Next Round!";
+          setTimeout(() => { window.location.replace("{% url 'same_group_page' %}") }, 1500);
+          break;
+        case 'end':
+          modal.style.display = "block";
+          modalText.innerHTML = "Your event's game has ended. Redirecting...";
+          window.location.replace("{% url 'home_creation_page' %}");
+          break;
+        default:
+          console.error(`Unknown notification: ${notification}`);
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
       //for a logged in user in a playing event
       if ("{{ is_playing }}") {
@@ -62,7 +106,26 @@
             document.getElementById("game-title").innerHTML = res.game;
             document.querySelector(".game-text").innerHTML = res.text;
             document.querySelector("hr").classList.add("star-light");
-          });
+            document.querySelector("#next").innerHTML = "Leave the Game";
+            document.querySelector("#next").className = "btn btn-primary btn-xl";
+            document.querySelector("#next").onclick = () => {
+              let removing = confirm("Remove yourself from this game?");
+              if (removing) {
+                const event_id = "{{ event_id }}"
+                fetch("{% url 'remove_self' event_id  %}")
+                .then( res => {
+                  alert("You've been removed");
+                  window.location.replace("{% url 'home_creation_page' %}");
+                  })
+              }
+            }
+          })
+          .error( err => {
+            error = err.json();
+            document.getElementById("game-title").innerHTML = error.game;
+            document.querySelector(".game-text").innerHTML = error.text;
+            document.querySelector("hr").classList.add("star-light");
+          })
         return false;
       }
       else {
