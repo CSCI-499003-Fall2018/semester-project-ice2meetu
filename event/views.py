@@ -15,8 +15,6 @@ from Home.forms import Join
 @login_required(login_url='login/')
 def event(request, string):
     event = Event.objects.get(access_code=string)
-    if EventUser.objects.get(user=request.user):
-        return TemplateResponse(request, "event/buttons.html", context={'event': event, 'join': True })
     user = EventUser.objects.create(user=request.user)
     user.events.add(event)
     user.save()
@@ -34,14 +32,14 @@ def go(request, string, format=None):
     if request.user.is_authenticated:
         user = event.event_users.filter(user=request.user)
 
-        player = event.gamemanager.player_set.filter(user__in=user)
+
         grouping = event.grouping_set.all()
         group = grouping
         content = {
             'event' : event,
             'group' : group,
             'user'  :request.user,
-            'join': len(player) == 0,
+            'join': True
         }
         return TemplateResponse(request, "event/buttons.html", content)
     else:
