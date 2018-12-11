@@ -27,6 +27,10 @@ eventSocket.onmessage = e => {
         }
     }
     switch (notification) {
+        case 'begin':
+            modal.style.display = "block";
+            modalText.innerHTML = "A game is starting soon in your event";
+            break;
         case 'add_all':
             modal.style.display = "block";
             modalText.innerHTML = "Your event admin has added you to a game";
@@ -105,6 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			view = btn.getAttribute('value');
 			hit_endpoint(view);
             eventSocket.send(JSON.stringify({
+                'event_code': '{{ event.access_code }}',
                 'notification': view
             }));
         }

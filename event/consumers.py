@@ -10,67 +10,71 @@ class EventConsumer(AsyncWebsocketConsumer):
         user = self.scope['user']
         if user.is_anonymous:
             await self.close()
-            
-        self.event_code = await self.get_access_code(user)
+        
+        self.event_codes = await self.get_access_codes(user)
 
-        if not self.event_code:
+        if not self.event_codes:
             await self.close()
 
         # Join group
-        await self.channel_layer.group_add(
-            self.event_code,
-            self.channel_name
-        )
+        for code in self.event_codes:
+            await self.channel_layer.group_add(
+                code,
+                self.channel_name
+            )
 
         await self.accept()
 
     @database_sync_to_async
-    def get_access_code(self, user):
+    def get_access_codes(self, user):
         if user.eventuser_set.exists():
             eventuser = user.eventuser_set.all()[0]
-            event = eventuser.playing_event()
-            if not event:
-                print("no playing event")
-            return event.access_code if event else None
+            codes = [event.access_code for event in eventuser.events.all()]
+            return codes
         else:
             return None
     
     async def disconnect(self, close_code):
-        if not self.event_code:
+        if not self.event_codes:
             await self.close()
 
         # Leave group connection
-        await self.channel_layer.group_discard(
-            self.event_code,
-            self.channel_name
-        )
+        for code in self.event_codes:
+            await self.channel_layer.group_discard(
+                code,
+                self.channel_name
+            )
 
     # Receive message from WebSocket
     async def receive(self, text_data):
-        if not self.event_code:
+        if not self.event_codes:
             await self.close()
 
         text_data_json = json.loads(text_data)
         notification = text_data_json['notification']
+        event_code = text_data_json['event_code']
 
         # Send message to group
         await self.channel_layer.group_send(
-            self.event_code,
+            event_code,
             {
                 'type': 'notify',
+                'event_code': event_code,
                 'notification': notification
             }
         )
 
     # Receive message from group
     async def notify(self, event):
-        if not self.event_code:
+        if not self.event_codes:
             await self.close()
 
         notification = event['notification']
+        event_code = event['event_code']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
+            'event_code': event_code,
             'notification': notification
         }))
 
