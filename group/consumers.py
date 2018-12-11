@@ -9,15 +9,13 @@ class GroupConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         user = self.scope['user']
         if not self.user:
-            self.close()
-            return
+            await self.close()
 
         group = await self.get_group(user)
         self.group_id = str(group.pk) if group else None
 
         if not self.group_id:
-            self.close()
-            return
+            await self.close()
 
         # Join group
         await self.channel_layer.group_add(
@@ -40,8 +38,7 @@ class GroupConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         if not self.group_id:
-            self.close()
-            return
+            await self.close()
         # Leave group connection
         await self.channel_layer.group_discard(
             self.group_id,
@@ -58,8 +55,8 @@ class GroupConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         if not self.group_id:
-            self.close()
-            return
+            await self.close()
+            
         text_data_json = json.loads(text_data)
         complete = text_data_json['complete']
 
@@ -78,8 +75,8 @@ class GroupConsumer(AsyncWebsocketConsumer):
     # Receive message from group
     async def notify(self, event):
         if not self.group_id:
-            self.close()
-            return
+            await self.close()
+            
         complete = event['complete']
 
         # Send message to WebSocket

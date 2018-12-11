@@ -8,16 +8,13 @@ import json
 class EventConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         user = self.scope['user']
-        if not user:
-            print("Not logged in")
-            self.close()
-            return
+        if user.is_anonymous:
+            await self.close()
             
         self.event_code = await self.get_access_code(user)
 
         if not self.event_code:
-            self.close()
-            return
+            await self.close()
 
         # Join group
         await self.channel_layer.group_add(
@@ -40,8 +37,8 @@ class EventConsumer(AsyncWebsocketConsumer):
     
     async def disconnect(self, close_code):
         if not self.event_code:
-            self.close()
-            return
+            await self.close()
+
         # Leave group connection
         await self.channel_layer.group_discard(
             self.event_code,
@@ -51,8 +48,8 @@ class EventConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         if not self.event_code:
-            self.close()
-            return
+            await self.close()
+
         text_data_json = json.loads(text_data)
         notification = text_data_json['notification']
 
@@ -68,8 +65,8 @@ class EventConsumer(AsyncWebsocketConsumer):
     # Receive message from group
     async def notify(self, event):
         if not self.event_code:
-            self.close()
-            return
+            await self.close()
+
         notification = event['notification']
 
         # Send message to WebSocket
