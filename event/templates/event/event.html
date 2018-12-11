@@ -104,9 +104,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		btn.onclick = () => {
 			view = btn.getAttribute('value');
 			hit_endpoint(view);
-            // if (view === "begin") {
-
-            // }
             eventSocket.send(JSON.stringify({
                 'notification': view
             }));

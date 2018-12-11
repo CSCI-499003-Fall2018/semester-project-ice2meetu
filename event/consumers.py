@@ -9,6 +9,7 @@ class EventConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         user = self.scope['user']
         if not user:
+            print("Not logged in")
             self.close()
             return
             
@@ -31,6 +32,8 @@ class EventConsumer(AsyncWebsocketConsumer):
         if user.eventuser_set.exists():
             eventuser = user.eventuser_set.all()[0]
             event = eventuser.playing_event()
+            if not event:
+                print("no playing event")
             return event.access_code if event else None
         else:
             return None
