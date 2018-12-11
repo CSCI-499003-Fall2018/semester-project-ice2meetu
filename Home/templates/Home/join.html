@@ -63,32 +63,14 @@
                             <div class="event-text">
                                 <h4>{{ event.title }}</h4>
                                 <div class="event-meta-data">
-                                    <a href="#" class="event-place">Merry Christmas</a>
-                                    <a href="#" class="event-date">December 25, 2018</a>
+                                    <a href="#" class="event-place">{{ event.description }}</a>
+                                    <!-- <a href="#" class="event-date">{{ event.date }}</a> -->
                                 </div>
                                 <a href="/event/{{event.access_code}}/go" class="btn see-more-btn">See Event</a>
                             </div>
                         </div>
                     </div>
                 {% endfor %}
-                
-                <!-- Single Event Area -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="single-event-area mb-30">
-                        <div class="event-thumbnail">
-                            <img src="{% get_static_prefix %}assets/images/event/e7.jpeg" alt="">
-                        </div>
-                        <div class="event-text">
-                            <h4>The Mission</h4>
-                            <div class="event-meta-data">
-                                <a href="#" class="event-place">Gold Arena</a>
-                                <a href="#" class="event-date">June 15, 2018</a>
-                            </div>
-                            <a href="#" class="btn see-more-btn">See Event</a>
-                        </div>
-                    </div>
-                </div>
-
             <div class="row">
                 <div class="col-12">
                     <div class="load-more-btn text-center mt-70">
