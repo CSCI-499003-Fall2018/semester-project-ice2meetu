@@ -67,13 +67,15 @@ def game(request):
                         is_playing=True)[0].pk
                 if eventuser.is_playing():
                     context['event_id'] = eventuser.playing_event().pk
-                    group = eventuser.current_group()
-                    context['is_playing'] = True
+                    if eventuser.playing_event.is_playing:
+                        group = eventuser.current_group()
+                        context['is_playing'] = True
                     if not group.is_complete:
                         return HttpResponseRedirect(reverse('same_group_page'))
                     break
     except AttributeError:
         pass #AnonUser
+    print(context)
     return render(request, 'Games/game.html', context)
 
 def gamesid(request, pk):
