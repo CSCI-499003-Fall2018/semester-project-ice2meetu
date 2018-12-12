@@ -145,7 +145,7 @@ def join(request):
             return render(request, 'Home/join.html', content)
 
         e = Event.objects.get(access_code=code)
-        user = EventUser.objects.get_or_create(user=request.user)
+        user, created = EventUser.objects.get_or_create(user=request.user)
         for u in e.users():
             if u.user == request.user:
                 return HttpResponseRedirect('../event/{}/go'.format(form.access_code))
