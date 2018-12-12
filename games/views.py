@@ -58,13 +58,14 @@ def game(request):
         if request.user.eventuser_set.exists():
             for eventuser in request.user.eventuser_set.all():
                 if eventuser.is_playing():
-                    group = eventuser.groups.filter(grouping__is_current=True)[0]
+                    group = eventuser.current_group()
                     if not group.is_complete:
                         return HttpResponseRedirect(reverse('same_group_page'))
                     context['is_playing'] = True
                     break
     except AttributeError:
         pass #AnonUser
+    context['event_id'] = user.eventuser_set.all()[0].playing_event().pk
     return render(request, 'Games/game.html', context)
 
 def gamesid(request, pk):
