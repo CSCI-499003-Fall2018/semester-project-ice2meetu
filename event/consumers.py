@@ -11,11 +11,13 @@ class EventConsumer(AsyncWebsocketConsumer):
         user = self.scope['user']
         if user.is_anonymous:
             await self.close()
+            return
         
         self.event_codes = await self.get_access_codes(user)
 
         if not self.event_codes:
             await self.close()
+            return
 
         # Join group
         for code in self.event_codes:
@@ -28,23 +30,29 @@ class EventConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_access_codes(self, user):
-        if user.eventuser_set.exists():
-            eventuser = user.eventuser_set.all()[0]
-            codes = [event.access_code for event in eventuser.events.all()]
-            return codes
-        else:
+        try:
+            if user.eventuser_set.exists():
+                eventuser = user.eventuser_set.all()[0]
+                codes = [event.access_code for event in eventuser.events.all()]
+                return codes
+            else:
+                return None
+        except AttributeError:
             return None
     
     async def disconnect(self, close_code):
-        if not self.event_codes:
-            await self.close()
+        try:
+            if not self.event_codes:
+                await self.close()
 
-        # Leave group connection
-        for code in self.event_codes:
-            await self.channel_layer.group_discard(
-                code,
-                self.channel_name
-            )
+            # Leave group connection
+            for code in self.event_codes:
+                await self.channel_layer.group_discard(
+                    code,
+                    self.channel_name
+                )
+        except AttributeError:
+            await self.close()
 
     # Receive message from WebSocket
     async def receive(self, text_data):

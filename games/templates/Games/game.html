@@ -12,7 +12,7 @@
     <div class="container-fluid">
 
       <!-- Select Num Players only if not logged in -->
-      {% if not user.is_authenticated %}
+      {% if not user.is_authenticated or not is_playing %}
         <div class="num-box">
           <p class="lead hint">Number of Players</p>
         {% for i in "23456789" %}
@@ -99,7 +99,10 @@
 
     document.addEventListener('DOMContentLoaded', function() {
       //for a logged in user in a playing event
-      if ("{{ user.is_authenticated }}" && "{{ is_playing }}") {
+      const authed = ("{{ user.is_authenticated }}" === "False" ? false : true);
+      const playing = ("{{ is_playing }}" === "False" ? false : true);
+      const event_playing = ("{{ event_playing }}" === "False" ? false : true);
+      if (authed && playing) {
         fetch("{% url 'get_user_game' %}")
           .then(res => { check_response(res); })
           .then(res => res.json())
@@ -121,7 +124,7 @@
             })
           })
           .catch( err => {
-            if (!"{{ event_playing }}") {
+            if (!event_playing) {
               error = err.json();
               document.getElementById("game-title").innerHTML = error.game;
               document.querySelector(".game-text").innerHTML = error.text;
@@ -132,17 +135,18 @@
             }
           })
       }
-      else if ("{{ user.is_authenticated }}" && "{{ event_playing }}") {
+      else if (authed && event_playing) {
         render_join();
       }
-      else {
+      else if ((authed && !playing) || !authed) {
         //for a user who is not logged in or not in a playing event
         document.querySelectorAll(".num").forEach(function(btn) {
           btn.onclick = () => {
             const players = btn.value;
             load_game(players);
 
-            render_button("Next Game", load_game(players))
+            render_button("Next Game");
+            document.querySelector("#next").onclick = () => load_game(players);
             document.querySelectorAll(".num").forEach(button => {
               button.classList.remove("active");
             })
@@ -150,6 +154,7 @@
           }
         });
       }
+
 
       function render_join() {
         document.getElementById("game-title").innerHTML = "Join?";
@@ -167,6 +172,12 @@
               })
           }
         })
+      }
+
+      function render_button(text) {
+        let button = document.querySelector("#next");
+        button.innerHTML = text;
+        button.className = "btn btn-primary btn-xl";
       }
 
       function render_button(text, click_function) {
