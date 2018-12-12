@@ -52,6 +52,7 @@ class EventConsumer(AsyncWebsocketConsumer):
             await self.close()
 
         text_data_json = json.loads(text_data)
+        event_id = text_data_json['event_id']
         event_code = text_data_json['event_code']
         event_title = text_data_json['event_title']
         notification = text_data_json['notification']
@@ -61,6 +62,7 @@ class EventConsumer(AsyncWebsocketConsumer):
             event_code,
             {
                 'type': 'notify',
+                'event_id': event_id,
                 'event_code': event_code,
                 'event_title': event_title,
                 'notification': notification
@@ -73,11 +75,13 @@ class EventConsumer(AsyncWebsocketConsumer):
             await self.close()
 
         notification = event['notification']
+        event_id = event['event_id']
         event_code = event['event_code']
         event_title = event['event_title']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
+            'event_id': event_id,
             'event_code': event_code,
             'event_title': event_title,
             'notification': notification
