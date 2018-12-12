@@ -11,6 +11,7 @@
         const data = JSON.parse(e.data);
         const notification = data['notification'];
         const event = data['event_title'];
+        const id = data['event_id'];
 
         let modal = document.querySelector('#notify-modal');
         let modalText = document.querySelector('#modal-text');
@@ -26,10 +27,32 @@
             case 'begin':
                 modal.style.display = "block";
                 modalText.innerHTML = `A game is starting soon in ${event}`;
+                render_button("Join?", () => {
+                    let joining = confirm("Join this game?");
+                    modal.style.display = "none";
+                    if (joining) {
+                        const url = "{% url 'add_self' 0 %}";
+                        fetch(url.replace('/0/', '/'+id+'/'))
+                            .then(res => {
+                                alert("You've been added.");
+                            })
+                    }
+                })
                 break;
             case 'add_all':
                 modal.style.display = "block";
                 modalText.innerHTML = `Your event admin has added you to a game in ${event}`;
+                render_button("Leave the Game", () => {
+                    let removing = confirm("Remove yourself from this game?");
+                    modal.style.display = "none";
+                    if (removing) {
+                        const url = "{% url 'remove_self' 0 %}";
+                        fetch(url.replace('/0/', '/' + id + '/'))
+                            .then(res => {
+                                alert("You've been removed");
+                            })
+                    }
+                })
                 break;
             case 'start_round':
                 modal.style.display = "block";
@@ -44,11 +67,31 @@
                 console.error(`Unknown notification: ${notification}`);
         }
     }
+
+    function render_button(text, click_function) {
+        let button = document.querySelector("#button");
+        button.innerHTML = text;
+        button.className = "btn btn-primary btn-xl";
+        button.onclick = () => {
+            click_function();
+        }
+    }
 </script>
+<style>
+#button {
+    width:20%;
+    margin-left: auto;
+    margin-right: auto; 
+}
+.modal-content {
+    padding: 10px;
+}
+</style>
 
 <div id="notify-modal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
         <p id="modal-text"></p>
+        <a id="button" href="#"></a>
     </div>
 </div>
