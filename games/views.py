@@ -50,22 +50,30 @@ def get_nplayer_game(request):
     return JsonResponse(context)
 
 def game(request):
-    context = {}
+    context = {
+        'event_id': 0,
+        'event_playing': False,
+        'is_playing': False
+    }
     try: 
         user = request.user
         if not user.is_authenticated or not user.eventuser_set.exists():
             return render(request, 'Games/game.html', context)
         if request.user.eventuser_set.exists():
             for eventuser in request.user.eventuser_set.all():
+                if eventuser.events.filter(is_playing=True).exists():
+                    context['event_playing'] = True
+                    context['event_id'] = eventuser.events.filter(
+                        is_playing=True)[0].pk
                 if eventuser.is_playing():
+                    context['event_id'] = eventuser.playing_event().pk
                     group = eventuser.current_group()
+                    context['is_playing'] = True
                     if not group.is_complete:
                         return HttpResponseRedirect(reverse('same_group_page'))
-                    context['is_playing'] = True
                     break
     except AttributeError:
         pass #AnonUser
-    context['event_id'] = user.eventuser_set.all()[0].playing_event().pk
     return render(request, 'Games/game.html', context)
 
 def gamesid(request, pk):

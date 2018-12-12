@@ -99,34 +99,41 @@
 
     document.addEventListener('DOMContentLoaded', function() {
       //for a logged in user in a playing event
-      if ("{{ is_playing }}") {
+      if ("{{ user.is_authenticated }}" && "{{ is_playing }}") {
         fetch("{% url 'get_user_game' %}")
+          .then(res => { check_response(res); })
           .then(res => res.json())
           .then(res => {
             document.getElementById("game-title").innerHTML = res.game;
             document.querySelector(".game-text").innerHTML = res.text;
             document.querySelector("hr").classList.add("star-light");
-            document.querySelector("#next").innerHTML = "Leave the Game";
-            document.querySelector("#next").className = "btn btn-primary btn-xl";
-            document.querySelector("#next").onclick = () => {
+
+            render_button("Leave the Game", () => {
               let removing = confirm("Remove yourself from this game?");
               if (removing) {
                 const event_id = "{{ event_id }}"
                 fetch("{% url 'remove_self' event_id  %}")
-                .then( res => {
-                  alert("You've been removed");
-                  window.location.replace("{% url 'home_creation_page' %}");
+                  .then(res => {
+                    alert("You've been removed");
+                    window.location.replace("{% url 'home_creation_page' %}");
                   })
               }
+            })
+          })
+          .catch( err => {
+            if (!"{{ event_playing }}") {
+              error = err.json();
+              document.getElementById("game-title").innerHTML = error.game;
+              document.querySelector(".game-text").innerHTML = error.text;
+              document.querySelector("hr").classList.add("star-light");
+            }
+            else {
+              render_join();
             }
           })
-          .error( err => {
-            error = err.json();
-            document.getElementById("game-title").innerHTML = error.game;
-            document.querySelector(".game-text").innerHTML = error.text;
-            document.querySelector("hr").classList.add("star-light");
-          })
-        return false;
+      }
+      else if ("{{ user.is_authenticated }}" && "{{ event_playing }}") {
+        render_join();
       }
       else {
         //for a user who is not logged in or not in a playing event
@@ -134,15 +141,48 @@
           btn.onclick = () => {
             const players = btn.value;
             load_game(players);
-            document.querySelector("#next").innerHTML = "Next Game";
-            document.querySelector("#next").className = "btn btn-primary btn-xl";
-            document.querySelector("#next").onclick = () => {
-              load_game(players);
-            }
 
-            return false;
+            render_button("Next Game", load_game(players))
+            document.querySelectorAll(".num").forEach(button => {
+              button.classList.remove("active");
+            })
+            btn.classList.add("active");
           }
         });
+      }
+
+      function render_join() {
+        document.getElementById("game-title").innerHTML = "Join?";
+        const msg = "Your event is playing right now, but you haven't joined. Would you like to join in the next round?";
+        document.querySelector(".game-text").innerHTML = msg;
+        document.querySelector("hr").classList.add("star-light");
+
+        render_button("Join", () => {
+          let joining = confirm("Join this game?");
+          if (joining) {
+            const event_id = "{{ event_id }}"
+            fetch("{% url 'add_self' event_id  %}")
+              .then(res => {
+                alert("You've been added. The page will refresh when the next round begins.");
+              })
+          }
+        })
+      }
+
+      function render_button(text, click_function) {
+        let button = document.querySelector("#next");
+        button.innerHTML = text;
+        button.className = "btn btn-primary btn-xl";
+        button.onclick = () => {
+          click_function();
+        }
+      }
+
+      function check_response(res) {
+        if (!res.ok) {
+          throw Error(res.text);
+        }
+        return res;
       }
 
       function load_game(players) {

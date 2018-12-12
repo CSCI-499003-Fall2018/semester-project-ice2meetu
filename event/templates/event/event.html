@@ -107,6 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			view = btn.getAttribute('value');
 			hit_endpoint(view);
             eventSocket.send(JSON.stringify({
+                'event_id': '{{ event.pk }}',
                 'event_code': '{{ event.access_code }}',
                 'event_title': '{{ event.title }}',
                 'notification': view
