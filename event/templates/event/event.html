@@ -125,8 +125,10 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="container-fluid" style="margin-top:100px;">
 <div class="row justify-content-center">
 <h1 class="col-12">{{ event.title }}</h1>
-	<h2 class="col-12">Welcome, {{ user.user }}</h2>
-	<p class="col-12">{{ event.admin }}</p>
+	<h2 class="col-12">Welcome, {{ user.username }}</h2>
+    {% if user == event.admin %}
+	<h4 class="col-12">You are the event admin</h4>
+    {% endif %}
     <p class="col-12">{{ event.description }}</p>
 </div>
 	<div  class="container"style="margin-top: 10px">
@@ -147,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
             Start Game
             </button>
         </div>
-	{% else %}
+	{% endif %}
         <div class="col-12 justify-content-center" style="margin-top: 10px">
             <h1 class="col-12">GamePlay</h1>
             <h6 id="something"></h6>
@@ -161,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </button>
             {% endif %}
         </div>
-    {% endif %}
+
 	</div>
 </div>
 {% endblock content %}
