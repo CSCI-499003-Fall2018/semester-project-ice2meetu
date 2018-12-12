@@ -22,7 +22,7 @@ class GameManager(models.Manager):
     def nplayer_games(self, num_players):
         min_games = Game.objects.filter(
             game_type__min_players__lte=num_players)
-        filtered_games = Game.objects.filter(
+        filtered_games = min_games.filter(
             game_type__max_players__gte=num_players)
         return filtered_games
 
