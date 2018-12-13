@@ -59,20 +59,19 @@ def game(request):
         user = request.user
         if not user.is_authenticated or not user.eventuser_set.exists():
             return render(request, 'Games/game.html', context)
-        if request.user.eventuser_set.exists():
-            for eventuser in request.user.eventuser_set.all():
-                if eventuser.events.filter(is_playing=True).exists():
-                    context['event_playing'] = True
-                    context['event_id'] = eventuser.events.filter(
-                        is_playing=True)[0].pk
-                if eventuser.is_playing():
-                    context['event_id'] = eventuser.playing_event().pk
-                    if eventuser.playing_event.is_playing:
-                        group = eventuser.current_group()
-                        context['is_playing'] = True
-                    if not group.is_complete:
-                        return HttpResponseRedirect(reverse('same_group_page'))
-                    break
+        if user.eventuser_set.exists():
+            eventuser = user.eventuser_set.all()[0]
+            if eventuser.events.filter(is_playing=True).exists():
+                context['event_playing'] = True
+                context['event_id'] = eventuser.events.filter(
+                    is_playing=True)[0].pk
+            if eventuser.is_playing():
+                context['event_id'] = eventuser.playing_event().pk
+                if eventuser.playing_event().is_playing:
+                    context['is_playing'] = True
+                    group = eventuser.current_group()
+                if not group.is_complete:
+                    return HttpResponseRedirect(reverse('same_group_page'))
     except AttributeError:
         pass #AnonUser
     print(context)
