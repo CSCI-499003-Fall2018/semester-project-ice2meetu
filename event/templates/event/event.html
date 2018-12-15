@@ -3,11 +3,11 @@
 {% block content %}
 <script>
     const eventSocket = new WebSocket(
-        'ws://' + window.location.host +
+        'wss://' + window.location.host +
         '/event/ws');
 
     eventSocket.onclose = e => {
-        console.log('Chat socket closed');
+        console.log('Chat socket closed in event.html');
     };
 
     eventSocket.onmessage = e => {
@@ -37,7 +37,7 @@
             case 'start_round':
                 modal.style.display = "block";
                 modalText.innerHTML = `The game has begun in ${event}. Redirecting...`;
-                setTimeout(() => { window.location.replace("{% url 'game' %}"); }, 1500);
+                setTimeout(() => { window.location.replace("{% url 'game' %}"); }, 5400);
                 break;
             case 'end':
                 modal.style.display = "block";

@@ -9,6 +9,7 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="shortcut icon" href="#" />
 <head></head>
 {% if group_number is None %}
 <body style="background-color: black">
@@ -46,8 +47,8 @@
 </body>
 <script>
     const groupSocket = new WebSocket(
-        'ws://' + window.location.host +
-        '/group/ws');
+        'wss://' + window.location.host +
+        '/group/wss');
     //Updating group complete
     groupSocket.onmessage = e => {
         const data = JSON.parse(e.data);
@@ -58,7 +59,7 @@
     };
 
     groupSocket.onclose = e => {
-        console.log('Chat socket closed');
+        console.log('Chat socket closed in group.html');
     };
 
     //Found Group
