@@ -106,7 +106,7 @@
       const event_playing = ("{{ event_playing }}" === "False" ? false : true);
       if (authed && playing) {
         fetch("{% url 'get_user_game' %}")
-          .then(res => { check_response(res); })
+          .then(res => check_response(res))
           .then(res => res.json())
           .then(res => {
             document.getElementById("game-title").innerHTML = res.game;
