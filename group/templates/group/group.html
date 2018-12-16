@@ -46,20 +46,12 @@
     </div>
 </body>
 <script>
-    // const ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    // groupSocket = "";
-    // if (ws_scheme == "wss") {
-    //     groupSocket = new WebSocket(
-    //     "wss://" +  window.location.host +
-    //     '/group/wss');
-    // } else {
-    //     groupSocket = new WebSocket(
-    //     'ws://' + window.location.host +
-    //     '/group/wss');
-    // }
+    const ws_scheme = window.location.protocol == "https:" ? "wss://" : "ws://";
     const groupSocket = new WebSocket(
-         'ws://' + window.location.host +
-        '/group/wss');
+      ws_scheme +  window.location.host +
+      '/group/ws'
+    );
+    
     // Updating group complete
     groupSocket.onmessage = e => {
         const data = JSON.parse(e.data);

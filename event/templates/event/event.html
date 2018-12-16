@@ -1,20 +1,10 @@
 {% extends "Home/base.html" %}
-{% load staticfiles %}
+{% load static %}
 {% block content %}
 <script>
-    // const ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    // eventSocket = "";
-    // if (ws_scheme == "wss") {
-    //     eventSocket = new WebSocket(
-    //     "wss://" +  window.location.host +
-    //     '/event/ws');
-    // } else {
-    //     eventSocket = new WebSocket(
-    //     'ws://' + window.location.host +
-    //     '/event/ws');
-    // }
+    const ws_scheme = window.location.protocol == "https:" ? "wss://" : "ws://";
     const eventSocket = new WebSocket(
-        'ws://' +  window.location.host +
+        ws_scheme +  window.location.host +
         '/event/ws');
 
 
@@ -128,6 +118,20 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 });
 </script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title -->
+    <title>Event</title>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'assets/css/style.css' %}"/>
+    <link rel="shortcut icon" href="#" />
+</head>
 <div id="notify-modal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
@@ -135,48 +139,59 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </div>
 <h1>Event Page</h1>
-<div class="container-fluid" style="margin-top:100px;">
-<div class="row justify-content-center">
-<h1 class="col-12">{{ event.title }}</h1>
-	<h2 class="col-12">Welcome, {{ user.username }}</h2>
-    {% if user == event.admin %}
-	<h4 class="col-12">You are the event admin</h4>
-    {% endif %}
-    <p class="col-12">{{ event.description }}</p>
-</div>
-	<div  class="container"style="margin-top: 10px">
-	{% if user == event.admin %}
-        <div class="col-12 justify-content-center">
-            <h1 class="col-12 ">Admin Control</h1>
-            <h5 id="admin"></h5>
-            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="begin">
-            Start Event
-            </button>
-            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="end">
-            End Game
-            </button>
-            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="add_all">
-            Add All Players
-            </button>
-            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" value="start_round">
-            Start Game
-            </button>
-        </div>
-	{% endif %}
-        <div class="col-12 justify-content-center" style="margin-top: 10px">
-            <h1 class="col-12">GamePlay</h1>
-            <h6 id="something"></h6>
-            {% if join %}
-            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" id="addremove" value="add">
-            Join Game
-            </button>
-            {% else %}
-            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" id="addremove" value="remove">
-            Leave Game
-            </button>
-            {% endif %}
-        </div>
 
-	</div>
-</div>
+<section class="breadcumb-area bg-img bg-overlay" style="background-image: url({% get_static_prefix %}assets/images/event/e6.jpeg);">
+    <div class="bradcumbContent">
+        <h3> Admin Control</h3>
+        <br>
+        <hr>
+        <br>
+        <h2>Events</h2>
+    </div>
+</section>
+
+<section class="events-area section-padding-100">
+    <div class="container">
+        <div class="row">
+            <!-- Single Event Area -->
+            <div class="col-12 col-md-6 col-lg-12">
+                <div class="single-event-area mb-30">
+                    <div class="event-thumbnail">
+                        <img src="{% get_static_prefix %}assets/images/event/e4.jpeg" alt="">
+                    </div>
+                    <div class="event-text">
+                        {% if user == event.admin %}
+                        <h4>{{ event.title }}</h4>
+                        {% if user == event.admin %}
+                        <h4 class="col-12">You are the event admin</h4>
+                        {% endif %}
+                        <div class="event-meta-data">
+                            <a href="#" class="event-place">{{ event.description }}</a>
+                            <a href="#" class="event-date">{{ event.event_type }}</a>
+                        </div>
+                        <h5 id="admin"></h5>
+                        <button class="btn btn-primary endpoint" style="padding: 5px" value="begin">Start Event</button>  
+                        <button class="btn btn-primary endpoint" style="padding: 5px; margin-left: 10px" value="add_all">Add All Players</button>                        
+                        <button class="btn btn-primary endpoint" style="padding: 5px; margin-left: 10px" value="start_round">Start Game</button>
+                        <button class="btn btn-primary endpoint" style="padding: 5px; margin-left: 10px" value="end">End Game</button>
+                        {% endif %}
+                        <br>
+                        <br>
+                        <hr style="background-color: grey; height: 1px; border: 0; margin-top: 22px">
+                        <br>
+                        <h4>Game Play</h4>
+                        <h6 id="something"></h6>
+                        <div class="event-meta-data" style="margin-top: 20px">
+                            {% if join %}
+                            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" id="addremove" value="add">Join Game</button>
+                            {% else %}
+                            <button class="btn btn-primary endpoint" style="padding: 5px" href="#" id="addremove" value="remove">Leave Game</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock content %}
