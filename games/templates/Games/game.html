@@ -58,9 +58,11 @@
   </header>
 
   <script>
-  const eventSocket = new WebSocket(
-      'ws://' + window.location.host +
-      '/event/ws');
+    const ws_scheme = window.location.protocol == "https:" ? "wss://" : "ws://";
+    const eventSocket = new WebSocket(
+      ws_scheme +  window.location.host +
+      '/event/ws'
+    );
 
     eventSocket.onclose = e => {
       console.log('Chat socket closed');
@@ -85,7 +87,7 @@
         case 'start_round':
           modal.style.display = "block";
           modalText.innerHTML = "Next Round!";
-          setTimeout(() => { window.location.replace("{% url 'same_group_page' %}") }, 1500);
+          setTimeout(() => { window.location.replace("{% url 'same_group_page' %}") }, 5400);
           break;
         case 'end':
           modal.style.display = "block";

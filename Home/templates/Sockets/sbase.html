@@ -1,6 +1,7 @@
 <script>
+    const ws_scheme = window.location.protocol == "https:" ? "wss://" : "ws://";
     const eventSocket = new WebSocket(
-        'ws://' + window.location.host +
+        ws_scheme + window.location.host +
         '/event/ws');
 
     eventSocket.onclose = e => {
@@ -58,7 +59,7 @@
                 hide_button();
                 modal.style.display = "block";
                 modalText.innerHTML = `The game has begun in ${event}. Redirecting...`;
-                setTimeout(() => { window.location.replace("{% url 'game' %}");}, 1500);
+                setTimeout(() => { window.location.replace("{% url 'game' %}");}, 5400);
                 break;
             case 'end':
                 hide_button();

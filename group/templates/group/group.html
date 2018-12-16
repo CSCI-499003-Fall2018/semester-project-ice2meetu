@@ -9,6 +9,7 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="shortcut icon" href="#" />
 <head></head>
 {% if group_number is None %}
 <body style="background-color: black">
@@ -45,10 +46,13 @@
     </div>
 </body>
 <script>
+    const ws_scheme = window.location.protocol == "https:" ? "wss://" : "ws://";
     const groupSocket = new WebSocket(
-        'ws://' + window.location.host +
-        '/group/ws');
-    //Updating group complete
+      ws_scheme +  window.location.host +
+      '/group/ws'
+    );
+    
+    // Updating group complete
     groupSocket.onmessage = e => {
         const data = JSON.parse(e.data);
         const complete = data['complete'];
