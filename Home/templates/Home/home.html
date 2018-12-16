@@ -192,15 +192,9 @@
                             <img src="{% get_static_prefix %}assets/images/service/game.jpeg" alt="">
                         </div>
                         <div class="service-info">
-                            {% if user.is_authenticated %}
                             <a href="{% url 'game' %}">
                                 <h5>Play</h5>
                             </a>
-                            {% else %}
-                            <a href="{% url 'login_page' %}">
-                                <h5>Play</h5>
-                            </a>
-                            {% endif %}
                             <p>Play a Game with Friends</p>
                         </div>
                     </div>
