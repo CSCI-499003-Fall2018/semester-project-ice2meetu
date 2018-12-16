@@ -2,9 +2,21 @@
 {% load staticfiles %}
 {% block content %}
 <script>
+    // const ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    // eventSocket = "";
+    // if (ws_scheme == "wss") {
+    //     eventSocket = new WebSocket(
+    //     "wss://" +  window.location.host +
+    //     '/event/ws');
+    // } else {
+    //     eventSocket = new WebSocket(
+    //     'ws://' + window.location.host +
+    //     '/event/ws');
+    // }
     const eventSocket = new WebSocket(
-        'wss://' + window.location.host +
+        'ws://' +  window.location.host +
         '/event/ws');
+
 
     eventSocket.onclose = e => {
         console.log('Chat socket closed in event.html');
