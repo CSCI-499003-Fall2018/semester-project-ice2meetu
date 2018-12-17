@@ -21,13 +21,51 @@ We deployed our application to Heroku, you can check it out here [Ice2MeetU](htt
 
 ## Installation
 
-Ice2MeetU requires [Python](https://www.python.org/) to run.
+Ice2MeetU requires [Python](https://www.python.org/) and [Django](https://www.djangoproject.com/) to run.
 
 #### Dependencies
 ```sh
 $ cd semester-project-ice2meetu
 
 $ pip install -r requirements.txt
+```
+
+#### Database Setup
+```sh
+$ pip install django psycopg2
+```
+
+Migrate the Database
+```sh
+$ cd semester-project-ice2meetu
+
+$ python manage.py makemigrations
+
+$ python manage.py migrate
+```
+
+Optional: Load dump data (We have five dumpdata files, make sure you are loading them in following order)
+```sh
+$ python manage.py loaddata db-users.json
+
+$ python manage.py loaddata db-creation.json
+
+$ python manage.py loaddata db-games.json
+
+$ python manage.py loaddata db-gamestart-creation.json
+
+$ python manage.py loaddata db-gameplay.json
+```
+
+After creating the database structure and loaded the dumpdata, we can create an administrative account by typing:
+```sh
+python manage.py createsuperuser
+```
+Before running the application, make sure you have both Postgres and Redis running, if not, start them using following two commands
+```sh
+$ brew services start postgresql
+
+$ brew services start redis
 ```
 
 # Running 
