@@ -1,35 +1,64 @@
-# Project Proposal
+# Ice2MeetU
 
-#### Project Title
-Ice2MeetU
+The Ice2MeetU project aims at the development of a web based application specially designed for events
+or parties for ice breaking purpose which can greatly help individuals to open up and overcome social anxiety.
 
-#### Date
-09/04/2018
+# Features
+-   Create Event
+    An organizer can create an Event and invite people into it (similar to a slack workspace), and each event can divided the people into separate groups.
 
-#### Team Members
-Kevin Cybura , Dandan Lin,  Silvena Chan, Kristoff Campbell
+-   Join Event
+    Individuals can join an existing event using associated access code
 
-#### Introduction
-Ice2MeetU is a group game app designed for events or parties that need a way to break the ice. The app will pair users to play a quick, randomized game. Break out our web or mobiles apps and play a game to introduce yourselves to each other in a non awkward way. 
+-   Grouping
+    Group event addendees by similar interest 
 
-#### Features
-- An organizer can create an Event and invite people into it (similar to a slack workspace), and each event can divided the people into separate groups.
-- Chat: Each event will have its own chat and each group will have its own private chat.
-- Accounts:
-    - Organizer accounts: choose available games, create groups, user profile fields, etc.
-    - User auth: each user must create their own account with profiles
-- Group people by similar interest (Ex: if you’re at a hackathon group by programming language).
-- Randomized games.
-- Instant chatting 
-- Follow up/Connect after the meetup
+-   Play Games
+    Randomized games.
 
-#### Client/Server architecture
-Need to create a rest api that can communicate with a database to implement chat, user auth, and create the “Events”. Each client(web frontend) will give the user a way to communicate to the rest api (Ex: create an account, login, chat).
+# Test It Out
+We deployed our application to Heroku, you can check it out here [Ice2MeetU](https://ice2meetu.herokuapp.com/)
 
-#### Privacy/Security:
-Need to securely store the user information for user auth. Prevent people from executing code through chat.
+## Installation
 
-#### Test plan 
-- Unit Test
-- Performance Test
-- User Studies
+Ice2MeetU requires [Python](https://www.python.org/) to run.
+
+#### Dependencies
+```sh
+$ cd semester-project-ice2meetu
+
+$ pip install -r requirements.txt
+```
+
+# Running 
+First, start the server.
+```sh
+$ python manage.py runserver
+```
+Then, navigate to following address in your preferred browser.
+```sh
+127.0.0.1:8000
+```
+
+# Future Work
+- Better Group Randomization 
+ Improve group randomization for better management
+
+- Messaging System 
+Add messaging system for users to follow up with each other after event 
+
+- EventAdmin Interface 
+Add more functionalities to EventAdmin Portal 
+
+- User Rating System 
+Users can rate group members
+
+# License
+
+MIT
+
+# Author
+- [Campbell, Kristoff](https://github.com/kristoff-campbell28)
+- [Chan, Silvena](https://github.com/silvenac)
+- [Cybura, Kevin](https://github.com/KevinCybura)
+- [Lin, Dandan](https://github.com/dandanlin0702)
