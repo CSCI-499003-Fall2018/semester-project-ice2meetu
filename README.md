@@ -69,7 +69,12 @@ $ brew services start redis
 ```
 
 # Running 
-First, start the server.
+If you haven't started Redis above, you can also use Docker:
+```sh
+$ docker run -p 6379:6379 -d redis:2.8
+```
+
+Start the Django server.
 ```sh
 $ python manage.py runserver
 ```
