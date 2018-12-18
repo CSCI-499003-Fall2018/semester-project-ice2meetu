@@ -4,17 +4,17 @@ The Ice2MeetU project aims at the development of a web based application special
 or parties for ice breaking purpose which can greatly help individuals to open up and overcome social anxiety.
 
 # Features
--   Create Event
-    An organizer can create an Event and invite people into it (similar to a slack workspace), and each event can divided the people into separate groups.
+-   **Create Event**<br />
+    An organizer can create an event and invite people to it (similar to a slack workspace)
 
--   Join Event
+-   **Join Event**<br />
     Individuals can join an existing event using associated access code
 
--   Grouping
-    Group event addendees by similar interest 
+-   **Play Game with your Event!**<br />
+    Start a game and once your event attendees join, they'll be randomly grouped to play a game!
 
--   Play Games
-    Randomized games.
+-   **...Or just play games, no need to register**<br />
+    Just pick the number of players and games will be generated for you.
 
 # Test It Out
 We deployed our application to Heroku, you can check it out here [Ice2MeetU](https://ice2meetu.herokuapp.com/)
@@ -33,6 +33,21 @@ $ pip install -r requirements.txt
 #### Database Setup
 ```sh
 $ pip install django psycopg2
+```
+Install Postgres & then setup a local Postgres Database:
+* Create an admin user and password for your DB: <br />
+```sh
+$ createuser -P -s -e <SOME_USERNAME>
+```
+* Create the DB: <br />
+```sh 
+$ createdb -h localhost -U <USERNAME_FROM_ABOVE> <DB_NAME>
+```
+* Set your environment varibles
+```sh
+export CAPSTONE_DB=<DB_NAME>
+export CAPSTONE_USER=<USERNAME_FROM_ABOVE>
+export CAPSTONE_PASSWORD=<PASSWORD_YOU_SET>
 ```
 
 Migrate the Database
