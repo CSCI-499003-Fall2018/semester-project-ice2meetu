@@ -1,7 +1,9 @@
-# Ice2MeetU
+# Ice2MeetU: A CSCI499 Hunter Capstone Production
 
 The Ice2MeetU project aims at the development of a web based application specially designed for events
 or parties for ice breaking purpose which can greatly help individuals to open up and overcome social anxiety.
+
+Checkout our [presentation](https://bit.ly/2EA5nTs)!
 
 # Features
 -   **Create Event**<br />
