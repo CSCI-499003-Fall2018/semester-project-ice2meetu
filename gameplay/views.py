@@ -53,7 +53,8 @@ def end_game(request, event_pk):
         return JsonResponse(status=status, data=err)
 
     if not event.is_playing and not hasattr(event, 'gamemanager'):
-        return JsonResponse({"Error": "This event is not playing"})
+        err = {"Error": "This event is not playing"}
+        return JsonResponse(status=405, data=err)
 
     event.gamemanager.end_game()
     return JsonResponse({"Success": "Game was ended"})
@@ -87,15 +88,19 @@ def start_round(request, event_pk):
         return JsonResponse(status=status, data=err)
     
     if not event.is_playing and not hasattr(event, 'gamemanager'):
-        return JsonResponse({"Error": "This event is not playing"})
+        err = {"Error": "This event is not playing"}
+        return JsonResponse(status=405, data=err)
     
     manager = event.gamemanager
     if len(manager.players()) < 2:
-        return JsonResponse({"Error": "Less than 2 players ready to play"})
+        err = {"Error": "Less than 2 players ready to play"}
+        return JsonResponse(status=405, data=err)
 
     play = manager.go_round()
+    print(play)
     if not play:
-        return JsonResponse({"Error": "All possible rounds complete"})
+        err = {"Status": "All possible rounds complete"}
+        return JsonResponse(status=204, data=err)
     group_objs = manager.get_current_grouping().groups()
     groups = [list(group.users()) for group in group_objs]
     grouped_users = []
@@ -113,7 +118,6 @@ def check_event_user(request, event):
     if not event.exists():
         err = {"Error": "Event id {} doesn't exist".format(event_pk)}
         return (404, err)
-    # event_user = request.user.eventuser_set.all()
     event_user = EventUser.objects.filter(user=request.user)
     ret = None
     for e_u in event_user:
@@ -153,7 +157,6 @@ def add_self(request, event_pk):
         'join': player
     }
     return TemplateResponse(request,"event/event.html",content)
-    # return JsonResponse({"Success": "You've been added to the game"})
 
 
 
@@ -171,7 +174,6 @@ def remove_self(request, event_pk):
     if not isinstance(event_user, EventUser):
         event_user = event_user.filter(events__access_code = event.access_code)[0]
     event_user.player.remove_self()
-    # return JsonResponse({"Success": "You've been removed from the game"})
 
     player = event.gamemanager.player_set.filter(user=event_user)
     player = len(player) == 0
@@ -180,32 +182,3 @@ def remove_self(request, event_pk):
         'join': player
     }
     return TemplateResponse(request,"event/event.html",content)
-
-
-    
-
-
-#@login_required(login_url='login/')
-# def play_test(request):
-    # if request.user.eventuser_set.exists():
-    #     user = list(request.user.eventuser_set.all())[0]
-    # else:
-    #     raise RuntimeError("Not an event user")
-    # if user.events.filter(is_playing=True).exists():
-    #     event = list(user.events.filter(is_playing=True))[0]
-    # else:
-    #     raise RuntimeError(
-    #         "User {} is not part of any event".format(repr(user)))
-    # s = SimulatedAnnealing(event)
-    # grouper = s.generate()
-    # grouping = next(grouper)
-    # start_games(s.start_state)
-    # context = {'event': repr(event),
-    #            'groups': []}
-    # for group in s.start_state.groups():
-    #     info = {}
-    #     info['name'] = repr(group)
-    #     info['users'] = [repr(user) for user in group.users()]
-    #     info['game'] = repr(group.game)
-    #     context['groups'].append(info)
-    # return JsonResponse(context)

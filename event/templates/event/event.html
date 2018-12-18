@@ -63,36 +63,52 @@ function hit_endpoint(view) {
 	{#httpRequest.onreadystatechange = responseHandler;#}
 	{#httpRequest.open('GET', url);#}
 	{#httpRequest.send();#}
-	fetch(url).then(function (res) {
-        if(view == 'add' ){
-            document.getElementById('something').innerText = 'Successfully joined'
-        } else if(view == 'remove'){
-            document.getElementById('something').innerText = 'Successfully left game'
-        }
-        button = document.getElementById('addremove');
-        if(view == 'add'){
-            button.value = 'remove'
-            button.innerText = 'Leave Game'
-        }
-        else if (view == 'remove'){
-            button.value = 'add'
-            button.innerText = 'Join Game'
-        }
-        if (view == 'add_all'){
-            document.getElementById('admin').innerText = 'Successfully add all players'
-        }
-        else if (view == 'begin'){
-            document.getElementById('admin').innerText = 'Event has been started'
-        }
-        else if (view == 'start_round'){
-            document.getElementById('admin').innerText = 'Game has been start'
-        }
-        else if(view == 'end') {
-            document.getElementById('admin').innerText = 'Event has been ended'
-        }
-    }).catch(function (err) {
-        console.log(err)
-    })
+	fetch(url)
+        .then(res => {
+            console.log(view);
+            console.log(res.status);
+            if (view === 'start_round' && res.status === 204) {
+                document.getElementById('something').innerText = 'No more rounds possible! All unique groups made!';
+                return false;
+            }
+            else if (!res.ok) {
+                document.getElementById('something').innerText = res.statusText;
+                return false;
+            }
+            else {
+                if (view == 'add') {
+                    document.getElementById('something').innerText = 'Successfully joined'
+                } else if (view == 'remove') {
+                    document.getElementById('something').innerText = 'Successfully left game'
+                }
+                button = document.getElementById('addremove');
+                if (view == 'add') {
+                    button.value = 'remove'
+                    button.innerText = 'Leave Game'
+                }
+                else if (view == 'remove') {
+                    button.value = 'add'
+                    button.innerText = 'Join Game'
+                }
+                if (view == 'add_all') {
+                    document.getElementById('admin').innerText = 'Successfully add all players'
+                }
+                else if (view == 'begin') {
+                    document.getElementById('admin').innerText = 'Event has been started'
+                }
+                else if (view == 'start_round') {
+                    document.getElementById('admin').innerText = 'Game has been started'
+                }
+                else if (view == 'end') {
+                    document.getElementById('admin').innerText = 'Event has been ended'
+                }
+                return true;
+            }
+        })
+        .catch(function (err) {
+            console.log(err);
+            return false;
+        })
 }
 
 function responseHandler() {
@@ -107,13 +123,14 @@ document.addEventListener('DOMContentLoaded', function() {
 	document.querySelectorAll(".endpoint").forEach(function(btn) {
 		btn.onclick = () => {
 			view = btn.getAttribute('value');
-			hit_endpoint(view);
-            eventSocket.send(JSON.stringify({
-                'event_id': '{{ event.pk }}',
-                'event_code': '{{ event.access_code }}',
-                'event_title': '{{ event.title }}',
-                'notification': view
-            }));
+			if (hit_endpoint(view)) {
+                eventSocket.send(JSON.stringify({
+                    'event_id': '{{ event.pk }}',
+                    'event_code': '{{ event.access_code }}',
+                    'event_title': '{{ event.title }}',
+                    'notification': view
+                }));
+            }
         }
 	});
 });

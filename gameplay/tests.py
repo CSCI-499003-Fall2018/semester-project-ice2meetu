@@ -173,10 +173,8 @@ class GameManagerPlayTestCase(TestCase):
 
         def add(x, y):
             if isinstance(x, Group):
-                print("x is a Group: {}".format(x))
                 return x.size() + y.size()
             else:
-                print("x is an int: {}".format(x))
                 return x + y.size()
 
         def count_grouped_players(manager):
