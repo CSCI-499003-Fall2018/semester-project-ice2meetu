@@ -97,6 +97,10 @@ Then, navigate to following address in your preferred browser.
 ```sh
 127.0.0.1:8000
 ```
+# Run Tests
+```sh
+$ python manage.py test gameplay
+```
 
 # Future Work
 - Better Group Randomization 
