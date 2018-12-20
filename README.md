@@ -103,6 +103,23 @@ Then, navigate to following address in your preferred browser.
 ```sh
 $ python manage.py test gameplay
 ```
+# Accessing REST-API
+
+Get Auth Token
+```
+/api-auth
+```
+* username and password are required to access your authtoken.
+```
+/api/users
+
+/api/events
+
+/api/games
+```
+* Auth token must be sent as token in the header of your request or if your accessing via the browser you can be logged in.
+
+
 
 # Future Work
 - Better Group Randomization 
