@@ -14,7 +14,7 @@ djangorestframework==3.9.0
 gunicorn
 idna==2.7
 Markdown==3.0.1
-numpy==1.15.2
+numpy==1.22.0
 oauthlib==2.1.0
 pandas==0.23.4
 psycopg2==2.7.5
